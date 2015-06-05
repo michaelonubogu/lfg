@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Custom imports
+var config = require('./config.js');
+var giantbomb = require('./giantbomb.js');
+
 var app = express();
 
 // view engine setup
@@ -50,6 +54,22 @@ app.use(function (err, req, res, next) {
         message: err.message,
         error: {}
     });
+});
+
+app.get('api/gaintbomb/games', function (req, res) {
+//...
+});
+
+app.get('api/gaintbomb/game/:id', function (req, res) {
+//...
+});
+
+app.get('api/gaintbomb/game', function (req, res) {
+//...
+});
+
+app.get('api/gaintbomb/platforms', function (req, res) {
+//...
 });
 
 app.get('*', function (req, res) {

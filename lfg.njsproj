@@ -1402,6 +1402,17 @@
     <Content Include="public\components\bower_components\webcomponentsjs\build.log" />
     <Content Include="public\components\bower_components\webcomponentsjs\package.json" />
     <Content Include="public\components\bower_components\webcomponentsjs\README.md" />
+    <Content Include="public\components\d-calendar\.bowerrc" />
+    <Content Include="public\components\d-calendar\.gitignore" />
+    <Content Include="public\components\d-calendar\bower.json" />
+    <Content Include="public\components\d-calendar\d-calendar-theme.html" />
+    <Content Include="public\components\d-calendar\d-calendar-weeks.html" />
+    <Content Include="public\components\d-calendar\d-calendar-years.html" />
+    <Content Include="public\components\d-calendar\d-calendar.html" />
+    <Content Include="public\components\d-calendar\d-date-utils.html" />
+    <Content Include="public\components\d-calendar\demo.html" />
+    <Content Include="public\components\d-calendar\index.html" />
+    <Content Include="public\components\d-calendar\README.md" />
     <Content Include="public\imports\lfg-drawer.html" />
     <Content Include="public\imports\materialize.html" />
     <Content Include="public\index.html" />
@@ -1706,6 +1717,7 @@
     <Folder Include="public\components\bower_components\sw-toolbox\" />
     <Folder Include="public\components\bower_components\web-animations-js\" />
     <Folder Include="public\components\bower_components\webcomponentsjs\" />
+    <Folder Include="public\components\d-calendar\" />
     <Folder Include="public\imports\" />
     <Folder Include="public\views\" />
   </ItemGroup>

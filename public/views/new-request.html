@@ -25,12 +25,12 @@
 <link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
 
+<!-- Custom Imports -->
+<!--<link rel="import" href="../imports/materialize.html">-->
+<!--<link rel="import" href="../components/d-calendar/d-calendar.html">-->
+
 
 <dom-module id="new-request">
-    <!-- CSS -->
-    <link rel="import" type="css" href="../assets/materialize/css/materialize.css"  />
-    <link rel="import" type="css" href='../assets/app/css/lfg.css'>
-
     <style>
         :host{
         }
@@ -41,6 +41,12 @@
             color:#ffffff;
             margin-left:-15px !important;
         }
+
+		#request_create_button {
+			background-color: #EF6C00;
+			color: #ffeb3b;
+			width:100%;
+		}
 
         .lfg-main-toolbar{
             --paper-toolbar-background:{
@@ -74,7 +80,8 @@
         }
 
         .lfg-input{
-            color: #ffeb3b;
+            color: #ffeb3b !important;
+
         }
 
         /* label color */
@@ -118,6 +125,12 @@
         .lfg-input.input-field .prefix.active {
             color: #ffeb3b;
         }
+
+		.lfg-input .select-wrapper input.select-dropdown{
+			border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+		}
+
 
         .switch label.new-request input[type=checkbox].new-request:checked + .lever.new-request{
             background-color: #fff59d;
@@ -207,10 +220,11 @@
                 <div fit class="content-area">
                     <br>
                     <form class="col s12">
+						<!--<input value="{{request.title}}" />-->
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-action-grade prefix"></i>
-                                <input id="request_title" type="text" class="validate">
+                                <input id="request_title" type="text" class="validate" value="{{request.title::input}}" />
                                 <label for="request_title">What is it you wanna do?</label>
                             </div>
                         </div>
@@ -218,23 +232,28 @@
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-hardware-gamepad prefix"></i>
-                                <input id="request_game" type="text" class="validate">
+                                <input id="request_game" type="text" class="validate" value={{request.game::input}}>
                                 <label for="request_game">In What Game?</label>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="lfg-input input-field col s12">
-                                <i class="mdi-hardware-tv prefix"></i>
-                                <input id="request_platform" type="text" class="validate">
-                                <label for="request_game">For Which System?</label>
-                            </div>
-                        </div>
+						<div class="row">
+							<div class="lfg-input select input-field col s12">
+								<i class="mdi-hardware-tv prefix"></i>
+								<select id="request_system">
+									<option value="" disabled selected></option>
+									<template is="dom-repeat" items="[[systems]]" onload="{{registerDropListPlugin()}}">
+										<option value="{{item.value::change}}">{{item.name}}</option>
+									</template>
+								</select>
+								<label >For Which System?</label>
+							</div>
+						</div>
 
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-action-today prefix"></i>
-                                <input id="request_date" type="text" class="validate">
+                                <input id="request_date" type="text" class="validate" value={{request.date::input}}>
                                 <label for="request_date">On What Day?</label>
                             </div>
                         </div>
@@ -242,7 +261,7 @@
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-device-access-time prefix"></i>
-                                <input id="request_time" type="text" class="validate">
+                                <input id="request_time" type="text" class="validate" value={{request.time::input}}>
                                 <label for="request_time">At What Time?</label>
                             </div>
                         </div>
@@ -256,13 +275,33 @@
                                 <div class="switch">
                                     <label class="white-text" style="font-size:1rem;">
                                         <span class="negative">No</span>
-                                        <input type="checkbox">
+                                        <input type="checkbox" checked="{{request.mic::change}}">
                                         <span class="lever"></span>
                                         <span class="positive">Yes</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
+						<br />
+						<div class="row">
+							<div class="col s12">
+								<ul id="request_details_container" class="collapsible" data-collapsible="expandable">
+									<li>
+										<div class="collapsible-header"><i class="mdi-image-filter-drama"></i>First</div>
+										<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col s12">
+								<paper-button id="request_create_button" raised on-click="saveRequest">
+									<iron-icon icon="done"></iron-icon>
+									Create Gaming Request
+								</paper-button>
+							</div>
+						</div>
                     </form>
                 </div>
             </paper-header-panel>
@@ -271,7 +310,12 @@
 </dom-module>
 
 <script>
-    (function(window) {
+	(function (window) {
+		/*$(document).ready(function () {
+			var select = $(document).shadowRoot;
+			$('select').material_select();
+		});*/
+
         var constructor = Polymer({
 
             is: 'new-request',
@@ -284,13 +328,7 @@
              * @default
              */
             properties: {
-                firebase: {
-                    requests: null,
-                    games: null,
-                    users: null
-                },
-                name: 'New Request Page'
-
+                elementname: 'New Request Page',
                 /**
                  * ...
                  *
@@ -307,10 +345,56 @@
                 $.get(config.appUrl)
             },
 
+            registerPlugins: function () {
+            	$(this.$.request_details_container).collapsible();
+            },
+
+            registerDropListPlugin: function () {
+            	//TODO: Add Options manually or Use "browser-default" class of materialselect
+            	$(this.$.request_system).material_select();
+            },
+
+            setData: function () {
+            	this.request = {
+            		title: '',
+            		game: '',
+            		system: '',
+            		date: '',
+            		time: '',
+            		mic: false
+            	};
+
+            	this.systems = [
+					{ name: 'PS3', value: 'ps3' },
+					{ name: 'PS4', value: 'ps4' },
+					{ name: 'Xbox 360', value: 'xbox360' },
+					{ name: 'Xbox One', value: 'xboxOne' }
+            	];
+
+            	this.firebase = {
+            		requests: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.requests)),
+            		games: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.games)),
+            		users: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.users))
+            	};
+            },
+
+            saveRequest: function () {
+            	alert(this.request.title);
+            },
+
+            Method: function () {
+            },
+
+            created: function () {
+				//Part of Polymer lifecycle
+            },
+
             ready: function () {
-                this.properties.firebase.requests = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.requests));
-                this.properties.firebase.games = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.games));
-                this.properties.firebase.users = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.users));
+            	this.setData();
+            },
+
+            attached: function () {
+            	this.registerPlugins();
             }
         });
     })(window);
