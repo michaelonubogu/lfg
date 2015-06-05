@@ -1,0 +1,183 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../components/bower_components/polymer/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+
+<dom-module id="request-page">
+    <!-- CSS -->
+    <link rel="import" type="css" href="../assets/materialize/css/materialize.css"  />
+    <link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+    <style>
+        :host{
+        }
+
+        .logo-link{
+            text-decoration: none;
+            font-size:2rem;
+            color:#ffffff;
+            margin-left:-15px !important;
+        }
+
+        .lfg-main-toolbar{
+            --paper-toolbar-background:{
+                 background-color: transparent !important;
+             };
+        }
+
+        .lfg-drawer-toolbar{
+            --paper-toolbar-background: #ef6c00;
+        }
+
+        #paper-header-panel{
+            border-bottom: solid 1px #ffffff;
+        }
+
+        .lfg-main-header-panel{
+            --paper-header-panel-cover-container:{
+                border: solid 1px #ffffff;
+             };
+        }
+
+        .lfg-paper-fab{
+            --paper-fab: {
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                 margin-right: 3%;
+                 margin-bottom: 3%;
+             };
+            --paper-fab-background: #e65100;
+        }
+
+        .bottom-bar{
+            margin-left:0px !important;
+        }
+
+        .content-area{
+            padding:0 15% 15% 15%;
+            background-color:#FAFAFA;
+        }
+
+        .requests-card-panel{
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius:0px;
+            height: 1200px !important;
+        }
+
+
+        @media (max-width: 640px){
+            .logo-link{
+                margin-left:0px;
+            }
+
+            .content-area{
+                padding: 0;
+            }
+
+            .lfg-paper-fab{
+                --paper-fab: {
+                     position: fixed;
+                     right: 0;
+                     bottom: 0;
+                     margin-right: 3.5%;
+                     margin-bottom: 3.5%;
+                 };
+                --paper-fab-background: #e65100;
+            }
+        }
+    </style>
+
+    <template>
+        <paper-drawer-panel>
+            <paper-header-panel mode="seamed" drawer>
+                <paper-toolbar class="tall lfg-drawer-toolbar">
+                </paper-toolbar>
+                <div fit class="orange darken-3"></div>
+            </paper-header-panel>
+            <paper-header-panel mode="waterfall-tall" main class="lfg-main-header-panel">
+                <paper-toolbar class="tall lfg-main-toolbar">
+                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
+                    <div flex></div>
+                    <paper-icon-button icon="search"></paper-icon-button>
+                    <paper-icon-button icon="more-vert"></paper-icon-button>
+                    <div class="middle">
+                    </div>
+                    <div title class="bottom bottom-bar">
+                        <a href="/" class="logo-link">Game Requests</a>
+                    </div>
+                </paper-toolbar>
+                <div fit class="content-area">
+                    <!--<div class="card-panel requests-card-panel"></div>-->
+                    <paper-fab icon="add" class="lfg-paper-fab" on-click="newRequest"></paper-fab>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+            is: 'request-page',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                firebase: {
+                    requests: null,
+                    games: null,
+                    users: null
+                },
+                name: 'Requests Page'
+
+                /**
+                 * ...
+                 *
+                 * @attribute thingName
+                 * @type string
+                 * @default ''
+                 */
+            },
+
+            newRequest: function(){
+                document.querySelector('app-router').go('/new');
+            },
+
+            ready: function () {
+                this.properties.firebase.requests = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.requests));
+                this.properties.firebase.games = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.games));
+                this.properties.firebase.users = new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.users));
+            }
+        });
+    })(window);
+</script>
