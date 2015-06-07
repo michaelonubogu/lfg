@@ -242,9 +242,9 @@
 								<i class="mdi-hardware-tv prefix"></i>
 								<select id="request_system">
 									<option value="" disabled selected></option>
-									<template is="dom-repeat" items="[[systems]]" onload="{{registerDropListPlugin()}}">
+									<!--<template is="dom-repeat" items="[[systems]]">
 										<option value="{{item.value::change}}">{{item.name}}</option>
-									</template>
+									</template>-->
 								</select>
 								<label >For Which System?</label>
 							</div>
@@ -345,12 +345,21 @@
                 $.get(config.appUrl)
             },
 
+            optionSelected: function () {
+            	alert('OPTION SELECTED!');
+            },
+
             registerPlugins: function () {
             	$(this.$.request_details_container).collapsible();
             },
 
             registerDropListPlugin: function () {
-            	//TODO: Add Options manually or Use "browser-default" class of materialselect
+            	//TODO: Add Options manually or Use "browser-default" class of materialselect (lame)
+				var list = ''
+				_.each(this.systems, function (system) {
+					list += '<option value="' + system.value + '" on-click="optionSelected">' + system.name + '</option>'
+				});
+				$(this.$.request_system).append(list);
             	$(this.$.request_system).material_select();
             },
 
@@ -379,7 +388,7 @@
             },
 
             saveRequest: function () {
-            	alert(this.request.title);
+            	//alert(this.request.title);
             },
 
             Method: function () {
@@ -395,6 +404,7 @@
 
             attached: function () {
             	this.registerPlugins();
+            	this.registerDropListPlugin();
             }
         });
     })(window);
