@@ -4,15 +4,15 @@
 module.exports = {
     "giant_bomb": {
         "url" : "http://www.giantbomb.com/api/",
-            "key" : "9caedc058d2f9553e2de63e66dde3d81df03d6d0",
-            "endpoints" : {
-            "game" : "game",
-                "games" : "games",
-                "genre" : "genre",
-                "genres" : "genres",
-                "platform" : "platform",
-                "platforms" : "platforms",
-                "search" : "search"
+        "key" : "9caedc058d2f9553e2de63e66dde3d81df03d6d0",
+        "endpoints" : {
+			"game" : "game",
+            "games" : "games",
+            "genre" : "genre",
+            "genres" : "genres",
+            "platform" : "platform",
+            "platforms" : "platforms",
+            "search" : "search"
         },
         "formats":{
             "json" : "json",

@@ -21,7 +21,7 @@
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <ProjectView>ShowAllFiles</ProjectView>
     <NodejsPort>1337</NodejsPort>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +40,7 @@
     <Compile Include="public\assets\app\js\dweet.io.js" />
     <Compile Include="public\assets\app\js\dweet.io.min.js" />
     <Compile Include="public\assets\app\js\jquery-2.1.3.min.js" />
+    <Compile Include="public\assets\app\js\jquery-ui.min.js" />
     <Compile Include="public\assets\app\js\modernizr.custom.52158.js" />
     <Compile Include="public\assets\app\js\underscore-min.js" />
     <Compile Include="public\assets\app\js\window.resizeStop.js" />
@@ -257,6 +258,7 @@
     <Compile Include="public\components\bower_components\webcomponentsjs\webcomponents-lite.min.js" />
     <Compile Include="public\components\bower_components\webcomponentsjs\webcomponents.js" />
     <Compile Include="public\components\bower_components\webcomponentsjs\webcomponents.min.js" />
+    <Compile Include="routes\api.js" />
     <Content Include="package.json" />
     <Content Include="public\assets\app\css\lfg.css" />
     <Content Include="public\assets\materialize\css\materialize.css" />
@@ -1423,6 +1425,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="routes\" />
     <Folder Include="public\" />
     <Folder Include="public\assets\" />
     <Folder Include="public\assets\app\" />

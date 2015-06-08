@@ -232,7 +232,7 @@
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-hardware-gamepad prefix"></i>
-                                <input id="request_game" type="text" class="validate" value={{request.game::input}}>
+                                <input id="request_game" type="text" class="validate" data-beloworigin="true" value={{request.game::input}}>
                                 <label for="request_game">In What Game?</label>
                             </div>
                         </div>
@@ -311,11 +311,6 @@
 
 <script>
 	(function (window) {
-		/*$(document).ready(function () {
-			var select = $(document).shadowRoot;
-			$('select').material_select();
-		});*/
-
         var constructor = Polymer({
 
             is: 'new-request',
@@ -341,29 +336,10 @@
             getLookupData: function(){
                 //Gets lookup data from Giant Bomb
                 var config = window.lfg.config;
-
                 $.get(config.appUrl)
             },
 
-            optionSelected: function () {
-            	alert('OPTION SELECTED!');
-            },
-
-            registerPlugins: function () {
-            	$(this.$.request_details_container).collapsible();
-            },
-
-            registerDropListPlugin: function () {
-            	//TODO: Add Options manually or Use "browser-default" class of materialselect (lame)
-				var list = ''
-				_.each(this.systems, function (system) {
-					list += '<option value="' + system.value + '" on-click="optionSelected">' + system.name + '</option>'
-				});
-				$(this.$.request_system).append(list);
-            	$(this.$.request_system).material_select();
-            },
-
-            setData: function () {
+            initializeData: function () {
             	this.request = {
             		title: '',
             		game: '',
@@ -374,24 +350,86 @@
             	};
 
             	this.systems = [
+					{ name: 'pc', value: 'PC' },
 					{ name: 'PS3', value: 'ps3' },
 					{ name: 'PS4', value: 'ps4' },
 					{ name: 'Xbox 360', value: 'xbox360' },
 					{ name: 'Xbox One', value: 'xboxOne' }
             	];
 
-            	this.firebase = {
-            		requests: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.requests)),
-            		games: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.games)),
-            		users: new Firebase(window.lfg.config.getFirebaseUrl(window.lfg.config.firebaseEntities.users))
-            	};
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            },
+
+            optionSelected: function (e) {
+            	var node = $('new-request')[0];
+            	var select = e.target;
+            	var val = $(select).val();
+            	node.__data__.request.system = val;  //This is the only way I know how to get properties declared on a Polymer custom element, 
+            	//when accessed outside of Polymer's context. I suspect theres a beter way than using the "__data__" prop
+            },
+
+            registerPlugins: function () {
+            	$(this.$.request_details_container).collapsible();
+
+            	$(this.$.request_game).autocomplete({
+            		source: function (request, response) {
+            			var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+
+            			$.ajax({
+            				url: url,
+            				type: 'GET',
+            				cache: false,
+            				data: { search: request.term },
+            				dataType: 'json',
+            				success: function (data) {
+            					response($.map(data, function (item) {
+            						return {
+            							label: '',
+										value: ''
+            						}
+            					}));
+            				},
+            				error: function (err) {
+            				}
+            			});
+            		},
+            		minLength: 6,
+            		select: function (event, ui) {
+            		},
+            		messages: {
+            			noResults: 'Could not find game title',
+            			results: function () { }
+            		}
+            	});
+            },
+
+            registerDropListPlugin: function () {
+            	//TODO: Add Options manually or Use "browser-default" class of materialselect (lame) | <DONE>
+				var list = ''
+				_.each(this.systems, function (system) {
+					list += '<option value="' + system.value + '">' + system.name + '</option>'
+				});
+				$(this.$.request_system).append(list);
+				$(this.$.request_system).material_select();
+
+				//option selected event
+				$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
             },
 
             saveRequest: function () {
-            	//alert(this.request.title);
-            },
+            	var requestsRef = this.firebaseRef.child('requests');
 
-            Method: function () {
+				//Save new request content;
+            	var newRequestRef = requestsRef.push({
+            		title: this.request.title,
+            		game: this.request.game,
+            		system: this.request.system,
+            		date: this.request.date,
+            		time: this.request.time,
+					mic: this.request.mic
+            	});
+
+            	var requestid = newRequestRef.key();
             },
 
             created: function () {
@@ -399,10 +437,11 @@
             },
 
             ready: function () {
-            	this.setData();
+            	this.initializeData();
             },
 
             attached: function () {
+				//called after ready();
             	this.registerPlugins();
             	this.registerDropListPlugin();
             }

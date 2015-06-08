@@ -8,11 +8,12 @@
         if(state === 'complete'){
             var lfg = {};
             var config = {
-                appUrl: 'http://localhost:3300/api/',
+                appUrl: '',
                 apiEndPoints: {
-                    games: 'games',
-                    game: 'game',
-                    platforms: 'platform'
+                    games: 'api/giantbomb/games',
+                    game: 'api/giantbomb/game',
+					platforms: 'api/giantbomb/platform',
+					search: 'api/giantbomb/search'
                 },
                 firebaseUrl: 'https://lfgbase.firebaseio.com/',
                 firebaseEntities: {
@@ -21,21 +22,29 @@
                     users: 'users'
                 },
 
-                getFirebaseUrl: function(entity){
-                    switch(entity){
-                        case this.firebaseEntities.requests:
-                            return this.firebaseUrl + this.firebaseEntities.requests;
+				getFirebaseUrl: function () {
+					return this.firebaseUrl;
+				},
+
+				getGiantBombUrl: function (entity) {
+					switch (entity) {
+                        case this.apiEndPoints.games:
+                            return this.appUrl + this.apiEndPoints.games;
                             break;
 
-                        case this.firebaseEntities.games:
-                            return this.firebaseUrl + this.firebaseEntities.games;
+                        case this.apiEndPoints.game:
+                            return this.appUrl + this.apiEndPoints.game;
                             break;
 
-                        case this.firebaseEntities.users:
-                            return this.firebaseUrl + this.firebaseEntities.users;
-                            break;
+                        case this.apiEndPoints.platforms:
+							return this.appUrl + this.apiEndPoints.platforms;
+							break;
+
+						case this.apiEndPoints.search:
+							return this.appUrl + this.apiEndPoints.search;
+							break;
                     }
-                }
+				}
             };
             lfg.config = config;
             window.lfg = lfg;
