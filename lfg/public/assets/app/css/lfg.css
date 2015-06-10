@@ -52,6 +52,12 @@ html,body {
 	transition: color .2s;
 }
 
+/* invalid color */
+.lfg-input .select-wrapper input.select-dropdown.invalid {
+	border-bottom: 1px solid #f44336 !important;
+    box-shadow: 0 1px 0 0 #f44336 !important;
+}
+
 .lfg-input.select .prefix.active {
 	color: #ffeb3b;
 }

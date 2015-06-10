@@ -26,6 +26,7 @@
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
 
 <!-- Custom Imports -->
+<link rel="import" href="../imports/font-awesome.html">
 <!--<link rel="import" href="../imports/materialize.html">-->
 <!--<link rel="import" href="../components/d-calendar/d-calendar.html">-->
 
@@ -111,14 +112,19 @@
         }
         /* valid color */
         .lfg-input.input-field input[type=text].valid {
-            border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+            border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
         }
         /* invalid color */
         .lfg-input.input-field input[type=text].invalid {
-            border-bottom: 1px solid #f44336;
-            box-shadow: 0 1px 0 0 #f44336;
+            border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
         }
+
+		.lfg-input .select-wrapper input.select-dropdown .invalid {
+			border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
+		}
 
         /* Icon prefix */
         .lfg-input.input-field .prefix {
@@ -211,19 +217,21 @@
             <paper-header-panel mode="scroll" main class="lfg-main-header-panel">
                 <paper-toolbar class="tall lfg-main-toolbar">
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-                    <paper-icon-button icon="arrow-back"></paper-icon-button>
+                    <paper-icon-button icon="arrow-back" on-click="goToList"></paper-icon-button>
                     <div flex></div>
                     <!--<paper-icon-button icon="search"></paper-icon-button>
                     <paper-icon-button icon="more-vert"></paper-icon-button>-->
                     <div class="middle">
                     </div>
                     <div title class="bottom bottom-bar">
-                        <a href="/" class="logo-link">New Gaming Request</a>
+                        <template is="dom-if" if="{{!saveSuccess}}">
+							<a href="/" class="logo-link">New Gaming Request</a>
+						</template>
                     </div>
                 </paper-toolbar>
                 <div fit class="content-area">
                     <br>
-                    <form class="col s12">
+                    <form id="new_request_form" class="col s12">
 						<!--<input value="{{request.title}}" />-->
                         <div class="row">
                             <div class="lfg-input input-field col s12">
@@ -247,31 +255,26 @@
 								<i class="mdi-hardware-tv prefix"></i>
 								<select id="request_system">
 									<option value="" disabled selected></option>
-									<!--<template is="dom-repeat" items="[[systems]]">
-										<option value="{{item.value::change}}">{{item.name}}</option>
-									</template>-->
 								</select>
 								<label >For Which System?</label>
 							</div>
 						</div>
 
                         <div class="row">
-                            <div class="lfg-input input-field col s12">
+                            <div class="lfg-input input-field col s7">
                                 <i class="mdi-action-today prefix"></i>
                                 <input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
                                 <label for="request_date">On What Day?</label>
                             </div>
+
+							<div class="lfg-input input-field col s5">
+								<i class="mdi-device-access-time prefix"></i>
+								<input id="request_time" type="text" class="validate" value={{request.time::input}}>
+								<label for="request_time">At What Time?</label>
+							</div>
                         </div>
 
-                        <div class="row">
-                            <div class="lfg-input input-field col s12">
-                                <i class="mdi-device-access-time prefix"></i>
-                                <input id="request_time" type="text" class="validate" value={{request.time::input}}>
-                                <label for="request_time">At What Time?</label>
-                            </div>
-                        </div>
-
-						<div class="row">
+						<!--<div class="row">
 							<div class="lfg-input select input-field col s8">
 								<i class="mdi-maps-place prefix"></i>
 								<select id="request_city">
@@ -287,7 +290,7 @@
 								</select>
 								<label>And Which State?</label>
 							</div>
-						</div>
+						</div>-->
                         <br>
                         <div class="row">
                             <div class="col s1" style="margin-top: -15px;">
@@ -305,7 +308,7 @@
                                 </div>
                             </div>
                         </div>
-						<br />
+						<!--<br />
 						<div class="row">
 							<div class="col s12">
 								<ul id="request_details_container" class="collapsible" data-collapsible="expandable">
@@ -315,7 +318,7 @@
 									</li>
 								</ul>
 							</div>
-						</div>
+						</div>-->
 						<br />
 						<div class="row">
 							<div class="col s12">
@@ -326,6 +329,19 @@
 							</div>
 						</div>
                     </form>
+
+					<div id="success_message" class="center-align" style="display:none;">
+						<h4 class="white-text">Your Gaming Request was created!</h4>
+						<h5 class="white-text">Now go tell the world about it!</h5>
+						<br /><br /><br />
+						<div class="row">
+							<div style="margin:0 auto;">
+								<div style="display:inline-block; padding:0 5%;"><a href="#" class="white-text"><i class="fa fa-facebook-square fa-4x"></i></a></div>
+								<div style="display:inline-block; padding:0 5%;"><a href="#" class="white-text"><i class="fa fa-twitter fa-4x"></i></a></div>
+								<div style="display:inline-block; padding:0 5%;"><a href="#" class="white-text"><i class="fa fa-google-plus fa-4x"></i></a></div>
+							</div>
+						</div>
+					</div>
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
@@ -356,13 +372,31 @@
                  */
             },
 
+            convertDateToUtc: function (date) {
+            	return Date.UTC(
+					date.getFullYear(),
+					date.getMonth(),
+					date.getDate(),
+					date.getHours(),
+					date.getMinutes(),
+					date.getSeconds()
+				)
+            },
+
             getLookupData: function(){
                 //Gets lookup data from Giant Bomb
                 var config = window.lfg.config;
                 $.get(config.appUrl)
             },
 
+            goToList: function () {
+            	document.querySelector('app-router').go('/');
+            },
+
             initializeData: function () {
+
+            	this.saveSuccess = false;
+
             	this.request = {
             		title: '',
             		game: '',
@@ -392,12 +426,19 @@
             	var val = $(select).val();
             	node.__data__.request.system = val;  //This is the only way I know how to get properties declared on a Polymer custom element, 
             	//when accessed outside of Polymer's context. I suspect theres a beter way than using the "__data__" prop
+
+            	//clear val errors
+            	$('#request_system').parent().find('.select-dropdown').removeClass('invalid');
             },
 
             registerPlugins: function () {
             	$(this.$.request_date).pickadate({
             		selectMonths: true,
 					selectYears: 15
+            	});
+
+            	$(this.$.request_time).timeEntry({
+            		spinnerImage: ''
             	});
 
             	$(this.$.request_details_container).collapsible();
@@ -429,6 +470,10 @@
             			event.preventDefault();
             			$('#' + this.id).val(ui.item.label);
             			$('#request_game_id').val(ui.item.value);
+
+            			var node = $('new-request')[0];
+            			node.__data__.request.game = ui.item.label;  //This is the only way I know how to get properties declared on a Polymer custom element, when accessed outside of Polymer's context. I suspect theres a beter way than using the "__data__" prop
+            			node.__data__.request.gameid = ui.item.value;
             		},
             		messages: {
             			noResults: 'Could not find game title',
@@ -437,6 +482,12 @@
             		open: function () {
             			$('.ui-autocomplete').width($(this).width()); //this is the input field
             		}
+            	});
+            },
+
+            registerEvents: function () {
+            	$(document).on('change', '#' + this.$.request_date.id, function () {
+            		$(this).removeClass('invalid');
             	});
             },
 
@@ -457,21 +508,76 @@
 				$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
             },
 
-            saveRequest: function () {
-            	var requestsRef = this.firebaseRef.child('requests');
-
-				//Save new request content;
-            	var newRequestRef = requestsRef.push({
-            		title: this.request.title,
-            		game: this.request.game,
-					gaintbombid: this.request.gameid,
-            		system: this.request.system,
-            		date: this.request.date,
-            		time: this.request.time,
-					mic: this.request.mic
+            showSuccessMessage: function () {
+            	this.saveSuccess = true;
+            	$(this.$.new_request_form).hide(0, function () {
+            		$('#success_message').fadeIn();
             	});
+            },
 
-            	var requestid = newRequestRef.key();
+            saveRequest: function () {
+            	//get the values of plugin-affected inputs
+            	var time_date = $(this.$.request_time).timeEntry('getTime');
+            	this.request.date = $(this.$.request_date).pickadate('picker').get('select', 'mm/dd/yyyy');
+            	this.request.time = time_date !== null && time_date !== undefined && time_date !== '' ? time_date : null;
+
+            	if (this.validateGameRequest(this.request) !== false) {
+
+            		var request_date = Date.parse(this.request.date);
+
+            		this.request.time.setFullYear(request_date.getFullYear());
+            		this.request.time.setMonth(request_date.getMonth(), request_date.getDate());
+            		this.request.time.setDate(request_date.getDate());
+
+            		var utcDate = this.convertDateToUtc(this.request.time);
+            		var requestsRef = this.firebaseRef.child('requests');
+
+            		//Save new request content;
+            		var newRequestRef = requestsRef.push({
+            			title: this.request.title,
+            			game: this.request.game,
+            			gaintbombid: this.request.gameid,
+            			system: this.request.system,
+            			datetime: utcDate,
+            			mic: this.request.mic
+            		});
+
+            		var requestid = newRequestRef.key();
+
+            		if (requestid !== null && requestid !== undefined)
+            			this.showSuccessMessage();
+            	}
+            },
+
+            validateGameRequest: function (request) {
+            	var valid = true;
+
+            	if (request.title === null || request.title === undefined || request.title === '') {
+            		$(this.$.request_title).addClass('invalid');
+            		valid = false;
+            	}
+
+            	if (request.game === null || request.game === undefined || request.game === '') {
+            		$(this.$.request_game).addClass('invalid');
+            		valid = false;
+            	}
+
+            	if (request.system === null || request.system === undefined || request.system === '') {
+            		$(this.$.request_system).parent().find('.select-dropdown').addClass('invalid');
+            		valid = false;
+            	}
+
+            	if (request.date === null || request.date === undefined || request.date === '') {
+            		$(this.$.request_date).addClass('invalid');
+            		valid = false;
+            	}
+
+            	if (request.time === null || request.time === undefined || request.time === '') {
+            		$(this.$.request_time).addClass('invalid');
+            		valid = false;
+            	}
+
+            	return valid;
             },
 
             created: function () {
@@ -486,6 +592,7 @@
 				//called after ready();
             	this.registerPlugins();
             	this.registerDropListPlugin();
+            	this.registerEvents();
             }
         });
     })(window);

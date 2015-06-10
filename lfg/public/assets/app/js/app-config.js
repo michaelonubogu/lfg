@@ -6,7 +6,7 @@
         var state = document.readyState;
 
         if(state === 'complete'){
-            var lfg = {};
+            var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};
             var config = {
                 appUrl: '',
                 apiEndPoints: {
