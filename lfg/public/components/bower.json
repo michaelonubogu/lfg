@@ -83,6 +83,8 @@
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.0.0",
     "paper-toolbar": "PolymerElements/paper-toolbar#^1.0.0",
     "platinum-push-messaging": "PolymerElements/platinum-push-messaging#~1.0.0",
-    "platinum-sw": "PolymerElements/platinum-sw#~1.0.0"
+    "platinum-sw": "PolymerElements/platinum-sw#~1.0.0",
+    "pk-timepicker": "~1.1.2",
+    "pk-datepicker": "~1.0.1"
   }
 }

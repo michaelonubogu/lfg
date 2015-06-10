@@ -29,8 +29,5 @@ router.get('/platforms', function (req, res) {
 //...
 });
 
-router.get('/search', function (req, res) {
-	console.log('FIRED!!!');
-});
 
 module.exports = router;

@@ -48,6 +48,14 @@
 			width:100%;
 		}
 
+		#paper-header-panel{
+            border-bottom: solid 1px #ffffff;
+        }
+
+		.picker__date-display {
+			background-color: #fb8c00 !important;
+		}
+
         .lfg-main-toolbar{
             --paper-toolbar-background:{
                  background-color: transparent !important;
@@ -56,10 +64,6 @@
 
         .lfg-drawer-toolbar{
             --paper-toolbar-background: #ef6c00;
-        }
-
-        #paper-header-panel{
-            border-bottom: solid 1px #ffffff;
         }
 
         .lfg-main-header-panel{
@@ -233,6 +237,7 @@
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-hardware-gamepad prefix"></i>
                                 <input id="request_game" type="text" class="validate" data-beloworigin="true" value={{request.game::input}}>
+								<input id="request_game_id" type="hidden" value={{request.gameid::input}}>
                                 <label for="request_game">In What Game?</label>
                             </div>
                         </div>
@@ -253,7 +258,7 @@
                         <div class="row">
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-action-today prefix"></i>
-                                <input id="request_date" type="text" class="validate" value={{request.date::input}}>
+                                <input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
                                 <label for="request_date">On What Day?</label>
                             </div>
                         </div>
@@ -265,6 +270,24 @@
                                 <label for="request_time">At What Time?</label>
                             </div>
                         </div>
+
+						<div class="row">
+							<div class="lfg-input select input-field col s8">
+								<i class="mdi-maps-place prefix"></i>
+								<select id="request_city">
+									<option value="" disabled selected></option>
+								</select>
+								<label>In What City?</label>
+							</div>
+
+							<div class="lfg-input select input-field col s4">
+								<i class="prefix"></i>
+								<select id="request_state">
+									<option value="" disabled selected></option>
+								</select>
+								<label>And Which State?</label>
+							</div>
+						</div>
                         <br>
                         <div class="row">
                             <div class="col s1" style="margin-top: -15px;">
@@ -343,6 +366,7 @@
             	this.request = {
             		title: '',
             		game: '',
+					gameid: '',
             		system: '',
             		date: '',
             		time: '',
@@ -350,11 +374,13 @@
             	};
 
             	this.systems = [
-					{ name: 'pc', value: 'PC' },
+					{ name: 'PC', value: 'pc' },
 					{ name: 'PS3', value: 'ps3' },
 					{ name: 'PS4', value: 'ps4' },
 					{ name: 'Xbox 360', value: 'xbox360' },
-					{ name: 'Xbox One', value: 'xboxOne' }
+					{ name: 'Xbox One', value: 'xboxOne' },
+					{ name: 'Wii', value: 'wii' },
+					{ name: 'Wii U', value: 'wiiu' }
             	];
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
@@ -369,6 +395,11 @@
             },
 
             registerPlugins: function () {
+            	$(this.$.request_date).pickadate({
+            		selectMonths: true,
+					selectYears: 15
+            	});
+
             	$(this.$.request_details_container).collapsible();
 
             	$(this.$.request_game).autocomplete({
@@ -382,10 +413,10 @@
             				data: { search: request.term },
             				dataType: 'json',
             				success: function (data) {
-            					response($.map(data, function (item) {
+            					response($.map(data.results, function (item) {
             						return {
-            							label: '',
-										value: ''
+            							label: item.name,
+										value: item.id
             						}
             					}));
             				},
@@ -393,12 +424,18 @@
             				}
             			});
             		},
-            		minLength: 6,
+            		minLength: 1,
             		select: function (event, ui) {
+            			event.preventDefault();
+            			$('#' + this.id).val(ui.item.label);
+            			$('#request_game_id').val(ui.item.value);
             		},
             		messages: {
             			noResults: 'Could not find game title',
             			results: function () { }
+            		},
+            		open: function () {
+            			$('.ui-autocomplete').width($(this).width()); //this is the input field
             		}
             	});
             },
@@ -410,7 +447,11 @@
 					list += '<option value="' + system.value + '">' + system.name + '</option>'
 				});
 				$(this.$.request_system).append(list);
+
+
 				$(this.$.request_system).material_select();
+				$(this.$.request_city).material_select();
+				$(this.$.request_state).material_select();
 
 				//option selected event
 				$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
@@ -423,6 +464,7 @@
             	var newRequestRef = requestsRef.push({
             		title: this.request.title,
             		game: this.request.game,
+					gaintbombid: this.request.gameid,
             		system: this.request.system,
             		date: this.request.date,
             		time: this.request.time,

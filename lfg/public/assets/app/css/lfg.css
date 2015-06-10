@@ -1,7 +1,10 @@
 html,body {
-    height: 100%;
     margin: 0;
     background-color: #fb8c00 ;
+}
+
+.picker__date-display, .picker__weekday-display{
+	background-color: #EF6C00 !important;
 }
 
 .lfg-input .select-wrapper {
@@ -69,5 +72,31 @@ html,body {
 #request_system:focus {
 	border:none !important;
 	/*outline:0;*/
+}
+
+ul.ui-autocomplete {
+	background-color: #fff;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	-webkit-box-shadow: 0 12px 15px 0 #e65100;
+	-moz-box-shadow: 0 12px 15px 0 #e65100;
+	box-shadow: 0 12px 15px 0 #e65100;
+	position: relative !important;
+}
+
+ul.ui-autocomplete .ui-menu-item {
+	padding: 10px 0 10px 10px;
+	font-size: 21px;
+	font-weight:500;
+	color: #616161;
+	cursor: pointer;
+}
+
+ul.ui-autocomplete .ui-menu-item:hover {
+	color: #0288d1;
+}
+
+.ui-helper-hidden-accessible {
+	display:none;
 }
 
