@@ -1,0 +1,2 @@
+C:\Users\Namdascious\Desktop\Projects\lfg\lfg\obj\Debug\lfg.njsprojResolveAssemblyReference.cache
+C:\Users\Namdascious\Desktop\Projects\lfg\lfg\bin\Microsoft.NodejsTools.WebRole.dll
