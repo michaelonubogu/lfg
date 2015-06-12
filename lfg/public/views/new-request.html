@@ -89,6 +89,16 @@
 
         }
 
+		.lfg-input.input-field textarea {
+			border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+		}
+
+		.lfg-input.input-field textarea:focus {
+			border-bottom: 1px solid #ffeb3b;
+            box-shadow: 0 1px 0 0 #ffeb3b;
+		}
+
         /* label color */
         .lfg-input.input-field label {
             color: #ffffff;
@@ -274,6 +284,22 @@
 							</div>
                         </div>
 
+						<div class="row">
+							<div class="lfg-input input-field col s12">
+								<i class="mdi-action-picture-in-picture prefix"></i>
+								<input id="request_gamertag" type="text" class="validate" value={{request.gamertag::input}}>
+								<label>Whats your Gamer Tag? (Optional)</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="lfg-input input-field col s12">
+								<i class="mdi-action-assignment prefix"></i>
+								<textarea id="request_description" type="text" class="materialize-textarea" length="250" value={{request.description::input}}></textarea>
+								<label>Tell us more about what you wanna do (Optional)</label>
+							</div>
+						</div>
+
 						<!--<div class="row">
 							<div class="lfg-input select input-field col s8">
 								<i class="mdi-maps-place prefix"></i>
@@ -404,6 +430,8 @@
             		system: '',
             		date: '',
             		time: '',
+            		gamertag: '',
+					description: '',
             		mic: false
             	};
 
@@ -413,6 +441,7 @@
 					{ name: 'PS4', value: 'ps4' },
 					{ name: 'Xbox 360', value: 'xbox360' },
 					{ name: 'Xbox One', value: 'xboxOne' },
+					{ name: 'Steam Machine', value: 'steam' },
 					{ name: 'Wii', value: 'wii' },
 					{ name: 'Wii U', value: 'wiiu' }
             	];
@@ -530,6 +559,8 @@
             		this.request.time.setDate(request_date.getDate());
 
             		var utcDate = this.convertDateToUtc(this.request.time);
+            		var createdUTC = this.convertDateToUtc(Date.now());
+
             		var requestsRef = this.firebaseRef.child('requests');
 
             		//Save new request content;
@@ -539,7 +570,8 @@
             			gaintbombid: this.request.gameid,
             			system: this.request.system,
             			datetime: utcDate,
-            			mic: this.request.mic
+            			mic: this.request.mic,
+            			created: createdUTC
             		});
 
             		var requestid = newRequestRef.key();

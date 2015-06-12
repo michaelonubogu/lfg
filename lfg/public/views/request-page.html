@@ -126,13 +126,36 @@
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
                     <div flex></div>
                     <paper-icon-button icon="search"></paper-icon-button>
-                    <paper-icon-button icon="more-vert"></paper-icon-button>
+                    <paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>
+					<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>
+					<ul id='search_dropdown' class='dropdown-content'>
+						<li>
+							<div class="row">
+								<div class="col s1"></div>
+								<div class="col s10"></div>
+								<div class="col s1"></div>
+							</div>
+						</li>
+						<li class="divider"></li>
+						<li><a href="#!">Search</a></li>
+						<li><a href="#!">Results</a></li>
+						<li><a href="#!">Listed</a></li>
+						<li><a href="#!">Here</a></li>
+					</ul>
+					<ul id='dropdown1' class='dropdown-content'>
+						<template is="dom-repeat" items="[[sortoptions]]">
+							<li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
+						</template>
+						<!--<li class="divider"></li>
+						<li><a href="#!">three</a></li>-->
+					</ul>
                     <div class="middle">
                     </div>
                     <div title class="bottom bottom-bar">
-                        <a href="/" class="logo-link">Game Requests</a>
+                        <a href="/" class="logo-link">Gaming Requests</a>
                     </div>
                 </paper-toolbar>
+
                 <div class="white" fit>
 					<ul class="collection" style="margin-top:0;">
 						
@@ -151,6 +174,50 @@
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
+
+		<div id="filter_modal" class="modal bottom-sheet" style="display: block; opacity: 0; bottom: -100%;">
+			<div class="modal-content">
+				<h5>Filter Requests</h5>
+				<ul class="collection">
+					<li class="collection-item avatar">
+						<i class="mdi-file-folder circle"></i>
+						<span class="title">Title</span>
+						<p>
+							First Line <br>
+							Second Line
+						</p>
+						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+					</li>
+					<li class="collection-item avatar">
+						<i class="mdi-file-folder circle"></i>
+						<span class="title">Title</span>
+						<p>
+							First Line <br>
+							Second Line
+						</p>
+						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+					</li>
+					<li class="collection-item avatar">
+						<i class="mdi-action-assessment circle green"></i>
+						<span class="title">Title</span>
+						<p>
+							First Line <br>
+							Second Line
+						</p>
+						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+					</li>
+					<li class="collection-item avatar">
+						<i class="mdi-av-play-arrow circle red"></i>
+						<span class="title">Title</span>
+						<p>
+							First Line <br>
+							Second Line
+						</p>
+						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
     </template>
 </dom-module>
 
@@ -186,17 +253,27 @@
             },
 
         	/* Functions */
+            changeSort: function (e) {
+            	var anchor_elem = e.target;
+            	this.dataops.sort = anchor_elem.dataset.sort;
+
+            	this.getRequests(this.dataops.sort, true);
+            },
+
             formatDate: function (utc) {
             	var date = new Date(utc);
             	return date.toString('MMMM dd, yyyy h:mm tt');
             },
 
-            getRequests: function () {
+            getRequests: function (orderby, clear) {
 				var customElem = this
-            	var requestsRef = this.firebaseRef.child('requests');
+				var requestsRef = this.firebaseRef.child('requests');
 
-            	requestsRef.on("value", function (snapshot) {
+				if (clear) { this.requests = []; };	//clear the array
+
+            	requestsRef.orderByChild(orderby).on("value", function (snapshot) {
             		//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
+
             		snapshot.forEach(function (child) {
             			var request = child.val();
             			customElem.push('requests', request); //Thank you so much flashback2k14 from Stack Overflow: http://stackoverflow.com/questions/30716483/polymer-1-0-problems-with-dom-repeat
@@ -205,6 +282,10 @@
             	}, function (errorObject) {
             		console.log("The read failed: " + errorObject.code);
             	});
+            },
+
+            showFilter: function () {
+            	$(this.$.filter_modal).openModal();
             },
 
 			/* Init */
@@ -222,11 +303,33 @@
 					{ name: 'Wii U', value: 'wiiu' }
             	];
 
+            	this.sortoptions = [
+					{ name: 'Date Created', column: 'created' },
+					{ name: 'Game', column: 'game' },
+            	];
+
+            	this.dataops = {
+            		sort: 'created',
+					filter: ''
+            	}
+
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
             	this.requests = [];
+
+            	$(this.$.filter_modal).hide();
             },
 
+            registerPlugins: function() {
+            	$(this.$.sort_menu).dropdown({
+            		inDuration: 300,
+            		outDuration: 225,
+            		constrain_width: false, // Does not change width of dropdown to that of the activator
+            		hover: false, // Activate on hover
+            		gutter: 0, // Spacing from edge
+            		belowOrigin: false // Displays dropdown below the button
+            	});
+            },
 
 			/* Events */
             newRequest: function(){
@@ -238,7 +341,8 @@
             },
 
             attached: function () {
-            	this.getRequests();
+            	this.getRequests(this.dataops.sort);
+            	this.registerPlugins();
             }
         });
     })(window);

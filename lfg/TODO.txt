@@ -1,3 +1,28 @@
-﻿ - Add sorting to Requests list
+﻿KEY
+	** = More to consider
+
+
+New Request
+---------------------------------------------------
+ - Add Gamertag (XBL, PSN, SteamOS, Wii) field	<DONE>
+ - Add Description field						<DONE>
+ - **Allow for recurring scheduled gaming event
+ - Add "created" field (datecreated)			<DONE>
+
+Requess List
+---------------------------------------------------
+ - Add sorting to Requests list					<DONE>
  - Add Pull up Filterting to Requests list
  - Add on-click event to list items in request list
+ - Show system icon in list (xbl, psn, wii, pc)
+ - Show mic icon in list
+ - Show gamer tag
+ - **Allow users to send message to lister from list page (message should get send to email and trigger push notification)
+
+Request Detail
+---------------------------------------------------
+ - Allow users to send message to lister from details page (message should get send to email and trigger push notification)
+ - Allow for comments in details page (by other users)
+
+User Page
+---------------------------------------------------
