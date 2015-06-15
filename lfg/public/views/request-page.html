@@ -43,6 +43,36 @@
             margin-left:-15px !important;
         }
 
+        input[type=text].request-page{
+             background-color: transparent;
+              border: none;
+              border-bottom: none !important;
+              border-radius: 0;
+              outline: none;
+              height: 3rem;
+              width: 100%;
+              font-size: 1.5rem !important;
+              font-weight:400;
+              margin: 0 0 15px 0;
+              padding: 0;
+        }
+
+        /* label underline focus color */
+        input[type=text].request-page:focus {
+            border-bottom: none;
+            box-shadow: none;
+        }
+        /* valid color */
+        input[type=text].request-page.valid {
+            border-bottom: none !important;
+            box-shadow: none !important;
+        }
+        /* invalid color */
+        input[type=text].request-page.invalid {
+            border-bottom: none;
+            box-shadow: none;
+        }
+
         .lfg-main-toolbar{
             --paper-toolbar-background:{
                  background-color: transparent !important;
@@ -125,23 +155,36 @@
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
                     <div flex></div>
-                    <paper-icon-button icon="search"></paper-icon-button>
+                    <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
                     <paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>
 					<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>
-					<ul id='search_dropdown' class='dropdown-content'>
-						<li>
-							<div class="row">
-								<div class="col s1"></div>
-								<div class="col s10"></div>
-								<div class="col s1"></div>
-							</div>
-						</li>
-						<li class="divider"></li>
-						<li><a href="#!">Search</a></li>
-						<li><a href="#!">Results</a></li>
-						<li><a href="#!">Listed</a></li>
-						<li><a href="#!">Here</a></li>
-					</ul>
+
+                    <ul id="search_dropdown" class="dropdown-content style-scope request-page active" style="min-height: 60px; top: 0px !important; left: 0px !important; min-width: 100% !important; position: absolute; opacity: 1; display: block;">
+                        <li style="vertical-align: middle !important; min-height: 60px !important; cursor:auto;" class="style-scope request-page">
+                            <div class="row style-scope request-page" style="min-height:100% !important; margin-bottom: 0px;">
+                                <div class="col s1 style-scope request-page" style="margin-top:19px;">
+                                    <paper-icon-button icon="arrow-back" class="grey-text text-darken-1 style-scope request-page x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
+                                        <paper-ripple id="ink" class="circle style-scope paper-icon-button" center="">
+                                            <div id="background" class="style-scope paper-ripple"></div>
+                                            <div id="waves" class="style-scope paper-ripple"></div>
+                                        </paper-ripple>
+                                        <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-0">
+                                            <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" class="style-scope iron-icon"></path></g></svg>
+                                            <iron-meta id="meta" type="iconset" class="style-scope iron-icon"></iron-meta>
+                                        </iron-icon>
+                                    </paper-icon-button>
+                                </div>
+                                <div class="col s11 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
+                                    <input id="search_input" type="text" class="validate style-scope request-page" placeholder="Game Title">
+                                </div>
+                            </div>
+                        </li>
+                        <!--<li class="divider"></li>
+                        <li><a href="#!">Search</a></li>
+                        <li><a href="#!">Results</a></li>
+                        <li><a href="#!">Listed</a></li>
+                        <li><a href="#!">Here</a></li>-->
+                    </ul>
 					<ul id='dropdown1' class='dropdown-content'>
 						<template is="dom-repeat" items="[[sortoptions]]">
 							<li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
@@ -288,6 +331,12 @@
             	$(this.$.filter_modal).openModal();
             },
 
+            showSearch: function () {
+                $(this.$.search_dropdown).fadeIn(100, function () {
+                    $('#search_input').focus();
+                });
+            },
+
 			/* Init */
             initializeData: function () {
 
@@ -317,7 +366,13 @@
 
             	this.requests = [];
 
+                //hide elements
             	$(this.$.filter_modal).hide();
+            	$(this.$.search_dropdown).hide();
+            },
+
+            registerEvents: function () {
+                $('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
             },
 
             registerPlugins: function() {
@@ -329,6 +384,15 @@
             		gutter: 0, // Spacing from edge
             		belowOrigin: false // Displays dropdown below the button
             	});
+
+            	//$(this.$.search_button).dropdown({
+            	//    inDuration: 300,
+            	//    outDuration: 225,
+            	//    constrain_width: false, // Does not change width of dropdown to that of the activator
+            	//    hover: false, // Activate on hover
+            	//    gutter: 0, // Spacing from edge
+            	//    belowOrigin: false // Displays dropdown below the button
+                //});
             },
 
 			/* Events */
@@ -343,6 +407,7 @@
             attached: function () {
             	this.getRequests(this.dataops.sort);
             	this.registerPlugins();
+            	this.registerEvents();
             }
         });
     })(window);
