@@ -205,9 +205,9 @@
 						<template is="dom-repeat" items="{{requests}}">
 							<li class="collection-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;">
 								<i class="mdi-social-person circle"></i>
-								<span class="title" style="font-size:1.25rem;">[[item.game]]</span>
+								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
-								<p class="grey-text truncate" style="font-size:0.8rem;">Lorem ipsum dolor sit amet, ius simul possit perfecto te, ad vel facete</p>
+								<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
 								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.datetime)]]</p>
 								<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
 							</li>
@@ -303,28 +303,51 @@
             	this.getRequests(this.dataops.sort, true);
             },
 
-            doSearch: function () {
-            	query = $('#search_input').val();
-            	var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+            doSearch: function (e) {
+            	var query = $('#search_input').val();
 
-            	$.ajax({
-            		url: url,
-            		type: 'GET',
-            		cache: false,
-            		data: { search: query, limit: 4 },
-            		dataType: 'json',
-            		success: function (data) {
-            			var html = '<li class="divider search-result-item"></li>';
-            			$('#search_dropdown').find('.search-result-item').remove();
+            	if ((e.keyCode || e.which) === 13) {
+            		/* so the idea here is to take a the text and do a "LIKE" type of query to firebase using "startAt" and "endAt".
+					 * I'm not sure atm, whether if/when the user selects the suggested option within the search window, I want to - 
+					 * still do a "LIKE" search or do an "EQUAL TO" search. The user might select the title "Street Fighter" but actually
+					 * not want street fighter from the 80s, but street fighter  4. Cuz we are using Giant Bomb as reference, whats returned in the
+					 * autocomplete ties to a gameid.
+					 *
+					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :|
+					 */
+            		//var node = $('request-page')[0];
+            		this.getRequests(this.dataops.sort, true, query.toLowerCase());
+            		$('#search_dropdown').fadeOut(100);
+            	}
+            	else {
+            		var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
 
-            			_.each(data.results, function (result) {
-            				html += '<li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!" data-result-id="' + result.id + '">' + result.name + '</a></li>';
-            			});
-            			$('#search_dropdown').append(html);
-            		},
-            		error: function (err) {
-            		}
-            	});
+            		$.ajax({
+            			url: url,
+            			type: 'GET',
+            			cache: false,
+            			data: { search: query, limit: 4 },
+            			dataType: 'json',
+            			success: function (data) {
+            				var html = '<li class="divider search-result-item"></li>';
+            				$('#search_dropdown').find('.search-result-item').remove();
+
+            				_.each(data.results, function (result) {
+            					html += '<li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!" data-result-id="' + result.id + '">' + result.name + '</a></li>';
+            				});
+            				$('#search_dropdown').append(html);
+            			},
+            			error: function (err) {
+            			}
+            		});
+            	}
+            },
+
+            doResultSearchWithClick: function(){
+            },
+
+            doResultSearchWithEnter: function () {
+				
             },
 
             formatDate: function (utc) {
@@ -332,18 +355,28 @@
             	return date.toString('MMMM dd, yyyy h:mm tt');
             },
 
-            getRequests: function (orderby, clear) {
+            getRequests: function (orderby, clear, query) {
 				var customElem = this
 				var requestsRef = this.firebaseRef.child('requests');
 
 				if (clear) { this.requests = []; };	//clear the array
 
-            	requestsRef.orderByChild(orderby).on("child_added", function (snapshot) {
-            		//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
-            		customElem.push('requests', snapshot.val());
-            	}, function (errorObject) {
-            		console.log("The read failed: " + errorObject.code);
-            	});
+				if (query !== null && query !== undefined && query !== '') {
+					//Going to perform a search query. The previous rquests array "needs" to be cleared
+					//The orderByChild property needs to change from whatever it was to game
+					this.requests = [];
+					requestsRef.orderByChild('game').startAt(query).endAt(query + '~').on('child_added', function (snapshot) {
+						customElem.push('requests', snapshot.val());
+					});
+				}
+				else {
+					requestsRef.orderByChild(orderby).on("child_added", function (snapshot) {
+						//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
+						customElem.push('requests', snapshot.val());
+					}, function (errorObject) {
+						console.log("The read failed: " + errorObject.code);
+					});
+				}
             },
 
             showFilter: function () {
@@ -392,7 +425,8 @@
 
             registerEvents: function () {
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
-            	$('#search_input').on('keypress', this.doSearch);
+            	$('#search_input').on('keypress', this.doSearch.bind(this));
+            	$('.search-result-item').on('click', this.doResultSearchWithClick.bind(this));
             },
 
             registerPlugins: function() {

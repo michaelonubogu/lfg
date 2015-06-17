@@ -566,11 +566,13 @@
             		//Save new request content;
             		var newRequestRef = requestsRef.push({
             			title: this.request.title,
-            			game: this.request.game,
+            			game: this.request.game.toLowerCase(),
+						gametitle: this.request.game,
             			gaintbombid: this.request.gameid,
             			system: this.request.system,
             			datetime: utcDate,
             			mic: this.request.mic,
+            			description: this.request.description,
             			created: createdUTC
             		});
 
