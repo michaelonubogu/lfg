@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/search', function (req, res) {
-	giantbomb.getGames(req.query.search)
+	giantbomb.getGames(req.query.search, req.query.limit)
 	.then(function (data) {
 		res.send(data);
 	}, function (err) {
