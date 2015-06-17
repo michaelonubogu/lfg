@@ -179,8 +179,8 @@
                                 </div>
                             </div>
                         </li>
-                        <!--<li class="divider"></li>
-                        <li><a href="#!">Search</a></li>
+                        <!--<li class="divider search-result-item"></li>
+                        <li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!">Search</a></li>
                         <li><a href="#!">Results</a></li>
                         <li><a href="#!">Listed</a></li>
                         <li><a href="#!">Here</a></li>-->
@@ -303,6 +303,30 @@
             	this.getRequests(this.dataops.sort, true);
             },
 
+            doSearch: function () {
+            	query = $('#search_input').val();
+            	var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+
+            	$.ajax({
+            		url: url,
+            		type: 'GET',
+            		cache: false,
+            		data: { search: query, limit: 4 },
+            		dataType: 'json',
+            		success: function (data) {
+            			var html = '<li class="divider search-result-item"></li>';
+            			$('#search_dropdown').find('.search-result-item').remove();
+
+            			_.each(data.results, function (result) {
+            				html += '<li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!" data-result-id="' + result.id + '">' + result.name + '</a></li>';
+            			});
+            			$('#search_dropdown').append(html);
+            		},
+            		error: function (err) {
+            		}
+            	});
+            },
+
             formatDate: function (utc) {
             	var date = new Date(utc);
             	return date.toString('MMMM dd, yyyy h:mm tt');
@@ -314,14 +338,9 @@
 
 				if (clear) { this.requests = []; };	//clear the array
 
-            	requestsRef.orderByChild(orderby).on("value", function (snapshot) {
+            	requestsRef.orderByChild(orderby).on("child_added", function (snapshot) {
             		//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
-
-            		snapshot.forEach(function (child) {
-            			var request = child.val();
-            			customElem.push('requests', request); //Thank you so much flashback2k14 from Stack Overflow: http://stackoverflow.com/questions/30716483/polymer-1-0-problems-with-dom-repeat
-            		});
-
+            		customElem.push('requests', snapshot.val());
             	}, function (errorObject) {
             		console.log("The read failed: " + errorObject.code);
             	});
@@ -372,7 +391,8 @@
             },
 
             registerEvents: function () {
-                $('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
+            	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
+            	$('#search_input').on('keypress', this.doSearch);
             },
 
             registerPlugins: function() {

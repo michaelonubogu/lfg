@@ -3,6 +3,10 @@ html,body {
     background-color: #fb8c00 ;
 }
 
+#bottomBar.paper-toolbar {
+	z-index: 0 !important;
+}
+
 .picker__date-display, .picker__weekday-display{
 	background-color: #EF6C00 !important;
 }
