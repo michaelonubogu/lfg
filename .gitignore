@@ -7,6 +7,8 @@ Desktop.ini
 
 # Components folder
 public/components
+.ntvs_analysis.dat
+.ntvs_analysis.dat.tmp
 node_modules
 
 # Recycle Bin used on file shares
@@ -54,3 +56,4 @@ Temporary Items
 lfg/.ntvs_analysis.dat.tmp
 *.suo
 lfg/lfg.njsproj
+lfg/.ntvs_analysis.dat
