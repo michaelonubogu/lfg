@@ -562,20 +562,25 @@
             		var createdUTC = this.convertDateToUtc(Date.now());
 
             		var requestsRef = this.firebaseRef.child('requests');
-
-            		//Save new request content;
-            		var newRequestRef = requestsRef.push({
+            		var newRequest = {
             			title: this.request.title,
             			game: this.request.game.toLowerCase(),
-						gametitle: this.request.game,
-            			gaintbombid: this.request.gameid,
+            			gametitle: this.request.game,
+            			giantbombid: this.request.gameid,
             			system: this.request.system,
             			datetime: utcDate,
             			mic: this.request.mic,
             			description: this.request.description,
             			created: createdUTC
-            		});
+            		}
 
+					//custom index for searching & ordering .> really just a hack
+            		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
+
+            		//Save new request content;
+            		var newRequestRef = requestsRef.push(newRequest);
+
+            		newRequestRef.setWithPriority(newRequest, 0 - Date.now());	//Set the priority so that this comes first 
             		var requestid = newRequestRef.key();
 
             		if (requestid !== null && requestid !== undefined)

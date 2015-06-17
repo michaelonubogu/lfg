@@ -157,7 +157,7 @@
                     <div flex></div>
                     <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
                     <paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>
-					<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>
+					<!--<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>-->
 
                     <ul id="search_dropdown" class="dropdown-content style-scope request-page active" style="min-height: 60px; top: 0px !important; left: 0px !important; min-width: 100% !important; position: absolute; opacity: 1; display: block;">
                         <li style="vertical-align: middle !important; min-height: 60px !important; cursor:auto;" class="style-scope request-page">
@@ -208,7 +208,7 @@
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
 								<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
-								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.datetime)]]</p>
+								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
 								<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
 							</li>
 						</template>
@@ -315,7 +315,6 @@
 					 *
 					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :|
 					 */
-            		//var node = $('request-page')[0];
             		this.getRequests(this.dataops.sort, true, query.toLowerCase());
             		$('#search_dropdown').fadeOut(100);
             	}
@@ -333,7 +332,7 @@
             				$('#search_dropdown').find('.search-result-item').remove();
 
             				_.each(data.results, function (result) {
-            					html += '<li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!" data-result-id="' + result.id + '">' + result.name + '</a></li>';
+            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;"><a class="search-result-link">' + result.name + '</a></li>';
             				});
             				$('#search_dropdown').append(html);
             			},
@@ -343,11 +342,9 @@
             	}
             },
 
-            doResultSearchWithClick: function(){
-            },
-
-            doResultSearchWithEnter: function () {
-				
+            doResultSearchWithClick: function (query) {
+            	this.getRequests(this.dataops.sort, true, query.toLowerCase());
+            	$('#search_dropdown').fadeOut(100);
             },
 
             formatDate: function (utc) {
@@ -355,22 +352,36 @@
             	return date.toString('MMMM dd, yyyy h:mm tt');
             },
 
-            getRequests: function (orderby, clear, query) {
+            getRequests: function (orderby, clear, query, id) {
 				var customElem = this
 				var requestsRef = this.firebaseRef.child('requests');
 
 				if (clear) { this.requests = []; };	//clear the array
 
 				if (query !== null && query !== undefined && query !== '') {
-					//Going to perform a search query. The previous rquests array "needs" to be cleared
-					//The orderByChild property needs to change from whatever it was to game
+
+					//see if we need to also get the games with the same giantbomb id
 					this.requests = [];
-					requestsRef.orderByChild('game').startAt(query).endAt(query + '~').on('child_added', function (snapshot) {
-						customElem.push('requests', snapshot.val());
-					});
+					if (id !== null && id !== undefined && id !== '') {
+						requestsRef.orderByChild('giantbombid').startAt(id).endAt(id).on('child_added', function (snapshot) {
+							customElem.push('requests', snapshot.val());
+						});
+					}
+					else {
+						//Going to perform a search query. The previous rquests array "needs" to be cleared
+						//The orderByChild property needs to change from whatever it was to game
+						this.requests = [];
+						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+						requestsRef.orderByChild('gameindex').startAt(query).endAt(query + '~').on('child_added', function (snapshot) {
+							/*Firebase inherently orders its data chronologically in ascending order by default. We are going to need to
+							reverse it so that most recent show up first*/
+							//TODO: sort descending order
+							customElem.push('requests', snapshot.val());
+						});
+					}
 				}
 				else {
-					requestsRef.orderByChild(orderby).on("child_added", function (snapshot) {
+					requestsRef.orderByPriority().on("child_added", function (snapshot) {
 						//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
 						customElem.push('requests', snapshot.val());
 					}, function (errorObject) {
@@ -424,9 +435,17 @@
             },
 
             registerEvents: function () {
+            	var polymer = this;
+
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
             	$('#search_input').on('keypress', this.doSearch.bind(this));
-            	$('.search-result-item').on('click', this.doResultSearchWithClick.bind(this));
+            	$(document).on('click', '.search-result-link', function (e) {
+            		var li = $(this).parent();
+            		var giantbombid = $(li).data('resultId');
+            		var game = $(this).html().toLowerCase();
+            		polymer.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
+            		e.preventDefault();
+            	});
             },
 
             registerPlugins: function() {
