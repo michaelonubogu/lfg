@@ -200,7 +200,7 @@
                 </paper-toolbar>
 
                 <div class="white" fit>
-					<ul class="collection" style="margin-top:0;">
+					<ul id="request_list" class="collection" style="margin-top:0;">
 						
 						<template is="dom-repeat" items="{{requests}}">
 							<li class="collection-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;">
@@ -300,7 +300,8 @@
             	var anchor_elem = e.target;
             	this.dataops.sort = anchor_elem.dataset.sort;
 
-            	this.getRequests(this.dataops.sort, true);
+            	//this.getRequests(this.dataops.sort, true);
+            	this.getRequests(null, this.querytype.none, false);
             },
 
             doSearch: function (e) {
@@ -313,9 +314,11 @@
 					 * not want street fighter from the 80s, but street fighter  4. Cuz we are using Giant Bomb as reference, whats returned in the
 					 * autocomplete ties to a gameid.
 					 *
-					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :|
-					 */
-            		this.getRequests(this.dataops.sort, true, query.toLowerCase());
+					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :| */
+
+            		this.dataops.query = query;		//save the query incase we need it for scrolling
+            		//this.getRequests(this.dataops.sort, true, query.toLowerCase());
+            		this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
             		$('#search_dropdown').fadeOut(100);
             	}
             	else {
@@ -342,9 +345,16 @@
             	}
             },
 
-            doResultSearchWithClick: function (query) {
-            	this.getRequests(this.dataops.sort, true, query.toLowerCase());
-            	$('#search_dropdown').fadeOut(100);
+            doResultSearchWithClick: function (e) {
+            	var polymer = this;		//bound to polymer elem
+            	var anchor = e.target;
+
+            	var li = $(anchor).parent();
+            	var giantbombid = $(li).data('resultId');
+            	var game = $(anchor).html().toLowerCase();
+            	//polymer.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
+            	polymer.getRequests(giantbombid, this.querytype.byid, false);
+            	e.preventDefault();
             },
 
             formatDate: function (utc) {
@@ -352,43 +362,210 @@
             	return date.toString('MMMM dd, yyyy h:mm tt');
             },
 
-            getRequests: function (orderby, clear, query, id) {
+            getRequests: function (query, querytype, paginate) {
+            	var customElem = this
+            	var requestsRef = this.firebaseRef.child('requests');
+
+            	if (paginate) {
+            		var lastrequest = this.requests[this.requests.length - 1];
+
+            		//determine query type
+            		switch (querytype) {
+            			case this.querytype.bygame:
+            				query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+
+            				//save the query & type (for pagination)
+            				this.dataops.query = query;
+            				this.dataops.querytype = querytype;
+
+            				//Using a custom index I created to reverse order entries
+            				requestsRef
+								.orderByChild('gameindex')
+								.startAt(lastrequest.gameindex)
+								.limitToFirst(this.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
+								});
+            				break;
+
+            			case this.querytype.byid:
+            				//save the query & type (for pagination)
+            				this.dataops.query = query;
+            				this.dataops.querytype = querytype;
+
+            				requestsRef
+								.orderByChild('giantbombindex')
+								.startAt(lastrequest.giantbombindex)
+								.limitToFirst(this.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
+								});
+            				break;
+
+            			default:
+            				//no query, so just go by priority
+            				//save the query & type (for pagination)
+            				this.dataops.querytype = querytype;
+
+            				requestsRef
+								.orderByPriority()
+								.startAt(lastrequest.priority)
+								.limitToFirst(this.dataops.limit + 1)
+								.on("child_added", function (snapshot) {
+									var request = snapshot.val() || {};
+									request.priority = snapshot.getPriority();
+									if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
+								}, function (errorObject) {
+									console.log("The read failed: " + errorObject.code);
+								});
+            				break;
+            		}
+            	}
+            	else {
+            		this.requests = [];
+            		switch (querytype) {
+            			case this.querytype.bygame:          				
+            				query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
+
+            				//save the query & type (for pagination)
+            				this.dataops.query = query;
+            				this.dataops.querytype = querytype;
+
+            				requestsRef				
+								.orderByChild('gameindex')
+								.startAt(query)
+								.endAt(query + '~')
+								.limitToFirst(this.dataops.limit)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									if (request !== lastrequest) { customElem.push('requests', request); };
+								});
+            				break;
+
+            			case this.querytype.byid:
+
+            				//save the query & type (for pagination)
+            				this.dataops.query = query;
+            				this.dataops.querytype = querytype;
+
+            				requestsRef
+								.orderByChild('giantbombindex')
+								.startAt(id)
+								.endAt(id + '~')
+								.limitToFirst(this.dataops.limit)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									if (request !== lastrequest) { customElem.push('requests', request); };
+								});
+            				break;
+
+            			default:
+            				//save the query & type (for pagination)
+            				this.dataops.querytype = querytype;
+
+            				requestsRef
+								.orderByPriority()
+								.limitToFirst(this.dataops.limit)
+								.on("child_added", function (snapshot) {
+									var request = snapshot.val() || {};
+									request.priority = snapshot.getPriority();
+									if (request !== lastrequest) { customElem.push('requests', request); };
+								}, function (errorObject) {
+									console.log("The read failed: " + errorObject.code);
+								});
+            				break;
+            		}
+            	}
+            },
+
+            /*getRequests: function (orderby, clear, query, id, next) {
 				var customElem = this
 				var requestsRef = this.firebaseRef.child('requests');
 
-				if (clear) { this.requests = []; };	//clear the array
+				if (next) {
+					var lastrequest = this.requests[this.request.length - 1];
+					if (query !== null && query !== undefined && query !== '') {
+						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
 
-				if (query !== null && query !== undefined && query !== '') {
-
-					//see if we need to also get the games with the same giantbomb id
-					this.requests = [];
-					if (id !== null && id !== undefined && id !== '') {
-						requestsRef.orderByChild('giantbombid').startAt(id).endAt(id).on('child_added', function (snapshot) {
-							customElem.push('requests', snapshot.val());
-						});
+						//Using a custom index I created to reverse order entries
+						requestsRef
+							.orderByChild('gameindex')
+							.startAt(query).endAt(query + '~')
+							.limitToFirst(this.dataops.limit + 1)
+							.on('child_added', function (snapshot) {
+								var request = snap.val() || {};
+								if (request !== lastrequest) { customElem.push('requests', val); };
+							});
+					}
+					else if (id !== null && id !== undefined && id !== '') {
+						requestsRef
+							.orderByChild('giantbombindex')
+							.startAt(null, lastrequest)
+							.endAt(id + '~')
+							.limitToFirst(this.dataops.limit + 1)
+							.on('child_added', function (snapshot) {
+								var request = snap.val() || {};
+								if (request !== lastrequest) { customElem.push('requests', val); };
+							});
 					}
 					else {
-						//Going to perform a search query. The previous rquests array "needs" to be cleared
-						//The orderByChild property needs to change from whatever it was to game
-						this.requests = [];
+						//going to query the gameindex so prep the game name
 						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
-						requestsRef.orderByChild('gameindex').startAt(query).endAt(query + '~').on('child_added', function (snapshot) {
-							/*Firebase inherently orders its data chronologically in ascending order by default. We are going to need to
-							reverse it so that most recent show up first*/
-							//TODO: sort descending order
-							customElem.push('requests', snapshot.val());
-						});
+
+						requestsRef
+							.orderByChild('gameindex')
+							.startAt(null, lastrequest)	//pagination with firebase
+							.endAt(query + '~')
+							.limitToFirst(this.dataops.limit + 1)	//account for the last request
+							.on('child_added', function (snapshot) {
+								var request = snap.val() || {};
+								if (request !== lastrequest) { customElem.push('requests', val); };
+							});
 					}
 				}
 				else {
-					requestsRef.orderByPriority().on("child_added", function (snapshot) {
-						//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
-						customElem.push('requests', snapshot.val());
-					}, function (errorObject) {
-						console.log("The read failed: " + errorObject.code);
-					});
+					if (query !== null && query !== undefined && query !== '') {
+						//going to perform a search query. The previous rquests array "needs" to be cleared
+						this.requests = [];
+
+						//querying by game title, so prepare query
+						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+
+						//using a custom index I created to reverse order entries
+						requestsRef
+							.orderByChild('gameindex')
+							.startAt(query)
+							.endAt(query + '~')
+							.limitToFirst(this.dataops.limit)
+							.on('child_added', function (snapshot) {
+								customElem.push('requests', snapshot.val());
+							});
+					}
+					else if (id !== null && id !== undefined && id !== '') {
+						this.requests = [];
+						requestsRef
+							.orderByChild('giantbombindex')
+							.startAt(id)
+							.endAt(id + '~')
+							.limitToFirst(this.dataops.limit)
+							.on('child_added', function (snapshot) {
+								customElem.push('requests', snapshot.val());
+							});
+					}
+					else {
+						requestsRef.orderByPriority()
+							.limitToFirst(this.dataops.limit)
+							.on("child_added", function (snapshot) {
+								//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
+								customElem.push('requests', snapshot.val());
+							}, function (errorObject) {
+								console.log("The read failed: " + errorObject.code);
+							});
+					}
 				}
-            },
+            },*/
 
             showFilter: function () {
             	$(this.$.filter_modal).openModal();
@@ -398,6 +575,15 @@
                 $(this.$.search_dropdown).fadeIn(100, function () {
                     $('#search_input').focus();
                 });
+            },
+
+            containerScroll: function (e) {
+            	var container = e.target;
+            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
+            		// reached bottom of page - run our call for pagination
+            		//this.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
+            		this.getRequests(this.dataops.query, this.dataops.querytype, true);
+            	}
             },
 
 			/* Init */
@@ -420,9 +606,19 @@
 					{ name: 'Game', column: 'game' },
             	];
 
+            	this.querytype = {
+            		bygame: 'bygame',
+            		byid: 'byid',
+					none: 'none'
+            	};
+
             	this.dataops = {
+					orderby: '',
             		sort: 'created',
-					filter: ''
+            		filter: '',
+            		query: '',
+            		type: this.querytype.none,
+					limit: 2,
             	}
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
@@ -439,13 +635,8 @@
 
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
             	$('#search_input').on('keypress', this.doSearch.bind(this));
-            	$(document).on('click', '.search-result-link', function (e) {
-            		var li = $(this).parent();
-            		var giantbombid = $(li).data('resultId');
-            		var game = $(this).html().toLowerCase();
-            		polymer.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
-            		e.preventDefault();
-            	});
+            	$('#mainContainer').scroll(this.containerScroll.bind(this));
+            	$(document).on('click', '.search-result-link', this.doResultSearchWithClick.bind(this));
             },
 
             registerPlugins: function() {
@@ -457,15 +648,6 @@
             		gutter: 0, // Spacing from edge
             		belowOrigin: false // Displays dropdown below the button
             	});
-
-            	//$(this.$.search_button).dropdown({
-            	//    inDuration: 300,
-            	//    outDuration: 225,
-            	//    constrain_width: false, // Does not change width of dropdown to that of the activator
-            	//    hover: false, // Activate on hover
-            	//    gutter: 0, // Spacing from edge
-            	//    belowOrigin: false // Displays dropdown below the button
-                //});
             },
 
 			/* Events */
@@ -478,7 +660,8 @@
             },
 
             attached: function () {
-            	this.getRequests(this.dataops.sort);
+            	//this.getRequests(this.dataops.sort);
+            	this.getRequests(null, this.querytype.none, false);
             	this.registerPlugins();
             	this.registerEvents();
             }

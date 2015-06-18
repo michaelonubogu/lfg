@@ -48,6 +48,14 @@
 			};
 			
 			var utils = {
+				/*This is used for lexicographical ordering of a date for firebase. Since javascript stores dates as numbers,
+				 * and firebase doesn't order in  chronologic descending order, if I wanted to order any field in 
+				 * chronologic descending order, I would need to make it so that the higher the time value, the smaller the 
+				 * chronologic order. Since time is ever increasing, If I swap the highest possible digit in a time value (9) for the
+				 * lowest possible letter in the alphabet (a), I could then create this ordering
+				 * 
+				 * I could probably do this without the array just using ascii code conversions, but at this time, this was just easier
+				 * */
 				indexMapping: [
 					{ char: '0', value : 'j' },
 					{ char: '1', value : 'i' },

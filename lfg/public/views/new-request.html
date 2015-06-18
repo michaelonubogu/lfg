@@ -574,8 +574,9 @@
             			created: createdUTC
             		}
 
-					//custom index for searching & ordering .> really just a hack
+					//custom index for searching & ordering games & giantbomb ids in lexicographical/chronologic order really just a hack
             		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
+            		newRequest.giantbombindex = newRequest.giantbombid + window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
 
             		//Save new request content;
             		var newRequestRef = requestsRef.push(newRequest);
