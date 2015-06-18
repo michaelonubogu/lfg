@@ -11,8 +11,8 @@ New Request
 
 Requess List
 ---------------------------------------------------
- - Add sorting to Requests list					<DONE>
- - Add Pull up Filterting to Requests list
+ - Add sorting to Requests list							<DONE -- but removed because of decision>
+ - Add Pull up Filterting to Requests list				<DONE -- but removed cuz of decision>
  - Add on-click event to list items in request list
  - Show system icon in list (xbl, psn, wii, pc)
  - Show mic icon in list

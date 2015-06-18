@@ -73,6 +73,10 @@
             box-shadow: none;
         }
 
+		.request-list-item {
+			cursor: pointer;
+		}
+
         .lfg-main-toolbar{
             --paper-toolbar-background:{
                  background-color: transparent !important;
@@ -158,7 +162,6 @@
 			</li>
 		</ul>
 		<!-- ------------------------ Search Box --------------------------------- -->
-
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="tall lfg-drawer-toolbar">
@@ -171,7 +174,7 @@
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
                     <div flex></div>
                     <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
-                    <paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>
+                    <!--<paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>-->
 					<!--<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>-->
 					<ul id='dropdown1' class='dropdown-content'>
 						<template is="dom-repeat" items="[[sortoptions]]">
@@ -191,7 +194,8 @@
 					<ul id="request_list" class="collection" style="margin-top:0;">
 						
 						<template is="dom-repeat" items="{{requests}}">
-							<li class="collection-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;">
+							<li class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
+								<input type="hidden" value="[[item.key]]" />
 								<i class="mdi-social-person circle"></i>
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
@@ -370,9 +374,11 @@
             				requestsRef
 								.orderByChild('gameindex')
 								.startAt(lastrequest.gameindex)
+								.endAt(query + '~')
 								.limitToFirst(this.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
+									request.key = snapshot.key();
 									if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -385,9 +391,11 @@
             				requestsRef
 								.orderByChild('giantbombindex')
 								.startAt(lastrequest.giantbombindex)
+								.endAt(lastrequest.giantbombindex + '~')
 								.limitToFirst(this.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
+									request.key = snapshot.key();
 									if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -403,6 +411,7 @@
 								.limitToFirst(this.dataops.limit + 1)
 								.on("child_added", function (snapshot) {
 									var request = snapshot.val() || {};
+									request.key = snapshot.key();
 									request.priority = snapshot.getPriority();
 									if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
 								}, function (errorObject) {
@@ -428,6 +437,7 @@
 								.limitToFirst(this.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
+									request.key = snapshot.key();
 									customElem.push('requests', request);
 								});
             				break;
@@ -445,6 +455,7 @@
 								.limitToFirst(this.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
+									request.key = snapshot.key();
 									customElem.push('requests', request);
 								});
             				break;
@@ -459,6 +470,7 @@
 								.on("child_added", function (snapshot) {
 									var request = snapshot.val() || {};
 									request.priority = snapshot.getPriority();
+									request.key = snapshot.key();
 									customElem.push('requests', request);
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -466,6 +478,13 @@
             				break;
             		}
             	}
+            },
+
+            loadRequest: function (e) {
+            	var listelem = e.target;
+            	var key = $(listelem).find('input[type|=hidden]').val();
+
+
             },
 
             showFilter: function () {
@@ -519,7 +538,7 @@
             		filter: '',
             		query: '',
             		type: this.querytype.none,
-					limit: 2,
+					limit: 1,
             	}
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
