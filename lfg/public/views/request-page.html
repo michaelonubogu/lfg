@@ -144,6 +144,21 @@
     </style>
 
     <template>
+		<!-- ------------------------ Search Box --------------------------------- -->
+		<ul id="search_dropdown" class="dropdown-content" style="min-height: 60px; top: 0px !important; left: 0px !important; min-width: 100% !important; position: absolute; opacity: 1; display: block;">
+			<li class="search-input-container" style="vertical-align: middle !important; min-height: 60px !important; cursor:auto;">
+				<div class="row" style="min-height:100% !important; margin-bottom: 0px;">
+					<div class="col s1" style="margin-top:19px;">
+						<paper-icon-button icon="arrow-back" class="grey-text text-darken-1"></paper-icon-button>
+					</div>
+					<div class="col s11 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
+						<input id="search_input" type="text" class="validate style-scope request-page" placeholder="Game Title">
+					</div>
+				</div>
+			</li>
+		</ul>
+		<!-- ------------------------ Search Box --------------------------------- -->
+
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="tall lfg-drawer-toolbar">
@@ -158,33 +173,6 @@
                     <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
                     <paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>
 					<!--<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>-->
-
-                    <ul id="search_dropdown" class="dropdown-content style-scope request-page active" style="min-height: 60px; top: 0px !important; left: 0px !important; min-width: 100% !important; position: absolute; opacity: 1; display: block;">
-                        <li style="vertical-align: middle !important; min-height: 60px !important; cursor:auto;" class="style-scope request-page">
-                            <div class="row style-scope request-page" style="min-height:100% !important; margin-bottom: 0px;">
-                                <div class="col s1 style-scope request-page" style="margin-top:19px;">
-                                    <paper-icon-button icon="arrow-back" class="grey-text text-darken-1 style-scope request-page x-scope paper-icon-button-0" role="button" tabindex="0" aria-disabled="false">
-                                        <paper-ripple id="ink" class="circle style-scope paper-icon-button" center="">
-                                            <div id="background" class="style-scope paper-ripple"></div>
-                                            <div id="waves" class="style-scope paper-ripple"></div>
-                                        </paper-ripple>
-                                        <iron-icon id="icon" class="style-scope paper-icon-button x-scope iron-icon-0">
-                                            <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" class="style-scope iron-icon"></path></g></svg>
-                                            <iron-meta id="meta" type="iconset" class="style-scope iron-icon"></iron-meta>
-                                        </iron-icon>
-                                    </paper-icon-button>
-                                </div>
-                                <div class="col s11 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
-                                    <input id="search_input" type="text" class="validate style-scope request-page" placeholder="Game Title">
-                                </div>
-                            </div>
-                        </li>
-                        <!--<li class="divider search-result-item"></li>
-                        <li class="search-result-item" style="padding: 7px 0px 7px 8.2%;"><a href="#!">Search</a></li>
-                        <li><a href="#!">Results</a></li>
-                        <li><a href="#!">Listed</a></li>
-                        <li><a href="#!">Here</a></li>-->
-                    </ul>
 					<ul id='dropdown1' class='dropdown-content'>
 						<template is="dom-repeat" items="[[sortoptions]]">
 							<li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
@@ -440,7 +428,7 @@
 								.limitToFirst(this.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
-									if (request !== lastrequest) { customElem.push('requests', request); };
+									customElem.push('requests', request);
 								});
             				break;
 
@@ -457,7 +445,7 @@
 								.limitToFirst(this.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
-									if (request !== lastrequest) { customElem.push('requests', request); };
+									customElem.push('requests', request);
 								});
             				break;
 
@@ -471,7 +459,7 @@
 								.on("child_added", function (snapshot) {
 									var request = snapshot.val() || {};
 									request.priority = snapshot.getPriority();
-									if (request !== lastrequest) { customElem.push('requests', request); };
+									customElem.push('requests', request);
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
 								});
@@ -479,93 +467,6 @@
             		}
             	}
             },
-
-            /*getRequests: function (orderby, clear, query, id, next) {
-				var customElem = this
-				var requestsRef = this.firebaseRef.child('requests');
-
-				if (next) {
-					var lastrequest = this.requests[this.request.length - 1];
-					if (query !== null && query !== undefined && query !== '') {
-						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
-
-						//Using a custom index I created to reverse order entries
-						requestsRef
-							.orderByChild('gameindex')
-							.startAt(query).endAt(query + '~')
-							.limitToFirst(this.dataops.limit + 1)
-							.on('child_added', function (snapshot) {
-								var request = snap.val() || {};
-								if (request !== lastrequest) { customElem.push('requests', val); };
-							});
-					}
-					else if (id !== null && id !== undefined && id !== '') {
-						requestsRef
-							.orderByChild('giantbombindex')
-							.startAt(null, lastrequest)
-							.endAt(id + '~')
-							.limitToFirst(this.dataops.limit + 1)
-							.on('child_added', function (snapshot) {
-								var request = snap.val() || {};
-								if (request !== lastrequest) { customElem.push('requests', val); };
-							});
-					}
-					else {
-						//going to query the gameindex so prep the game name
-						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
-
-						requestsRef
-							.orderByChild('gameindex')
-							.startAt(null, lastrequest)	//pagination with firebase
-							.endAt(query + '~')
-							.limitToFirst(this.dataops.limit + 1)	//account for the last request
-							.on('child_added', function (snapshot) {
-								var request = snap.val() || {};
-								if (request !== lastrequest) { customElem.push('requests', val); };
-							});
-					}
-				}
-				else {
-					if (query !== null && query !== undefined && query !== '') {
-						//going to perform a search query. The previous rquests array "needs" to be cleared
-						this.requests = [];
-
-						//querying by game title, so prepare query
-						query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
-
-						//using a custom index I created to reverse order entries
-						requestsRef
-							.orderByChild('gameindex')
-							.startAt(query)
-							.endAt(query + '~')
-							.limitToFirst(this.dataops.limit)
-							.on('child_added', function (snapshot) {
-								customElem.push('requests', snapshot.val());
-							});
-					}
-					else if (id !== null && id !== undefined && id !== '') {
-						this.requests = [];
-						requestsRef
-							.orderByChild('giantbombindex')
-							.startAt(id)
-							.endAt(id + '~')
-							.limitToFirst(this.dataops.limit)
-							.on('child_added', function (snapshot) {
-								customElem.push('requests', snapshot.val());
-							});
-					}
-					else {
-						requestsRef.orderByPriority()
-							.limitToFirst(this.dataops.limit)
-							.on("child_added", function (snapshot) {
-								//add to the list of requests...polymer should do the rest via template 2-way binding awesomeness.
-								customElem.push('requests', snapshot.val());
-							}, function (errorObject) {
-								console.log("The read failed: " + errorObject.code);
-							});
-					}
-				}
-            },*/
 
             showFilter: function () {
             	$(this.$.filter_modal).openModal();
