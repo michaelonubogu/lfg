@@ -1,0 +1,441 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../components/bower_components/polymer/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<!--Custom Imports-->
+<link rel="import" href="../imports/font-awesome.html">
+
+<dom-module id="request-details">
+	<style>
+		:host {
+		}
+
+		.logo-link {
+			text-decoration: none;
+			font-size: 2rem;
+			color: #ffffff;
+			margin-left: -15px !important;
+		}
+
+		.row {
+			margin-bottom: 0 !important;
+			margin-top: 0 !important;
+			line-height: 1;
+		}
+
+		input[type=text].request-page {
+			background-color: transparent;
+			border: none;
+			border-bottom: none !important;
+			border-radius: 0;
+			outline: none;
+			height: 3rem;
+			width: 100%;
+			font-size: 1.5rem !important;
+			font-weight: 400;
+			margin: 0 0 15px 0;
+			padding: 0;
+		}
+
+		/* label underline focus color */
+		input[type=text].request-page:focus {
+			border-bottom: none;
+			box-shadow: none;
+		}
+		/* valid color */
+		input[type=text].request-page.valid {
+			border-bottom: none !important;
+			box-shadow: none !important;
+		}
+		/* invalid color */
+		input[type=text].request-page.invalid {
+			border-bottom: none;
+			box-shadow: none;
+		}
+
+		.request-list-item {
+			cursor: pointer;
+		}
+
+		.lfg-main-toolbar {
+			--paper-toolbar-background:
+			{
+				background-color: transparent !important;
+			};
+		}
+
+		.lfg-drawer-toolbar {
+			--paper-toolbar-background: #ef6c00;
+		}
+
+		#paper-header-panel {
+			border-bottom: solid 1px #ffffff;
+		}
+
+		.lfg-main-header-panel {
+			--paper-header-panel-cover-container:
+			{
+				border: solid 1px #ffffff;
+			};
+		}
+
+		.lfg-paper-fab {
+			--paper-fab:
+			{
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				margin-right: 3%;
+				margin-bottom: 3%;
+			}; 
+			--paper-fab-background: #e65100;
+		}
+
+		.collection-item {
+			height: auto !important;
+			padding-top: 20px !important;
+			padding-bottom: 20px !important;
+		}
+
+		.bottom-bar {
+			margin-left: 0px !important;
+		}
+
+		.content-area {
+			padding: 0 5% 5% 5%;
+		}
+
+		.requests-card-panel {
+			width: 100%;
+			box-shadow: 0 2px 5px 0 #e65100;
+			border-radius: 0px;
+			height: 290px !important;
+		}
+
+		.comments-card-panel {
+			width: 100%;
+			box-shadow: 0 2px 5px 0 #e65100;
+			border-radius: 0px;
+			padding:0;
+		}
+
+
+		@media (max-width: 640px) {
+			.logo-link {
+				margin-left: 0px;
+			}
+
+			.content-area {
+				padding: 0;
+			}
+
+			.lfg-paper-fab {
+				--paper-fab:
+				{
+					position: fixed;
+					right: 0;
+					bottom: 0;
+					margin-right: 3.5%;
+					margin-bottom: 3.5%;
+				}; 
+				 
+				--paper-fab-background: #e65100;
+			}
+		}
+	</style>
+
+	<template>
+		<paper-drawer-panel>
+			<paper-header-panel mode="seamed" drawer>
+				<paper-toolbar class="tall lfg-drawer-toolbar">
+
+				</paper-toolbar>
+				<div fit class="orange darken-3">Drawer Content</div>
+			</paper-header-panel>
+			<paper-header-panel mode="scroll" main class="lfg-main-header-panel">
+				<paper-toolbar class="tall lfg-main-toolbar">
+					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+					<paper-icon-button icon="arrow-back" on-click="goToList"></paper-icon-button>
+					<div flex></div>
+					<!--<paper-icon-button icon="more-vert"></paper-icon-button>-->
+					<div class="middle"></div>
+					<div title class="bottom bottom-bar"></div>
+				</paper-toolbar>
+				<div fit class="content-area">
+					<div class="row">
+						<div class="col s12 m1">
+							<img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid white;" class="circle" width="60" height="60">
+						</div>
+						<div class="col s12 m8 white-text"><h5 style="font-weight:200;"><span class="yellow-text">JasonTheMaster</span>'s Gaming Request</h5></div>
+						<div class="col s12 m3 white-text" style="margin-top:10px;">
+							<i class="fa fa-facebook-square fa-2x white-text" style="padding-right:10px;"></i>
+							<i class="fa fa-twitter-square fa-2x white-text" style="padding-right:10px;"></i>
+							<i class="fa fa-google-plus-square fa-2x white-text" style="padding-right:10px;"></i>
+							<i class="fa fa-comment fa-2x white-text" style="padding-right:10px;"></i>
+							<i class="fa fa-envelope fa-2x white-text" style="padding-right:10px;"></i>
+						</div>
+					</div>
+					<br /><br />
+					<div class="row">
+						<div class="col s12 m4">
+							<div class="card-panel white requests-card-panel">
+							</div>
+						</div>
+						<div class="col s12 m8">
+							<div class="row">
+								<div class="col s12" style="margin-top:10px;"><h6 class="yellow-text" style="font-size:1.5rem; font-weight:300;">Warframe</h6></div>
+								<div class="col s12"><h4 class="white-text">Infested on Saturn</h4>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col s12 m2 input-field">
+									<h6 class="yellow-text" style="font-weight:300;">
+									<i class="fa fa-clock-o yellow-text" style="padding-right:5px;"></i>When</h6>
+								</div>
+								<div class="col s12 m9 input-field">
+									<h6 class="white-text">Monday, July 22nd @ 9:30PM</h6>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12 m2 input-field">
+									<h6 class="yellow-text" style="font-weight:300;">
+										<i class="fa fa-gamepad yellow-text" style="padding-right:5px;"></i>System</h6>
+								</div>
+								<div class="col s12 m9 input-field">
+									<h6 class="white-text">PS4</h6>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12 m2 input-field">
+									<h6 class="yellow-text" style="font-weight:300;">
+										<i class="fa fa-tag yellow-text" style="padding-right:5px;"></i>Gamertag</h6>
+								</div>
+								<div class="col s12 m9 input-field">
+									<h6 class="white-text">Rammone-X</h6>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12 m2 input-field">
+									<h6 class="yellow-text" style="font-weight:300;">
+										<i class="fa fa-microphone yellow-text" style="padding-right:5px;"></i>Mic</h6>
+								</div>
+								<div class="col s12 m9 input-field">
+									<h6 class="white-text">Not Required</h6>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 input-field">
+							<p class="white-text flow-text" style="font-weight:300;">
+								Just looking for people to play infested with. No mics needed, but would be much more fun if you used one. I will have a mic :)
+							</p>
+						</div>
+					</div>
+					<br /><br />
+					<div class="white-text col s12 center-align"><h5 style="font-weight:300;">Comments</h5></div>
+					<div class="row">
+						<div class="input-field card-panel comments-card-panel">
+							<ul class="collection">
+								<li class="collection-item avatar">
+									<!--<img src="images/yuna.jpg" alt="" class="circle">-->
+									<i class="mdi-file-folder circle"></i>
+									<span class="title">Title</span>
+									<p>
+										Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
+
+										Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
+
+										Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-file-folder circle"></i>
+									<span class="title">Title</span>
+									<p>
+										Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
+
+										Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
+
+										Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-action-assessment circle green"></i>
+									<span class="title">Title</span>
+									<p>
+										Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
+
+										Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
+
+										Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
+
+										Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
+
+										Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+								<li class="collection-item avatar">
+									<i class="mdi-av-play-arrow circle red"></i>
+									<span class="title">Title</span>
+									<p>
+										First Line <br>
+										Second Line
+									</p>
+									<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</paper-header-panel>
+		</paper-drawer-panel>
+	</template>
+</dom-module>
+
+<script>
+	(function (window) {
+        var constructor = Polymer({
+
+        	is: 'request-details',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                elementname: 'Request Details Page',
+                /**
+                 * ...
+                 *
+                 * @attribute thingName
+                 * @type string
+                 * @default ''
+                 */
+            },
+
+            convertDateToUtc: function (date) {
+            	return Date.UTC(
+					date.getFullYear(),
+					date.getMonth(),
+					date.getDate(),
+					date.getHours(),
+					date.getMinutes(),
+					date.getSeconds()
+				)
+            },
+
+            getLookupData: function(){
+                //Gets lookup data from Giant Bomb
+                var config = window.lfg.config;
+                $.get(config.appUrl)
+            },
+
+
+            initializeData: function () {
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            },
+
+            registerPlugins: function () {
+            },
+
+            registerEvents: function () {
+            },
+
+            created: function () {
+				//Part of Polymer lifecycle
+            },
+
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+				//called after ready();
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>

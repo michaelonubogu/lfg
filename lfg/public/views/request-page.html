@@ -186,16 +186,14 @@
                     <div class="middle">
                     </div>
                     <div title class="bottom bottom-bar">
-                        <a href="/" class="logo-link">Gaming Requests</a>
+						Gaming Requests
                     </div>
                 </paper-toolbar>
 
                 <div class="white" fit>
-					<ul id="request_list" class="collection" style="margin-top:0;">
-						
+					<ul id="request_list" class="collection" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
-							<li class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
-								<input type="hidden" value="[[item.key]]" />
+							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
 								<i class="mdi-social-person circle"></i>
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
@@ -482,9 +480,14 @@
 
             loadRequest: function (e) {
             	var listelem = e.target;
-            	var key = $(listelem).find('input[type|=hidden]').val();
+            	if (listelem.nodeName.toLowerCase() !== 'li') {
+            		listelem = $(listelem).parent()[0];
+            	}
 
-
+            	var requestkey = listelem.dataset.requestKey;
+            	if (requestkey) {
+            		document.querySelector('app-router').go('/request/' + requestkey);
+            	}
             },
 
             showFilter: function () {
@@ -538,7 +541,7 @@
             		filter: '',
             		query: '',
             		type: this.querytype.none,
-					limit: 1,
+					limit: 50,
             	}
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());

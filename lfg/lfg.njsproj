@@ -264,6 +264,7 @@
     <Compile Include="routes\api.js" />
     <Content Include="package.json" />
     <Content Include="public\assets\app\css\lfg.css" />
+    <Content Include="public\assets\app\img\images.jpg" />
     <Content Include="public\assets\font-awesome\css\font-awesome.css" />
     <Content Include="public\assets\font-awesome\css\font-awesome.min.css" />
     <Content Include="public\assets\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -1431,6 +1432,7 @@
     <Content Include="public\index.html" />
     <Content Include="public\views\landing-page.html" />
     <Content Include="public\views\new-request.html" />
+    <Content Include="public\views\request-details.html" />
     <Content Include="public\views\request-page.html" />
     <Content Include="README.md" />
     <Content Include="TODO.txt" />
