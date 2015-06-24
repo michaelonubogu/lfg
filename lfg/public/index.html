@@ -48,6 +48,7 @@
 	<script src="assets/app/js/jquery.timeentry.js"></script>
     <script src="assets/app/js/underscore-min.js"></script>
     <script src="assets/app/js/date.js"></script>
+	<script src="components/bower_components/ckeditor/ckeditor.js"></script>
     <script src="assets/app/js/app-config.js"></script>
 	<!--<script src="assets/app/js/app-utils.js"></script>-->
 
@@ -56,13 +57,13 @@
     <link rel="import" href="components/bower_components/app-router/app-router.html">
 </head>
 <body>
-<app-router>
+<app-router init="manual">
     <!--<app-route path="/" import="/views/landing-page.html"></app-route>-->
     <app-route path="/" import="/views/request-page.html"></app-route>
     <app-route path="/new" import="/views/new-request.html"></app-route>
     <app-route path="/about" import="/views/about.html"></app-route>
     <app-route path="/discover" import="/views/discover.html"></app-route>
-	<app-route path="/request/:id" import="/views/request-details.html"></app-route>
+	<app-route path="/request/:requestkey" import="/views/request-details.html"></app-route>
     <!--<app-route path="/new/:thingName" import="/views/new-profile.html"></app-route>
     <app-route path="/nothing" import="/views/no-thing.html"></app-route>
     <app-route path="/profile/:id" import="/views/profile.html"></app-route>-->
@@ -70,8 +71,8 @@
 </app-router>
 <script>
     //var DEFAULT_ROUTE = 'home';
-    document.addEventListener('polymer-ready', function() {
-
+    document.addEventListener('WebComponentsReady', function() {
+    	document.querySelector('app-router').init();
     });
 </script>
 </body>
