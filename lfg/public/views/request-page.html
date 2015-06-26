@@ -26,15 +26,27 @@
 <!-- Google Custom Elements-->
 <link rel="import" href="../components/bower_components/firebase-element/firebase-collection.html">
 
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/flaticons.html" />
 
 <dom-module id="request-page">
     <!-- CSS -->
-    <link rel="import" type="css" href="../assets/materialize/css/materialize.css"  />
     <link rel="import" type="css" href='../assets/app/css/lfg.css'>
 
     <style>
         :host{
         }
+
+		.flaticon-update {
+			margin-top: -3px !important;
+		}
+
+		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
+			margin-left:0px !important; 
+			font-size:35px !important;
+		}
 
         .logo-link{
             text-decoration: none;
@@ -75,6 +87,10 @@
 
 		.request-list-item {
 			cursor: pointer;
+		}
+
+		.request-list-item-container {
+			padding: 10px 20px 10px 20px;
 		}
 
         .lfg-main-toolbar{
@@ -121,9 +137,17 @@
             width: 100%;
             box-shadow: 0 2px 5px 0 #e65100;
             border-radius:0px;
-            height: 1200px !important;
+            height: 200px !important;
         }
 
+		.request-card-item {
+			min-height: 200px !important;
+			border-bottom:1px solid #f9a825;
+		}
+
+		.request-card-item .card-item .row {
+			margin-bottom:5px;
+		}
 
         @media (max-width: 640px){
             .logo-link{
@@ -190,20 +214,49 @@
                     </div>
                 </paper-toolbar>
 
-                <div class="white" fit>
-					<ul id="request_list" class="collection" style="margin-top:0;">						
+                <div class="grey lighten-3">
+					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
-							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
+							<!--<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
 								<i class="mdi-social-person circle"></i>
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
 								<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
 								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
-								<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
-							</li>
+							</li>-->
+							<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
+							<div class="card-panel white request-list-item request-card-item" data-request-key$="[[item.key]]" on-click="loadRequest">
+								<div class="col s12">
+									<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
+								</div>
+								<div class="row card-item">
+									<div class="col s12 m1"><img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid #ff9800;" class="circle" width="60" height="60"></div>
+									<div class="col s12 m10">
+										<div class="row">
+											<div class="col s12">
+												<div class="row">
+													<div class="s12 m1"><i class$="[[item.sysicon]]" style="margin-top: -10px !important;"></i></div>
+													<div class="s12 m11">
+														<h6 style="font-size:1.75rem;" class="orange-text text-darken-4">[[item.gametitle]]</h6>
+													</div>
+												</div>
+											</div>
+											<div class="col s12"><p style="font-size:1.25rem;">[[item.title]]</p></div>
+											<div class="col s12"><p class="grey-text">[[item.description]]</p></div>
+										</div>
+									</div>
+								</div>
+								<!--<span class="white-text">
+									
+									<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
+									<p style="font-size:0.875rem;">[[item.title]]</p>
+									<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
+									<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
+								</span>-->
+							</div>
 						</template>
 					</ul>
-                    <paper-fab icon="add" class="lfg-paper-fab" on-click="newRequest"></paper-fab>
+                    <!--<paper-fab icon="add" class="lfg-paper-fab" on-click="newRequest"></paper-fab>-->
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
@@ -325,7 +378,7 @@
             				$('#search_dropdown').find('.search-result-item').remove();
 
             				_.each(data.results, function (result) {
-            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;"><a class="search-result-link">' + result.name + '</a></li>';
+            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</a></li>';
             				});
             				$('#search_dropdown').append(html);
             			},
@@ -377,6 +430,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -388,12 +442,13 @@
 
             				requestsRef
 								.orderByChild('giantbombindex')
-								.startAt(lastrequest.giantbombindex)
+								.startAt(lastrequest.giantbombindex.toString())
 								.endAt(lastrequest.giantbombindex + '~')
 								.limitToFirst(this.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -411,6 +466,7 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.priority = snapshot.getPriority();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -436,6 +492,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									customElem.push('requests', request);
 								});
             				break;
@@ -448,12 +505,13 @@
 
             				requestsRef
 								.orderByChild('giantbombindex')
-								.startAt(id)
-								.endAt(id + '~')
+								.startAt(query.toString())
+								.endAt(query + '~')
 								.limitToFirst(this.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									customElem.push('requests', request);
 								});
             				break;
@@ -469,6 +527,7 @@
 									var request = snapshot.val() || {};
 									request.priority = snapshot.getPriority();
 									request.key = snapshot.key();
+									request.sysicon = customElem.getSystemIcon(request.system);
 									customElem.push('requests', request);
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -478,10 +537,46 @@
             	}
             },
 
+            getSystemIcon: function (system) {
+
+            	var classAppend = 'left flaticon-update';
+
+            	switch (system) {
+            	
+            		case 'pc':
+            			return 'flaticon-monitor49 ' + classAppend;
+            			break;
+
+            		case 'ps3':
+            			return 'flaticon-ps46 ' + classAppend;
+            			break;
+
+            		case 'ps4':
+            			return 'flaticon-game27 ' + classAppend;
+            			break;
+
+            		case 'xbox360':
+            			return 'flaticon-xbox19 ' + classAppend;
+            			break;
+
+            		case 'xboxone':
+            			return 'flaticon-xbox12 ' + classAppend;
+            			break;
+
+            		case 'wii':
+            			return 'flaticon-wii14 ' + classAppend;
+            			break;
+
+            		case 'wiiu':
+            			return 'flaticon-wii12 ' + classAppend;
+            			break;
+            	}
+            },
+
             loadRequest: function (e) {
             	var listelem = e.target;
-            	if (listelem.nodeName.toLowerCase() !== 'li') {
-            		listelem = $(listelem).parent()[0];
+            	if (listelem.className.indexOf('request-card-item') === -1) {
+            		listelem = $(listelem).parents('.request-card-item')[0];
             	}
 
             	var requestkey = listelem.dataset.requestKey;
