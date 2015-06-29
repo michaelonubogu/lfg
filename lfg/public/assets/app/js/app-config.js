@@ -5,7 +5,9 @@
     document.onreadystatechange = function(){
         var state = document.readyState;
 
-        if(state === 'complete'){
+		if (state === 'complete') {
+			
+			//Config & Util Settings
             var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};
             var config = {
                 appUrl: '',

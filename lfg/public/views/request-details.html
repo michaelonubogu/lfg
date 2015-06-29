@@ -55,6 +55,10 @@
 			line-height: 1;
 		}
 
+		.comment-button-row {
+		    margin-top: 20px !important;
+		}
+
 		input[type=text].request-page {
 			background-color: transparent;
 			border: none;
@@ -208,7 +212,7 @@
 						</div>
 					</div>
 					<br /><br />
-					<div class="row">
+					<div class="row request-details">
 						<div class="col s12 m4">
 							<div class="card-panel white requests-card-panel">
 							</div>
@@ -267,7 +271,7 @@
 							<h6 class="yellow-text" style="font-weight:300;">
 								<i class="fa fa-file-text yellow-text" style="padding-right:5px;"></i>Description
 							</h6>
-							<p class="white-text flow-text" style="font-weight:300;">[[request.description]]</p>
+							<p class="white-text" style="font-weight:300; font-size: 1.15rem;">[[request.description]]</p>
 						</div>
 					</div>
 					<br /><br />
@@ -275,10 +279,10 @@
 					<div class="row">
 						<!--Text Editor-->
 						<textarea id="comment_editor">
-							This is my textarea to be replaced with CKEditor.
+							
 						</textarea>
 					</div>
-					<div class="row">
+					<div class="row comment-button-row">
 						<div class="col s6">
 							<a class="waves-effect waves-light btn orange darken-4 white-text" on-click="addComment">Post Comment</a>
 						</div>
@@ -286,7 +290,7 @@
 
 					<div class="row" style="margin-top:10% !important;">
 						<div class="input-field card-panel comments-card-panel">
-							<ul class="collection">
+							<ul id="request_comments_list" class="collection">
 								<!--<li class="collection-item avatar">
 									<i class="mdi-file-folder circle"></i>
 									<span class="title"><strong>CoolGamer</strong> wrote:</span><br /><br />
@@ -297,15 +301,15 @@
 									</p>
 									<a href="" class="grey-text secondary-content">June 23rd, 2015 @ 6:30AM</a>
 								</li>-->
-								<template is="dom-repeat" items="[[request.comments]]">
+								<<!--template is="dom-repeat" items="[[request.comments]]">
 									<li class="collection-item avatar">
-										<!--<img src="images/yuna.jpg" alt="" class="circle">-->
+										<img src="images/yuna.jpg" alt="" class="circle">
 										<i class="mdi-file-folder circle"></i>
 										<span class="title"><strong>[[getCommenter(item.userkey)]]</strong> wrote:</span><br /><br />
-										<div>[[item.comment]]</div>
+										<div id="[[setCommentId(item.id)]]" class="comment-placeholder" changed="[[setComment(item.id, item.comment)]]"></div>
 										<a href="" class="grey-text secondary-content">[[formatDate(item.created)]]</a>
 									</li>
-								</template>
+								</!--template>-->
 							</ul>
 						</div>
 					</div>
@@ -347,7 +351,12 @@
             	var comment = CKEDITOR.instances.comment_editor.getData();
             	if (comment == null || comment == undefined || comment == '') {
             		//throw error
+            		return;
             	}
+
+            	//Escape user input from ckEditor
+            	comment = filterXSS(comment);
+				alert(comment)
 
             	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey + '/comments');
             	var newCommentRef = requestCommentRef.push({
@@ -359,6 +368,20 @@
             	if (key !== null && key !== undefined && key !== '')
             		Materialize.toast('Comment Added', 4000);
             },
+
+            commentAddedHandler: function(){
+            },
+
+            setCommentId: function (id) {
+            	return 'div_' + id;
+            },
+
+            setComment: function (id, comments) {
+            	var divId = 'div_' + id;
+            	var div = this.$$(divId);
+            	var dav = div;
+            },
+
 
             convertDateToUtc: function (date) {
             	return Date.UTC(
@@ -427,11 +450,26 @@
             	requestRef.on('value', function (snapshot) {	//I LUV U Firebase :D
             		var request = snapshot.val();
             		var comments = [];
+            		var commentHtml = '';
             		_.each(request.comments, function (value, key) {
+            			value.id = key;	//set an id property
             			comments.push(value);
+
+            			//Because of Polymer XSS security features, html cannot be databound to DOM elements (escaped or otherwise).
+						//we'll need to append the whole list via DOM injection the first time, and set a handler for any new comments added (later)
+            			commentHtml += '<li class="collection-item avatar">';
+            			commentHtml += '<i class="mdi-file-folder circle"></i>';
+            			commentHtml += '<span class="title"><strong>' + customElem.getCommenter(value.userkey) + '</strong> wrote:</span><br /><br />';
+            			commentHtml += '<div id="' + customElem.setCommentId(value.id) + '" class="comment-placeholder" >' + value.comment + '</div>';
+            			commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(value.created) + '</a>';
+            			commentHtml += '</li>';
             		});
             		request.comments = comments;
             		customElem.request = request;
+
+					//Add comments and set handler for new comments
+            		customElem.$.request_comments_list.innerHTML = commentHtml;
+            		customElem.commentAddedHandler();
             	});
             },
 
@@ -476,6 +514,9 @@
             },
 
             registerEvents: function () {
+            	$('.comment-hidden-trigger').on('change', function () {
+            		alert($(this).val());
+            	})
             },
 
             created: function () {

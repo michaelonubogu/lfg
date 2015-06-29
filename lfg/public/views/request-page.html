@@ -40,7 +40,7 @@
         }
 
 		.flaticon-update {
-			margin-top: -3px !important;
+			margin-top: -10px !important;
 		}
 
 		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
@@ -118,10 +118,10 @@
                 position: fixed;
                 right: 0;
                 bottom: 0;
-                 margin-right: 3%;
+                 margin-right: 5%;
                  margin-bottom: 3%;
              };
-            --paper-fab-background: #e65100;
+            --paper-fab-background: #ffff00;
         }
 
         .bottom-bar{
@@ -163,11 +163,15 @@
                      position: fixed;
                      right: 0;
                      bottom: 0;
-                     margin-right: 3.5%;
+                     margin-right: 5%;
                      margin-bottom: 3.5%;
                  };
-                --paper-fab-background: #e65100;
+                --paper-fab-background: #ffff00;
             }
+
+		.flaticon-update {
+			margin-top: -13px !important;
+		}
         }
     </style>
 
@@ -226,24 +230,24 @@
 							</li>-->
 							<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
 							<div class="card-panel white request-list-item request-card-item" data-request-key$="[[item.key]]" on-click="loadRequest">
-								<div class="col s12">
-									<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
-								</div>
 								<div class="row card-item">
 									<div class="col s12 m1"><img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid #ff9800;" class="circle" width="60" height="60"></div>
-									<div class="col s12 m10">
+									<div class="col s12 m9">
 										<div class="row">
 											<div class="col s12">
 												<div class="row">
-													<div class="s12 m1"><i class$="[[item.sysicon]]" style="margin-top: -10px !important;"></i></div>
+													<div class="s12 m1"><i class$="[[item.sysicon]]"></i></div>
 													<div class="s12 m11">
 														<h6 style="font-size:1.75rem;" class="orange-text text-darken-4">[[item.gametitle]]</h6>
 													</div>
 												</div>
 											</div>
-											<div class="col s12"><p style="font-size:1.25rem;">[[item.title]]</p></div>
-											<div class="col s12"><p class="grey-text">[[item.description]]</p></div>
+											<div class="col s12" style="margin-top:-30px;"><p style="font-size:1.25rem;">[[item.title]]</p></div>
+											<div class="col s12" style="margin-top:-15px;"><p class="grey-text">[[item.description]]</p></div>
 										</div>
+									</div>
+									<div class="col s12 m2">
+										<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
 									</div>
 								</div>
 								<!--<span class="white-text">
@@ -256,7 +260,7 @@
 							</div>
 						</template>
 					</ul>
-                    <!--<paper-fab icon="add" class="lfg-paper-fab" on-click="newRequest"></paper-fab>-->
+                    <paper-fab icon="add" class="lfg-paper-fab orange-text text-darken-4" on-click="newRequest"></paper-fab>
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
