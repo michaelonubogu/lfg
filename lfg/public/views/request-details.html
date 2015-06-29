@@ -130,7 +130,7 @@
 		.collection-item {
 			height: auto !important;
 			padding-top: 20px !important;
-			padding-bottom: 20px !important;
+			padding-bottom: 40px !important;
 		}
 
 		.bottom-bar {
@@ -301,7 +301,7 @@
 									</p>
 									<a href="" class="grey-text secondary-content">June 23rd, 2015 @ 6:30AM</a>
 								</li>-->
-								<<!--template is="dom-repeat" items="[[request.comments]]">
+								<!--template is="dom-repeat" items="[[request.comments]]">
 									<li class="collection-item avatar">
 										<img src="images/yuna.jpg" alt="" class="circle">
 										<i class="mdi-file-folder circle"></i>
@@ -356,7 +356,6 @@
 
             	//Escape user input from ckEditor
             	comment = filterXSS(comment);
-				alert(comment)
 
             	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey + '/comments');
             	var newCommentRef = requestCommentRef.push({
@@ -369,7 +368,26 @@
             		Materialize.toast('Comment Added', 4000);
             },
 
-            commentAddedHandler: function(){
+            commentAddedHandler: function (requestKey) {
+            	var customElem = this;
+            	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + requestKey + '/comments');
+
+            	requestCommentRef.on('child_added', function (snapshot) {	//I LUV U Firebase :D
+            		var comment = snapshot.val();
+            		comment.id = snapshot.key();
+            		customElem.request.comments.push(comment);
+
+            		var commentHtml = '';
+            		commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
+            		commentHtml += '<i class="mdi-file-folder circle"></i>';
+            		commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
+            		commentHtml += '<div id="' + customElem.setCommentId(comment.id) + '" class="comment-placeholder" >' + comment.comment + '</div>';
+            		commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
+            		commentHtml += '</li>';
+
+            		//Add comments
+            		$(customElem.$.request_comments_list).append(commentHtml);
+            	});
             },
 
             setCommentId: function (id) {
@@ -447,29 +465,17 @@
             	var customElem = this;
             	var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey);
             	
-            	requestRef.on('value', function (snapshot) {	//I LUV U Firebase :D
+            	requestRef.once('value', function (snapshot) {	//I LUV U Firebase :D. Data will be read once for initial request
             		var request = snapshot.val();
-            		var comments = [];
-            		var commentHtml = '';
-            		_.each(request.comments, function (value, key) {
-            			value.id = key;	//set an id property
-            			comments.push(value);
+            		request.id = snapshot.key();
 
-            			//Because of Polymer XSS security features, html cannot be databound to DOM elements (escaped or otherwise).
-						//we'll need to append the whole list via DOM injection the first time, and set a handler for any new comments added (later)
-            			commentHtml += '<li class="collection-item avatar">';
-            			commentHtml += '<i class="mdi-file-folder circle"></i>';
-            			commentHtml += '<span class="title"><strong>' + customElem.getCommenter(value.userkey) + '</strong> wrote:</span><br /><br />';
-            			commentHtml += '<div id="' + customElem.setCommentId(value.id) + '" class="comment-placeholder" >' + value.comment + '</div>';
-            			commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(value.created) + '</a>';
-            			commentHtml += '</li>';
-            		});
-            		request.comments = comments;
+            		//Because of Polymer XSS security features, html cannot be databound to DOM elements (escaped or otherwise).
+            		//we'll need to append the whole list via DOM injection the first time, and set a handler for any new comments added (later)
             		customElem.request = request;
+            		customElem.request.comments = []
 
-					//Add comments and set handler for new comments
-            		customElem.$.request_comments_list.innerHTML = commentHtml;
-            		customElem.commentAddedHandler();
+            		//Add comments and set handler for new comments
+            		customElem.commentAddedHandler(request.id);
             	});
             },
 
