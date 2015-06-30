@@ -368,38 +368,51 @@
             		Materialize.toast('Comment Added', 4000);
             },
 
-            commentAddedHandler: function (requestKey) {
+            getLatestComment: function (requestKey) {
             	var customElem = this;
-            	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + requestKey + '/comments');
+            	var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey + '/comments');
 
-            	requestCommentRef.on('child_added', function (snapshot) {	//I LUV U Firebase :D
-            		var comment = snapshot.val();
-            		comment.id = snapshot.key();
-            		customElem.request.comments.push(comment);
-
+				//Get the latest comment added
+            	commentsRef.orderByPriority().limitToLast(1).once('value', function (childsnapshot) {
             		var commentHtml = '';
-            		commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
-            		commentHtml += '<i class="mdi-file-folder circle"></i>';
-            		commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
-            		commentHtml += '<div id="' + customElem.setCommentId(comment.id) + '" class="comment-placeholder" >' + comment.comment + '</div>';
-            		commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
-            		commentHtml += '</li>';
 
-            		//Add comments
-            		$(customElem.$.request_comments_list).append(commentHtml);
+            		var comments = _.map(childsnapshot.val(), function (comment, key) {
+            			comment.id = key;
+            			return comment;
+            		});
+
+            		if (comments !== null && comments !== undefined && comments.length > 0) {
+            			var comment = comments[0];
+
+            			commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
+            			commentHtml += '<i class="mdi-file-folder circle"></i>';
+            			commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
+            			commentHtml += '<div id="' + customElem.setCommentId(comment.id) + '" class="comment-placeholder" >' + comment.comment + '</div>';
+            			commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
+            			commentHtml += '</li>';
+
+            			$(customElem.$.request_comments_list).append(commentHtml);
+            		}
+            	});
+            },
+
+            goToList: function () {
+            	document.querySelector('app-router').go('/');
+            },
+
+            setCommentsHandler: function (requestRef) {
+            	//Handler for when request children change - for comments
+            	var customElem = this;
+            	requestRef.on('child_changed', function (childsnapshot, preChildKey) {
+            		if (childsnapshot.name() === 'comments') {
+            			customElem.getLatestComment(requestRef.key());
+            		}
             	});
             },
 
             setCommentId: function (id) {
             	return 'div_' + id;
             },
-
-            setComment: function (id, comments) {
-            	var divId = 'div_' + id;
-            	var div = this.$$(divId);
-            	var dav = div;
-            },
-
 
             convertDateToUtc: function (date) {
             	return Date.UTC(
@@ -413,8 +426,7 @@
             },
 
             formatDate: function (utc) {
-            	var date = new Date(utc);
-            	return date.toString('MMMM dd, yyyy h:mm tt');
+            	return window.lfg.utils.convertUtcToLocal(utc);
             },
 
             formatMicRequest: function (mic) {
@@ -466,18 +478,47 @@
             	var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey);
             	
             	requestRef.once('value', function (snapshot) {	//I LUV U Firebase :D. Data will be read once for initial request
+            		
+            		var comments = [];
             		var request = snapshot.val();
             		request.id = snapshot.key();
 
-            		//Because of Polymer XSS security features, html cannot be databound to DOM elements (escaped or otherwise).
-            		//we'll need to append the whole list via DOM injection the first time, and set a handler for any new comments added (later)
-            		customElem.request = request;
-            		customElem.request.comments = []
+            		comments = _.map(request.comments, function (comment, key) {
+            			comment.id = key;
+            			return comment;
+            		});
 
-            		//Add comments and set handler for new comments
-            		customElem.commentAddedHandler(request.id);
+            		customElem.request = request;
+            		customElem.request.comments = comments;
+
+            		if (customElem.request.comments.length > 0) {
+            			_.each(customElem.request.comments, function (comment) {
+            				var commentHtml = '';
+            				commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
+            				commentHtml += '<i class="mdi-file-folder circle"></i>';
+            				commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
+            				commentHtml += '<div id="' + customElem.setCommentId(key) + '" class="comment-placeholder" >' + comment.comment + '</div>';
+            				commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
+            				commentHtml += '</li>';
+
+            				//Add comments
+            				$(customElem.$.request_comments_list).append(commentHtml);
+            			});
+            		}
+            		else {
+            			var commentHtml = '';
+            			commentHtml += '<li class="collection-item avatar no-comments" style="padding-top: 20px; padding-bottom: 40px;">';
+            			commentHtml += '<h6>No comments posted yet</h6>';
+            			commentHtml += '</li>';
+
+            			$(customElem.$.request_comments_list).append(commentHtml);
+            		}
+            		
+            		//Set the request changed handler for any new comments
+            		customElem.setCommentsHandler(requestRef);
             	});
             },
+
 
             getRequestKey: function(){
             	//app-router doesn support Polymer 1.0. Get hash and requestkey manually

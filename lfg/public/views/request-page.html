@@ -405,8 +405,7 @@
             },
 
             formatDate: function (utc) {
-            	var date = new Date(utc);
-            	return date.toString('MMMM dd, yyyy h:mm tt');
+            	return window.lfg.utils.convertUtcToLocal(utc);
             },
 
             getRequests: function (query, querytype, paginate) {
