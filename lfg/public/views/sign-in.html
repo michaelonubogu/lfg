@@ -1,0 +1,92 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../components/bower_components/polymer/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/iron-form/iron-form.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/font-awesome.html">
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/materialize.html" />
+
+<dom-module id="sign-in">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+	</style>
+
+	<template>
+		
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+            is: 'sign-in',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                name: 'Sign In'
+            },
+
+        	/* Functions */
+
+
+			/* Init */
+            initializeData: function () {
+
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            },
+
+            registerEvents: function () {
+            	var polymer = this;
+            },
+
+            registerPlugins: function() {
+            },
+
+			/* Events */
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>

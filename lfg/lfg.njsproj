@@ -4126,6 +4126,7 @@
     <Content Include="public\views\new-request.html" />
     <Content Include="public\views\request-details.html" />
     <Content Include="public\views\request-page.html" />
+    <Content Include="public\views\sign-in.html" />
     <Content Include="README.md" />
     <Content Include="TODO.txt" />
   </ItemGroup>

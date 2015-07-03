@@ -46,6 +46,10 @@ html,body {
 	color: #ffffff;
 }
 
+.lfg-input .select-wrapper .caret {
+	color: #ffffff;
+}
+
 .lfg-input .select-wrapper .dropdown-content {
 	margin-left: 3rem;
 }

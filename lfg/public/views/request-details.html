@@ -348,6 +348,10 @@
             },
 
             addComment: function () {
+            	var customElem = this;
+            	var requestkey = customElem.request.id;
+            	var userkey = '';
+
             	var comment = CKEDITOR.instances.comment_editor.getData();
             	if (comment == null || comment == undefined || comment == '') {
             		//throw error
@@ -357,9 +361,10 @@
             	//Escape user input from ckEditor
             	comment = filterXSS(comment);
 
-            	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey + '/comments');
+            	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
             	var newCommentRef = requestCommentRef.push({
-            		userkey: '',
+            		requestkey: requestkey,
+            		userkey: userkey,
             		comment: comment,
             		created: this.convertDateToUtc(new Date.now())
             	});
@@ -368,22 +373,17 @@
             		Materialize.toast('Comment Added', 4000);
             },
 
-            getLatestComment: function (requestKey) {
+            getComments: function (requestkey) {
             	var customElem = this;
-            	var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey + '/comments');
+            	var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
 
-				//Get the latest comment added
-            	commentsRef.orderByPriority().limitToLast(1).once('value', function (childsnapshot) {
+            	//Get the latest comment added
+            	commentsRef.orderByChild('requestkey').equalTo(requestkey).on('child_added', function (childsnapshot) {
             		var commentHtml = '';
+            		var comment = childsnapshot.val();
+            		comment.id = childsnapshot.key();
 
-            		var comments = _.map(childsnapshot.val(), function (comment, key) {
-            			comment.id = key;
-            			return comment;
-            		});
-
-            		if (comments !== null && comments !== undefined && comments.length > 0) {
-            			var comment = comments[0];
-
+            		if (comment !== null && comment !== undefined) {
             			commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
             			commentHtml += '<i class="mdi-file-folder circle"></i>';
             			commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
@@ -398,16 +398,6 @@
 
             goToList: function () {
             	document.querySelector('app-router').go('/');
-            },
-
-            setCommentsHandler: function (requestRef) {
-            	//Handler for when request children change - for comments
-            	var customElem = this;
-            	requestRef.on('child_changed', function (childsnapshot, preChildKey) {
-            		if (childsnapshot.name() === 'comments') {
-            			customElem.getLatestComment(requestRef.key());
-            		}
-            	});
             },
 
             setCommentId: function (id) {
@@ -483,39 +473,10 @@
             		var request = snapshot.val();
             		request.id = snapshot.key();
 
-            		comments = _.map(request.comments, function (comment, key) {
-            			comment.id = key;
-            			return comment;
-            		});
-
             		customElem.request = request;
-            		customElem.request.comments = comments;
 
-            		if (customElem.request.comments.length > 0) {
-            			_.each(customElem.request.comments, function (comment) {
-            				var commentHtml = '';
-            				commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
-            				commentHtml += '<i class="mdi-file-folder circle"></i>';
-            				commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
-            				commentHtml += '<div id="' + customElem.setCommentId(key) + '" class="comment-placeholder" >' + comment.comment + '</div>';
-            				commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
-            				commentHtml += '</li>';
-
-            				//Add comments
-            				$(customElem.$.request_comments_list).append(commentHtml);
-            			});
-            		}
-            		else {
-            			var commentHtml = '';
-            			commentHtml += '<li class="collection-item avatar no-comments" style="padding-top: 20px; padding-bottom: 40px;">';
-            			commentHtml += '<h6>No comments posted yet</h6>';
-            			commentHtml += '</li>';
-
-            			$(customElem.$.request_comments_list).append(commentHtml);
-            		}
-            		
             		//Set the request changed handler for any new comments
-            		customElem.setCommentsHandler(requestRef);
+            		customElem.getComments(request.id);
             	});
             },
 
@@ -532,10 +493,6 @@
                 $.get(config.appUrl)
             },
 
-            insertCommentHtml: function(html){
-            },
-
-
             initializeData: function () {
             	this.getRequestKey();
             	this.request = {
@@ -551,7 +508,7 @@
             	CKEDITOR.replace('comment_editor', {
             		toolbarGroups: [
 						{ name: 'document', groups: ['mode', 'document'] },			// Displays document group with its two subgroups.
- 						{ name: 'clipboard', groups: ['clipboard', 'undo'] },			// Group's name will be used to create voice label.
+ 						{ name: 'clipboard', groups: ['clipboard', 'undo'] },		// Group's name will be used to create voice label.
  						{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
  						{ name: 'links' }
             		],
