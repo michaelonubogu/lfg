@@ -552,7 +552,7 @@
             		this.request.time.setDate(request_date.getDate());
 
             		var utcDate = this.convertDateToUtc(this.request.time);
-            		var createdUTC = this.convertDateToUtc(Date.now());
+            		var createdUTC = this.convertDateToUtc(new Date.now());
 
             		var requestsRef = this.firebaseRef.child('requests');
             		var newRequest = {
