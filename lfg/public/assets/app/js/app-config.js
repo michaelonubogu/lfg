@@ -17,7 +17,7 @@
 					platforms: 'api/giantbomb/platform',
 					search: 'api/giantbomb/search'
                 },
-                firebaseUrl: 'https://lfgbase.firebaseio.com/',
+				firebaseUrl: 'https://lfgbase.firebaseio.com/',
                 firebaseEntities: {
                     requests: 'requests',
                     games: 'games',

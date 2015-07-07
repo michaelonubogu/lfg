@@ -27,8 +27,9 @@
 
 <!-- Custom Imports -->
 <link rel="import" href="../imports/font-awesome.html">
-<link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/flaticons.html" />
 
 <dom-module id="sign-in">
 	<!-- CSS -->
@@ -37,10 +38,59 @@
 	<style>
 		:host {
 		}
+
+		.sign-in-flaticon-update {
+			font-size: 50px !important;
+			color: #ffffff;
+			margin-top: -15px;
+		}
+
+		.regular-text {
+			text-transform:none;
+		}
+
+		.sign-in-button {
+			width: 300px;
+		}
+		
 	</style>
 
 	<template>
-		
+		<div layout fit vertical center-center>
+			<div class="layout horizontal">
+				<h4 class="white-text thin">Sign in & Start Gaming with Gamers</h4>
+			</div>
+			<div layout horizontal>
+				<i class="flaticon-xbox12 sign-in-flaticon-update"></i>
+				<i class="flaticon-game27 sign-in-flaticon-update"></i>
+				<i class="flaticon-xbox19 sign-in-flaticon-update"></i>
+				<i class="flaticon-ps46 sign-in-flaticon-update"></i>
+				<i class="flaticon-wii14 sign-in-flaticon-update"></i>
+				<i class="flaticon-wii12 sign-in-flaticon-update"></i>
+				<i class="flaticon-monitor49 sign-in-flaticon-update"></i>
+			</div>
+			<br /><br />
+			<div>
+				<a class="waves-effect waves-light btn light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
+					<i class="fa fa-facebook left"></i>
+					Sign in with Facebook
+				</a>
+			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-purple btn light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
+					<i class="fa fa-twitter left"></i>
+					Sign in with Twitter
+				</a>
+			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-light btn red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
+					<i class="fa fa-google left"></i>
+					Sign in with Google
+				</a>
+			</div>
+		</div>
 	</template>
 </dom-module>
 
@@ -62,12 +112,28 @@
             },
 
         	/* Functions */
+            signInWithFacebook: function () {
+            	this.firebaseRef.authWithOAuthPopup('facebook', function (error, authData) {
+            		if (error) {
+            		}
+            		else {
+            			console.log("Authenticated Successfully with payload:", authData);
+            		}
+            	});
+            },
 
+            signInWithTwitter: function () {
+            	
+            },
+
+            signInWithGoogle: function () {
+            	
+            },
 
 			/* Init */
             initializeData: function () {
 
-            	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             },
 

@@ -399,8 +399,11 @@
             	var li = $(anchor).parent();
             	var giantbombid = $(li).data('resultId');
             	var game = $(anchor).html().toLowerCase();
+            	game = window.lfg.utils.clearWhiteSpace(game);
+
             	//polymer.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
-            	polymer.getRequests(giantbombid, this.querytype.byid, false);
+            	//polymer.getRequests(giantbombid, this.querytype.byid, false);
+            	polymer.getRequests(game, this.querytype.bygame, false);
             	e.preventDefault();
             },
 
