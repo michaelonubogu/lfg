@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../components/bower_components/polymer/layout.html">
+<link rel="import" href="../imports/layout.html">
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
@@ -27,6 +27,7 @@
 <link rel="import" href="../imports/font-awesome.html">
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
 
 <dom-module id="request-details">
 
@@ -94,8 +95,7 @@
 		}
 
 		.lfg-main-toolbar {
-			--paper-toolbar-background:
-			{
+			--paper-toolbar-background:{
 				background-color: transparent !important;
 			};
 		}
@@ -109,15 +109,13 @@
 		}
 
 		.lfg-main-header-panel {
-			--paper-header-panel-cover-container:
-			{
+			--paper-header-panel-cover-container:{
 				border: solid 1px #ffffff;
 			};
 		}
 
 		.lfg-paper-fab {
-			--paper-fab:
-			{
+			--paper-fab:{
 				position: fixed;
 				right: 0;
 				bottom: 0;
@@ -166,8 +164,7 @@
 			}
 
 			.lfg-paper-fab {
-				--paper-fab:
-				{
+				--paper-fab:{
 					position: fixed;
 					right: 0;
 					bottom: 0;
@@ -184,9 +181,10 @@
 		<paper-drawer-panel>
 			<paper-header-panel mode="seamed" drawer>
 				<paper-toolbar class="tall lfg-drawer-toolbar">
-
 				</paper-toolbar>
-				<div fit class="orange darken-3">Drawer Content</div>
+				<div fit class="orange darken-3">
+					<side-nav-contents></side-nav-contents>
+				</div>
 			</paper-header-panel>
 			<paper-header-panel mode="scroll" main class="lfg-main-header-panel">
 				<paper-toolbar class="tall lfg-main-toolbar">
@@ -350,27 +348,32 @@
             addComment: function () {
             	var customElem = this;
             	var requestkey = customElem.request.id;
-            	var userkey = '';
+            	var authData = sessionStorage.getItem('authData');
 
-            	var comment = CKEDITOR.instances.comment_editor.getData();
-            	if (comment == null || comment == undefined || comment == '') {
-            		//throw error
-            		return;
+            	if (authData !== null && authData !== undefined) {
+            		var comment = CKEDITOR.instances.comment_editor.getData();
+            		if (comment == null || comment == undefined || comment == '') {
+            			//throw error
+            			return;
+            		}
+
+            		//Escape user input from ckEditor
+            		comment = filterXSS(comment);
+
+            		var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
+            		var newCommentRef = requestCommentRef.push({
+            			requestkey: requestkey,
+            			uid: authData.uid,
+            			comment: comment,
+            			created: this.convertDateToUtc(new Date.now())
+            		});
+            		var key = newCommentRef.key();
+            		if (key !== null && key !== undefined && key !== '')
+            			Materialize.toast('Comment Added', 4000);
             	}
-
-            	//Escape user input from ckEditor
-            	comment = filterXSS(comment);
-
-            	var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
-            	var newCommentRef = requestCommentRef.push({
-            		requestkey: requestkey,
-            		userkey: userkey,
-            		comment: comment,
-            		created: this.convertDateToUtc(new Date.now())
-            	});
-            	var key = newCommentRef.key();
-            	if (key !== null && key !== undefined && key !== '')
-            		Materialize.toast('Comment Added', 4000);
+            	else {
+					//display error message
+            	}
             },
 
             getComments: function (requestkey) {
@@ -397,7 +400,7 @@
             },
 
             goToList: function () {
-            	document.querySelector('app-router').go('/');
+            	document.querySelector('app-router').go('/requests');
             },
 
             setCommentId: function (id) {

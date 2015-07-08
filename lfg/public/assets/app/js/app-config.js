@@ -85,7 +85,7 @@
 				convertUtcToLocal: function (utcDate) {
 					var date = new Date(utcDate);
 					date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-					return date.toString('MMMM dd, yyyy h:mm tt');
+					return date.toString('MMM dd, yyyy h:mm tt');
 				},
 				
 				clearWhiteSpace: function (str) {

@@ -2494,6 +2494,13 @@
     <Content Include="package.json" />
     <Content Include="public\assets\app\css\lfg.css" />
     <Content Include="public\assets\app\img\images.jpg" />
+    <Content Include="public\assets\app\img\profile_background1.png" />
+    <Content Include="public\assets\app\img\profile_background2.jpg" />
+    <Content Include="public\assets\app\img\profile_background3.png" />
+    <Content Include="public\assets\app\img\profile_background4.png" />
+    <Content Include="public\assets\app\img\profile_background5.jpg" />
+    <Content Include="public\assets\app\img\profile_background6.png" />
+    <Content Include="public\assets\app\img\profile_background7.png" />
     <Content Include="public\assets\flaticons\flaticon.css" />
     <Content Include="public\assets\flaticons\flaticon.eot" />
     <Content Include="public\assets\flaticons\flaticon.html" />
@@ -4029,7 +4036,6 @@
     <Content Include="public\components\bower_components\polymer\.bower.json" />
     <Content Include="public\components\bower_components\polymer\bower.json" />
     <Content Include="public\components\bower_components\polymer\build.log" />
-    <Content Include="public\components\bower_components\polymer\layout.html" />
     <Content Include="public\components\bower_components\polymer\LICENSE.txt" />
     <Content Include="public\components\bower_components\polymer\polymer-micro.html" />
     <Content Include="public\components\bower_components\polymer\polymer-mini.html" />
@@ -4118,9 +4124,13 @@
     <Content Include="public\components\d-calendar\README.md" />
     <Content Include="public\imports\flaticons.html" />
     <Content Include="public\imports\font-awesome.html" />
+    <Content Include="public\imports\layout.html" />
     <Content Include="public\imports\lfg-drawer.html" />
     <Content Include="public\imports\materialize.html" />
     <Content Include="public\imports\material_icons.html" />
+    <Content Include="public\imports\side-nav-contents.html" />
+    <Content Include="public\imports\side-nav-profile.html" />
+    <Content Include="public\imports\user-setup.html" />
     <Content Include="public\index.html" />
     <Content Include="public\views\landing-page.html" />
     <Content Include="public\views\new-request.html" />

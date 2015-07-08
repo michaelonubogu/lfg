@@ -6,7 +6,8 @@ ehthumbs.db
 Desktop.ini
 
 # Components folder
-lfg/public/components
+components
+
 .ntvs_analysis.dat
 .ntvs_analysis.dat.tmp
 node_modules

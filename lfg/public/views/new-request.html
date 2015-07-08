@@ -1,5 +1,5 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../components/bower_components/polymer/layout.html">
+<link rel="import" href="../imports/layout.html">
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
@@ -21,6 +21,7 @@
 <link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 <link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-button/paper-button.html">
 <link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
@@ -29,6 +30,7 @@
 <link rel="import" href="../imports/font-awesome.html">
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
 
 
 <dom-module id="new-request">
@@ -222,7 +224,9 @@
                 <paper-toolbar class="tall lfg-drawer-toolbar">
 
                 </paper-toolbar>
-                <div fit class="orange darken-3">Drawer Content</div>
+                <div fit class="orange darken-3">
+					<side-nav-contents></side-nav-contents>
+				</div>
             </paper-header-panel>
             <paper-header-panel mode="scroll" main class="lfg-main-header-panel">
                 <paper-toolbar class="tall lfg-main-toolbar">
@@ -233,7 +237,7 @@
                     <paper-icon-button icon="more-vert"></paper-icon-button>-->
                     <div class="middle">
                     </div>
-                    <div title class="bottom bottom-bar">
+                    <div class="title bottom">
                         <template is="dom-if" if="{{!saveSuccess}}">
 							<a href="/" class="logo-link">New Gaming Request</a>
 						</template>
@@ -409,7 +413,7 @@
             },
 
             goToList: function () {
-            	document.querySelector('app-router').go('/');
+            	document.querySelector('app-router').go('/requests');
             },
 
             initializeData: function () {
@@ -542,8 +546,9 @@
             	var time_date = $(this.$.request_time).timeEntry('getTime');
             	this.request.date = $(this.$.request_date).pickadate('picker').get('select', 'mm/dd/yyyy');
             	this.request.time = time_date !== null && time_date !== undefined && time_date !== '' ? time_date : null;
+            	var authData = sessionStorage.getItem('authData');
 
-            	if (this.validateGameRequest(this.request) !== false) {
+            	if (this.validateGameRequest(this.request) !== false && authData !== null && authData !== undefined) {
 
             		var request_date = Date.parse(this.request.date);
 
@@ -564,7 +569,8 @@
             			datetime: utcDate,
             			mic: this.request.mic,
             			description: this.request.description,
-            			created: createdUTC
+            			created: createdUTC,
+						uid: authData.uid
             		}
 
 					//custom index for searching & ordering games & giantbomb ids in lexicographical/chronologic order really just a hack

@@ -1,5 +1,5 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../components/bower_components/polymer/layout.html">
+<link rel="import" href="../imports/layout.html">
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
@@ -22,6 +22,7 @@
 <link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
 
 <!-- Google Custom Elements-->
 <link rel="import" href="../components/bower_components/firebase-element/firebase-collection.html">
@@ -30,6 +31,7 @@
 <link rel="import" href="../imports/materialize.html" />
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/flaticons.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
 
 <dom-module id="request-page">
     <!-- CSS -->
@@ -40,7 +42,8 @@
         }
 
 		.flaticon-update {
-			margin-top: -10px !important;
+			margin-top: 2px !important;
+			color: #424242;
 		}
 
 		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
@@ -74,11 +77,13 @@
             border-bottom: none;
             box-shadow: none;
         }
+
         /* valid color */
         input[type=text].request-page.valid {
             border-bottom: none !important;
             box-shadow: none !important;
         }
+
         /* invalid color */
         input[type=text].request-page.invalid {
             border-bottom: none;
@@ -90,7 +95,7 @@
 		}
 
 		.request-list-item-container {
-			padding: 10px 20px 10px 20px;
+			/*padding: 10px 20px 10px 20px;*/
 		}
 
         .lfg-main-toolbar{
@@ -100,7 +105,10 @@
         }
 
         .lfg-drawer-toolbar{
-            --paper-toolbar-background: #ef6c00;
+			--paper-toolbar:{
+				background: url('../assets/app/img/profile_background5.jpg');
+				background-size: 256px 192px;
+			};
         }
 
         #paper-header-panel{
@@ -121,7 +129,7 @@
                  margin-right: 5%;
                  margin-bottom: 3%;
              };
-            --paper-fab-background: #ffff00;
+            --paper-fab-background: #e65100;
         }
 
         .bottom-bar{
@@ -141,7 +149,7 @@
         }
 
 		.request-card-item {
-			min-height: 200px !important;
+			min-height: 150px !important;
 			border-bottom:1px solid #f9a825;
 		}
 
@@ -166,12 +174,12 @@
                      margin-right: 5%;
                      margin-bottom: 3.5%;
                  };
-                --paper-fab-background: #ffff00;
+                --paper-fab-background: #e65100;
             }
 
-		.flaticon-update {
-			margin-top: -13px !important;
-		}
+			.flaticon-update {
+				margin-top: 2px !important;
+			}
         }
     </style>
 
@@ -193,12 +201,26 @@
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="tall lfg-drawer-toolbar">
+					<img src="../assets/app/img/images.jpg" alt="" style="border:solid 1px #ffffff; margin-top:130px;" class="circle" width="64" height="64">
+					<div class="bottom white-text" style="font-size:1.05rem;">Rammone-X</div>
                 </paper-toolbar>
-                <div fit class="orange darken-3"></div>
+                <div fit class="orange darken-3">
+					<side-nav-contents></side-nav-contents>
+					<!--<div style="padding-top:20px; height:45vh; border-bottom:1px solid #f57f17;">
+						<paper-item><iron-icon icon="view-day"></iron-icon>Requests</paper-item>
+						<paper-item><iron-icon icon="star"></iron-icon>Games</paper-item>
+						<paper-item><iron-icon icon="event"></iron-icon>Schedule</paper-item>
+					</div>
+					<div style="padding-top:20px;">
+						<paper-item><iron-icon icon="build"></iron-icon>Settings</paper-item>
+						<paper-item><iron-icon icon="info"></iron-icon>About</paper-item>
+						<paper-item><iron-icon icon="arrow-back"></iron-icon>Sign Out</paper-item>
+					</div>-->
+				</div>
             </paper-header-panel>
             <paper-header-panel mode="waterfall-tall" main class="lfg-main-header-panel">
                 <paper-toolbar class="tall lfg-main-toolbar">
-                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
                     <div flex></div>
                     <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
@@ -213,23 +235,22 @@
 					</ul>
                     <div class="middle">
                     </div>
-                    <div title class="bottom bottom-bar">
-						Gaming Requests
-                    </div>
+                    <div  class="bottom title" style="font-size:1.25rem; margin-left:0px;">Gaming Requests</div>
                 </paper-toolbar>
 
                 <div class="grey lighten-3">
 					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
-							<!--<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
+							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
 								<i class="mdi-social-person circle"></i>
+								<i class$="[[item.sysicon]]"></i>
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
-								<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
+								<p class="grey-text truncate" style="font-size:0.8rem; margin-left:50px !important;">[[item.description]]</p>
 								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
-							</li>-->
+							</li>
 							<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
-							<div class="card-panel white request-list-item request-card-item" data-request-key$="[[item.key]]" on-click="loadRequest">
+							<!--<div class="card-panel white request-list-item request-card-item" data-request-key$="[[item.key]]" on-click="loadRequest">
 								<div class="row card-item">
 									<div class="col s12 m1"><img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid #ff9800;" class="circle" width="60" height="60"></div>
 									<div class="col s12 m9">
@@ -238,29 +259,22 @@
 												<div class="row">
 													<div class="s12 m1"><i class$="[[item.sysicon]]"></i></div>
 													<div class="s12 m11">
-														<h6 style="font-size:1.75rem;" class="orange-text text-darken-4">[[item.gametitle]]</h6>
+														<h6 style="font-size:1.35rem;" class="orange-text text-darken-4">[[item.gametitle]]</h6>
 													</div>
 												</div>
 											</div>
-											<div class="col s12" style="margin-top:-30px;"><p style="font-size:1.25rem;">[[item.title]]</p></div>
-											<div class="col s12" style="margin-top:-15px;"><p class="grey-text">[[item.description]]</p></div>
+											<div class="col s12" style="margin-top:-30px;"><p style="font-size:1.05rem;">[[item.title]]</p></div>
+											<div class="col s12" style="margin-top:-15px;"><p class="grey-text" style="font-size:0.85rem;">[[item.description]]</p></div>
 										</div>
 									</div>
 									<div class="col s12 m2">
 										<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
 									</div>
 								</div>
-								<!--<span class="white-text">
-									
-									<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
-									<p style="font-size:0.875rem;">[[item.title]]</p>
-									<p class="grey-text truncate" style="font-size:0.8rem;">[[item.description]]</p>
-									<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
-								</span>-->
-							</div>
+							</div>-->
 						</template>
 					</ul>
-                    <paper-fab icon="add" class="lfg-paper-fab orange-text text-darken-4" on-click="newRequest"></paper-fab>
+                    <paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
@@ -581,8 +595,9 @@
 
             loadRequest: function (e) {
             	var listelem = e.target;
-            	if (listelem.className.indexOf('request-card-item') === -1) {
-            		listelem = $(listelem).parents('.request-card-item')[0];
+            	if (listelem.className.indexOf('request-card-item') === -1 && listelem.className.indexOf('request-list-item') === -1) {
+            		var elem = $(listelem).parents('.request-card-item')[0];
+            		listelem = elem === null || elem === undefined ? $(listelem).parents('.request-list-item')[0] : elem;
             	}
 
             	var requestkey = listelem.dataset.requestKey;
