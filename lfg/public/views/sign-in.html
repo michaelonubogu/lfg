@@ -184,10 +184,9 @@
 
 						//redirect to user setup page
 						if (user === null || user === undefined) {
+							document.querySelector('app-router').go('/setup');
 						}
 						else {
-							//put user in sessionStorage
-							//TODO...
 							document.querySelector('app-router').go('/requests');
 						}
 					});

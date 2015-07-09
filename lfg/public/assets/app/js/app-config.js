@@ -71,6 +71,15 @@
 					{ char: '9', value : 'a' },
 				],
 				
+				checkEmail: function (email) {
+					var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+					
+					if (!filter.test(email.value)) {
+						return false;
+					}
+					return true;
+				},
+				
 				convertDateToUtc: function (date) {
 					return Date.UTC(
 						date.getFullYear(),

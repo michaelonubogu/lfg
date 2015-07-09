@@ -45,6 +45,7 @@
     <Compile Include="public\assets\app\js\jquery.plugin.min.js" />
     <Compile Include="public\assets\app\js\jquery.timeentry.js" />
     <Compile Include="public\assets\app\js\modernizr.custom.52158.js" />
+    <Compile Include="public\assets\app\js\sha256-min.js" />
     <Compile Include="public\assets\app\js\underscore-min.js" />
     <Compile Include="public\assets\app\js\window.resizeStop.js" />
     <Compile Include="public\assets\materialize\js\materialize.js" />
@@ -2494,6 +2495,7 @@
     <Content Include="package.json" />
     <Content Include="public\assets\app\css\lfg.css" />
     <Content Include="public\assets\app\img\images.jpg" />
+    <Content Include="public\assets\app\img\profile-photo-placeholder.png" />
     <Content Include="public\assets\app\img\profile_background1.png" />
     <Content Include="public\assets\app\img\profile_background2.jpg" />
     <Content Include="public\assets\app\img\profile_background3.png" />
@@ -4122,6 +4124,7 @@
     <Content Include="public\components\d-calendar\demo.html" />
     <Content Include="public\components\d-calendar\index.html" />
     <Content Include="public\components\d-calendar\README.md" />
+    <Content Include="public\imports\crypto-js.html" />
     <Content Include="public\imports\flaticons.html" />
     <Content Include="public\imports\font-awesome.html" />
     <Content Include="public\imports\layout.html" />
@@ -4130,7 +4133,7 @@
     <Content Include="public\imports\material_icons.html" />
     <Content Include="public\imports\side-nav-contents.html" />
     <Content Include="public\imports\side-nav-profile.html" />
-    <Content Include="public\imports\user-setup.html" />
+    <Content Include="public\views\user-setup.html" />
     <Content Include="public\index.html" />
     <Content Include="public\views\landing-page.html" />
     <Content Include="public\views\new-request.html" />
