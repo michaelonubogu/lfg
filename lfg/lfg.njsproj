@@ -2494,7 +2494,31 @@
     <Compile Include="routes\api.js" />
     <Content Include="package.json" />
     <Content Include="public\assets\app\css\lfg.css" />
+    <Content Include="public\assets\app\img\1662530.jpg" />
+    <Content Include="public\assets\app\img\1792822.png" />
+    <Content Include="public\assets\app\img\2.jpg" />
+    <Content Include="public\assets\app\img\23194-polygon-deer-at-the-forest-pond-1920x1080-vector-wallpaper.jpg" />
+    <Content Include="public\assets\app\img\23195-polygon-fjord-1920x1080-vector-wallpaper.jpg" />
+    <Content Include="public\assets\app\img\44d2642ca5525173cd00b0432688d76f.jpg" />
+    <Content Include="public\assets\app\img\abstract-polygon-processing-mountain-colored-background-hd-wallpaper.jpg" />
+    <Content Include="public\assets\app\img\alpine-landscape-vector-hd-wallpaper-1920x1080-9824.jpg" />
+    <Content Include="public\assets\app\img\Android-Lollipop-wallpapers-Google-Now-Wallpaper-2.png" />
+    <Content Include="public\assets\app\img\Android-Lollipop-wallpapers-p.png" />
+    <Content Include="public\assets\app\img\big_4ab3990f5d3c7940e6f14cd2ff96c76178d5e56e.png" />
+    <Content Include="public\assets\app\img\forest-patrol.jpg" />
+    <Content Include="public\assets\app\img\FW91PiS.jpg" />
+    <Content Include="public\assets\app\img\Google IO Plane Design_HD.jpg" />
+    <Content Include="public\assets\app\img\gtxpxkC.jpg" />
     <Content Include="public\assets\app\img\images.jpg" />
+    <Content Include="public\assets\app\img\Lowpoly_Landscape.jpg" />
+    <Content Include="public\assets\app\img\ocean-wave-vector-hd-wallpaper-1920x1200-9828.jpg" />
+    <Content Include="public\assets\app\img\polygon-mountain-range-26676-2880x1800.jpg" />
+    <Content Include="public\assets\app\img\Polygon-Mountain-Wallpaper-poly-polygon-HD-wallpapers-backgrounds-image-wide-new-tablet-smart-phone-pc-laptop-2013-2014-2015-201672.jpg" />
+    <Content Include="public\assets\app\img\polygon-wallpaper-22.jpg" />
+    <Content Include="public\assets\app\img\polygon-wallpaper-2560x1440-3d-cube-green-orange-blue-246.jpg" />
+    <Content Include="public\assets\app\img\polygon-waterfall-abstract-hd-wallpaper-2560x1440-4455.jpg" />
+    <Content Include="public\assets\app\img\PolyPlanet1920.jpg" />
+    <Content Include="public\assets\app\img\profile-photo-placeholder.jpg" />
     <Content Include="public\assets\app\img\profile-photo-placeholder.png" />
     <Content Include="public\assets\app\img\profile_background1.png" />
     <Content Include="public\assets\app\img\profile_background2.jpg" />
@@ -2503,6 +2527,8 @@
     <Content Include="public\assets\app\img\profile_background5.jpg" />
     <Content Include="public\assets\app\img\profile_background6.png" />
     <Content Include="public\assets\app\img\profile_background7.png" />
+    <Content Include="public\assets\app\img\sharp-blob-640x400.jpg" />
+    <Content Include="public\assets\app\img\the_red_mountains_by_toilettenmassaker-d6dux3c.png" />
     <Content Include="public\assets\flaticons\flaticon.css" />
     <Content Include="public\assets\flaticons\flaticon.eot" />
     <Content Include="public\assets\flaticons\flaticon.html" />
@@ -4145,6 +4171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="public\assets\app\img\" />
     <Folder Include="public\assets\flaticons\" />
     <Folder Include="public\assets\font-awesome\" />
     <Folder Include="public\assets\font-awesome\css\" />
@@ -4440,7 +4467,6 @@
     <Folder Include="public\assets\" />
     <Folder Include="public\assets\app\" />
     <Folder Include="public\assets\app\css\" />
-    <Folder Include="public\assets\app\img\" />
     <Folder Include="public\assets\app\js\" />
     <Folder Include="public\assets\materialize\" />
     <Folder Include="public\assets\materialize\css\" />

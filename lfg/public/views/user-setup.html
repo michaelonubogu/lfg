@@ -39,10 +39,31 @@
 
 	<style>
 		:host {
+			
+		}
+
+		.profile-background {
+			background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');
+			background-size:cover;
+			border-bottom:solid 1px #ffee58;
+		}
+
+		.profile-overlay{  
+			background:rgba(0,0,0,.5);
+            text-align:center;
+            padding:45px 0 66px 0;
+            opacity:0;
+            -webkit-transition: opacity .25s ease;
+			-moz-transition: opacity .25s ease;
+			 opacity:1;
+			 height: 100%;
+			 width: 100%;
 		}
 
 		.content-area{
-			margin-top:3%;
+			/*margin-top:3%;*/
+			padding:0 3% 0 3%;
             background-color:#fb8c00;
         }
 
@@ -64,76 +85,75 @@
 			width: 300px;
 		}
 		.lfg-input{
-            color: #ffeb3b !important;
-
+            color: #e65100 !important;
         }
 
 		.lfg-input.input-field textarea {
-			border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
 		}
 
 		.lfg-input.input-field textarea:focus {
-			border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
 		}
 
         /* label color */
         .lfg-input.input-field label {
-            color: #ffffff;
+            color: #e65100;
         }
 
         .lfg-input.input-field input[type=text]{
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
             font-size: 1.5rem;
         }
 
 		.lfg-input.input-field input[type=email]{
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
             font-size: 1.5rem;
         }
 
         /* label focus color */
         .lfg-input.input-field input[type=text]:focus + label {
-            color: #ffeb3b;
+            color: #e65100;
         }
 
 		.lfg-input.input-field input[type=email]:focus + label {
-            color: #ffeb3b;
+            color: #e65100;
         }
 
         /* label underline focus color */
         .lfg-input.input-field input[type=text]:focus {
-            border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
 
 		.lfg-input.input-field input[type=email]:focus {
-            border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
         /* valid color */
         .lfg-input.input-field input[type=text].valid {
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
 
 		.lfg-input.input-field input[type=email].valid {
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
 
         /* invalid color */
         .lfg-input.input-field input[type=text].invalid {
-            border-bottom: 1px solid #f44336 !important;
-            box-shadow: 0 1px 0 0 #f44336 !important;
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
         }
 
 		.lfg-input.input-field input[type=email].invalid {
-            border-bottom: 1px solid #f44336 !important;
-            box-shadow: 0 1px 0 0 #f44336 !important;
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
         }
 
 		.lfg-input .select-wrapper input.select-dropdown .invalid {
@@ -143,37 +163,122 @@
 
         /* Icon prefix */
         .lfg-input.input-field .prefix {
-            color: #ffffff;
+            color: #e65100;
         }
 
         /* icon prefix focus color */
         .lfg-input.input-field .prefix.active {
-            color: #ffeb3b;
+            color: #e65100;
         }
 
 		.lfg-input .select-wrapper input.select-dropdown{
 			border-bottom: 1px solid #ffffff;
             box-shadow: 0 1px 0 0 #ffffff;
 		}
+
+		.requests-card-panel{
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius:0px;
+            padding:0px;
+			margin-top:40px;
+        }
+
+		.collection-modified li {
+			padding-left: 20px !important;
+		}
+
+		.collection-modified li i {
+			font-size:3rem;
+			color:#e65100;
+			margin-top: 15px;
+		}
+
+		.wizard-header {
+			text-shadow: 0px 2px 2px #8c9eff;
+		}
+
+		.wizard-input.row {
+			margin-bottom: 0 !important;
+			margin-top: 0 !important;
+			line-height: 1;
+		}
+
 	</style>
 
 	<template>
-		<div fit class="container content-area">
-			<br>
-			<form id="new_request_form" class="col s12">
+		<div class="profile-background" layout vertical center style="height:60vh;">
+			<div class="profile-overlay">
+				<div layout horizontal center-justified style="opacity:1.0 !important; z-index:1000;">
+					<div layout no-wrap style="visibility:hidden;">
+						<a class="btn-flat white-text">
+							<i class="material-icons white-text left">arrow_back</i>
+							Back
+						</a>
+					</div>
+					<div flex></div>
+					<div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Enter your Username & Email, and upload a profile picture</h6></div>
+					<div flex></div>
+					<div layout no-wrap>
+						<a class="btn-flat white-text waves-effect waves-light thin">
+							<i class="material-icons white-text right thin">arrow_forward</i>
+							Next
+						</a>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 50px; opacity:1.0 !important; z-index:1000;">
+					<div class="col s12 center center-aligned">
+						<img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:125px; width:125px;">
+					</div>
+					<div class="col s12 center" style="margin-top:-10px;">
+						<h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
+					</div>
+					
+					<div class="lfg-input input-field col s12 center" layout center style="margin-top:40px;">
+						<div class="file-field" layout horizontal center-center>
+							<div class="btn center center-aligned orange darken-4">
+								<span><i class="material-icons left">backup</i> Upload your Pic</span>
+								<input id="file_upload" type="file" accept="image/*" capture="camera" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container content-area">
+			<div class="card-panel requests-card-panel">
+				<ul class="collection collection-modified">
+					<li class="collection-item avatar">
+						<div class="wizard-input row">
+							<div class="col s2"><i class="material-icons prefix">account_circle</i></div>
+							<div class="lfg-input input-field col s10">
+								<input id="username" placeholder="Username" type="text" class="validate" on-keyup="changeUsername" />
+							</div>
+						</div>
+					</li>
+					<li class="collection-item avatar">
+						<div class="row">
+							<div class="col s2"><i class="material-icons prefix">email</i></div>
+							<div class="lfg-input input-field col s10">
+								<input id="email" placeholder="Email (No spam! We promise)" type="text" class="validate" value="{{user.email}}" />
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<!--<form id="new_request_form" class="col s12">
 				<div class="row">
 					<div class="lfg-input input-field col s12">
-						<i class="material-icons prefix">account_circle</i>
 						<input id="username" type="text" class="validate" on-keyup="changeUsername" />
-						<label for="username">What should we call you?</label>
+						<label for="username">Username</label>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="lfg-input input-field col s12">
-						<i class="material-icons prefix">email</i>
-						<input id="email" type="email" class="validate" value="{{user.email}}"/>
-						<label for="email">What's your email? We promise, we won't spam your inbox</label>
+						<input id="email" type="text" class="validate" value="{{user.email}}"/>
+						<label for="email">Email (We promise, we won't spam your inbox)</label>
 					</div>
 				</div>
 				<br />
@@ -190,15 +295,6 @@
 						</div>
 					</div>
 				</div>
-				<br /><br />
-				<div class="row">
-					<div class="col s12 center center-aligned">
-						<img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.png" alt="" class="circle responsive-img"  style="border:solid 2px #ffffff; height:125px; width:125px;">
-					</div>
-					<div class="col s12 center">
-						<h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
-					</div>
-				</div>
 				<br />
 				<div class="row">
 					<div class="col s12"  layout horizontal center-center>
@@ -208,7 +304,7 @@
 						</a>
 					</div>
 				</div>
-			</form>
+			</form>-->
 		</div>
 	</template>
 </dom-module>
@@ -252,7 +348,7 @@
             initializeData: function () {
 
             	this.user = {
-            		username: "What we'll call you",
+            		username: "(What we'll call you)",
             		email: ''
             	};
 
@@ -262,6 +358,7 @@
 
             registerEvents: function () {
             	document.getElementById("file_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
+            	$(this.$.username).focus();
             },
 
             registerPlugins: function() {
