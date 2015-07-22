@@ -282,7 +282,7 @@
 								<div class="wizard-input row">
 									<div class="col s2"><i class="material-icons prefix">account_circle</i></div>
 									<div class="lfg-input input-field col s10">
-										<input id="username" placeholder="Username" type="text" class="validate" on-keyup="changeUsername" />
+										<input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keyup="changeUsername" />
 									</div>
 								</div>
 							</li>
@@ -290,7 +290,7 @@
 								<div class="row">
 									<div class="col s2"><i class="material-icons prefix">email</i></div>
 									<div class="lfg-input input-field col s10">
-										<input id="email" placeholder="Email" type="text" class="validate" value="{{user.email}}" />
+										<input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" />
 									</div>
 								</div>
 							</li>
@@ -329,7 +329,7 @@
 									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">Oceunmoon</h4></div>
 								</div>
 								<div layout horizontal style="margin-top:5%;">
-									<div><iron-icon class="" src="../assets/app/img/steam.svg" style="width:128px; height:128px;"></iron-icon></div>
+									<div><iron-icon class="" src="../assets/app/img/steam.svg" style="width:128px; height:128px;" on-click="startSteamVerify"></iron-icon></div>
 									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">rammone4</h4></div>
 								</div>
 							</div>
@@ -369,6 +369,24 @@
             	}
             },
 
+            getSteamAuthUrl: function () {
+            	//alert('event triggered');
+            	var url = window.lfg.config.getSteamVerifyUrl();
+
+            	$.ajax({
+            		url: url,
+            		type: 'GET',
+            		cache: false,
+            		dataType: 'json',
+            		success: function (data) {
+            			
+            		},
+            		error: function (err) {
+            			alert('Login through Steam is temporarily unavailable');
+            		}
+            	});
+            },
+
             validateInput: function (userdata) {
             	var valid = true;
 
@@ -388,6 +406,8 @@
 
 			/* Init */
             initializeData: function () {
+            	this.getSteamAuthUrl();		//Get the Steam Authentication Url
+
             	this.selected = 0;
             	this.user = {
             		username: "(What we'll call you)",

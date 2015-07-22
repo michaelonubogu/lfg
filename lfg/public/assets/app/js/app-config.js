@@ -15,7 +15,8 @@
                     games: 'api/giantbomb/games',
                     game: 'api/giantbomb/game',
 					platforms: 'api/giantbomb/platform',
-					search: 'api/giantbomb/search'
+					search: 'api/giantbomb/search',
+					steamlogin: 'api/steam/authenticate'
                 },
 				firebaseUrl: 'https://lfgbase.firebaseio.com/',
                 firebaseEntities: {
@@ -46,6 +47,10 @@
 							return this.appUrl + this.apiEndPoints.search;
 							break;
                     }
+				},
+
+				getSteamVerifyUrl: function () {
+					return this.appUrl + this.apiEndPoints.steamlogin;
 				}
 			};
 			

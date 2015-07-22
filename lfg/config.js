@@ -34,5 +34,13 @@ module.exports = {
 	"facebook" : {
 		"appid" : "857142311041951",
 		"appsecret" : "0de76eaa87e8118ce44d0f34f060ca45"
+	},
+	"steam" : {
+		"api_url" : 'http://api.steampowered.com/<interface_name>/<method_name>/<version>/?key=<api_key>&format=<format>',
+		"api_key" : '4B152814751E25D21F710569111A99BE',
+		"provider" : 'http://steamcommunity.com/openid'
+	},
+	"firebase" : {
+		"url" : 'https://lfgbase.firebaseio.com/',
 	}
 }
