@@ -5,6 +5,22 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var config = require('./config');
+
+var domain = 'localhost';
+
+switch (config.appsettings.env) {
+
+	case 'test':
+		domain = 'localhost';
+		break;
+
+	case 'prod':
+		domain = '';
+		break;
+}
+
+process.env.HOST = domain;
 var routes = require('./routes/api');
 
 var app = express();
@@ -60,6 +76,5 @@ app.use(function (err, req, res, next) {
 app.get('*', function (req, res) {
 	res.sendFile('/index.html');
 });
-
 
 module.exports = app;

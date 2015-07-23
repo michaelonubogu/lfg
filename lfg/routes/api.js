@@ -1,7 +1,10 @@
 ﻿var express = require('express');
+var http = require('http');
 var giantbomb = require('../giantbomb');
-var config = require('../config');
 var openid = require('openid');
+var faye = require('faye');
+var config = require('../config');
+
 
 var app = express();
 var router = express.Router();
@@ -10,8 +13,15 @@ var port = process.env.PORT || 1337;
 
 var origin = 'http://' + host + ':' + port;
 
+var server = http.createServer();
+var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
+console.log('Firing up faye server. . . ');
+faye_server.attach(server);
+server.listen(8089);
+
+
 var relyingParty = new openid.RelyingParty(
-							origin + '/steam/authenticate/verify', // Verification URL (yours)
+							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
 							origin, // Realm (optional, specifies realm for OpenID authentication)
 							true, // Use stateless verification
 							false, // Strict mode
@@ -44,10 +54,11 @@ router.get('/steam/authenticate', function (req, res) {
 
 router.get('/steam/authenticate/verify', function (req, res) {
 	relyingParty.verifyAssertion(req, function (error, result) {
-		res.writeHead(200);
-		res.end(!error && result.authenticated 
-                  ? 'Success :)'
-                  : 'Failure :(');
+		faye_server.getClient().publish('/steamSuccess', 
+		{
+			pageName: 'sign-in.html',
+			steamIdUrl: result.claimedIdentifier,
+		});
 	});
 });
 

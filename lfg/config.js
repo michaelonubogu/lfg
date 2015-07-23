@@ -1,7 +1,16 @@
 /**
  * Created by Namdascious on 6/4/2015.
  */
+var env = {
+	dev: 'dev',
+	test: 'test',
+	prod: 'prod'
+};
+
 module.exports = {
+	"appsettings" : {
+		"env" : env.dev
+	},
     "giant_bomb": {
         "url" : "http://www.giantbomb.com/api/",
         "key" : "9caedc058d2f9553e2de63e66dde3d81df03d6d0",

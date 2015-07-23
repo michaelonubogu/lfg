@@ -369,24 +369,6 @@
             	}
             },
 
-            getSteamAuthUrl: function () {
-            	//alert('event triggered');
-            	var url = window.lfg.config.getSteamVerifyUrl();
-
-            	$.ajax({
-            		url: url,
-            		type: 'GET',
-            		cache: false,
-            		dataType: 'json',
-            		success: function (data) {
-            			
-            		},
-            		error: function (err) {
-            			alert('Login through Steam is temporarily unavailable');
-            		}
-            	});
-            },
-
             validateInput: function (userdata) {
             	var valid = true;
 

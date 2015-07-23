@@ -31,6 +31,8 @@
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/flaticons.html" />
 
+<script type="text/javascript" src="http://localhost:8089/faye/client.js"></script>
+
 <dom-module id="sign-in">
 	<!-- CSS -->
 	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
@@ -90,6 +92,13 @@
 					Sign in with Google
 				</a>
 			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-light btn light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
+					<i class="fa fa-steam-square left"></i>
+					Sign in with Steam
+				</a>
+			</div>
 		</div>
 
 		<div id="loginerror" class="modal">
@@ -119,6 +128,26 @@
             },
 
         	/* Functions */
+            getSteamAuthUrl: function () {
+            	var customElem = this;
+            	var url = window.lfg.config.getSteamVerifyUrl();
+
+            	$.ajax({
+            		url: url,
+            		type: 'GET',
+            		cache: false,
+            		dataType: 'json',
+            		success: function (data) {
+            			if (data !== null && data !== undefined && data.url != null && data.url !== undefined && data.url !== '') {
+            				customElem.steamAuthUrl = data.url;
+            			}
+            		},
+            		error: function (err) {
+            			alert('Login through Steam is temporarily unavailable');
+            		}
+            	});
+            },
+
             signInWithFacebook: function () {
             	var currElem = this;
             	this.firebaseRef.authWithOAuthPopup('facebook', function (error, authData) {
@@ -170,7 +199,16 @@
             	});
             },
 
-            signInWithEmail: function(){
+            signInWithSteam: function () {
+            	if (this.steamAuthUrl !== null && this.steamAuthUrl !== undefined && this.steamAuthUrl !== '') {
+            		this.steamWindow = window.open(
+								  this.steamAuthUrl,
+								  '_blank' // <- This is what makes it open in a new window.
+							   );
+            	}
+            	else {
+            		alert('Authentication via Steam is not working at the moment! Sorry...');
+            	}
             },
 
             startIntroProcess: function (authData) {
@@ -194,8 +232,22 @@
 
 			/* Init */
             initializeData: function () {
+				var customElem = this
+            	this.steamAuthUrl = '';
+            	this.getSteamAuthUrl();
+
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	var faye_client = new Faye.Client('http://localhost:8089/faye');
+            	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
+            		alert(message.steamIdUrl);
+            		if (customElem.steamWindow != null && customElem.steamWindow != undefined) {
+            			customElem.steamWindow.close();
+            			//TODO: process steam url claimedId
+						//...
+            		}
+            	});
             },
 
             registerEvents: function () {
