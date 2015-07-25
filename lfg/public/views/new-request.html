@@ -546,7 +546,13 @@
             	var time_date = $(this.$.request_time).timeEntry('getTime');
             	this.request.date = $(this.$.request_date).pickadate('picker').get('select', 'mm/dd/yyyy');
             	this.request.time = time_date !== null && time_date !== undefined && time_date !== '' ? time_date : null;
-            	var authData = sessionStorage.getItem('authData');
+            	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var authData = JSON.parse(authJSON);
+
+            	if (authData == null || authData == undefined) {
+            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		authData = JSON.parse(localJSON);
+            	}
 
             	if (this.validateGameRequest(this.request) !== false && authData !== null && authData !== undefined) {
 

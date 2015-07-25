@@ -24,7 +24,7 @@
                     games: 'games',
                     users: 'users'
                 },
-
+				firebaseCacheKey: 'firebase:session::lfgbase',
 				getFirebaseUrl: function () {
 					return this.firebaseUrl;
 				},

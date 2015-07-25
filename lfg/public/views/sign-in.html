@@ -54,6 +54,11 @@
 		.sign-in-button {
 			width: 300px;
 		}
+
+		[type="checkbox"].filled-in:checked + label:after {
+			border: 2px solid #e65100;
+			background-color: #e65100;
+		}
 		
 	</style>
 
@@ -64,8 +69,8 @@
 			</div>
 			<div layout horizontal>
 				<i class="flaticon-xbox12 sign-in-flaticon-update"></i>
-				<i class="flaticon-game27 sign-in-flaticon-update"></i>
 				<i class="flaticon-xbox19 sign-in-flaticon-update"></i>
+				<i class="flaticon-game27 sign-in-flaticon-update"></i>
 				<i class="flaticon-ps46 sign-in-flaticon-update"></i>
 				<i class="flaticon-wii14 sign-in-flaticon-update"></i>
 				<i class="flaticon-wii12 sign-in-flaticon-update"></i>
@@ -99,6 +104,17 @@
 					Sign in with Steam
 				</a>
 			</div>
+			<br />
+			<div>
+				<p>
+					<input type="checkbox" id="keep_signed" class="filled-in" checked="{{login.keepsignin}}" />
+					<label for="keep_signed" class="white-text">Keep me logged in</label>
+				</p>
+			</div>
+			<br />
+			<div>
+				<p class="white-text">By signing in to GWG, you agree to our <a href="#termsagree" class="yellow-text text-accent-2 modal-trigger" style="cursor:pointer;">Terms & Data Policy</a></p>
+			</div>
 		</div>
 
 		<div id="loginerror" class="modal">
@@ -106,6 +122,29 @@
 				<i class="material-icons medium grey-text text-darken-2">mood_bad</i>
 				<p style="font-size:1.15rem;">Oh Noez!!! We had a little trouble signing you in. Don't panic, try to sign-in again. If that doesn't work then, erm....oh, try petting a porcupine! That'll do it for sure...ok, ok don't do that. Open a trouble ticket <a style="cursor:pointer;">here</a></p>
 			</div>
+		</div>
+
+		<div id="termsagree" class="modal">
+			<div class="modal-content orange-text text-darken-4">
+				<p>
+					Lorem ipsum dolor sit amet, eu dicit gubergren liberavisse eam, lorem solet nonumes id vis, simul accusamus ex pri. Te dicunt impedit eam, eam maiorum mnesarchum efficiendi ad, cum an veri omittantur theophrastus. Has ea invenire torquatos. In reque tibique fierent est, vis ei adhuc simul vivendo, at quo enim iusto inciderint.
+				</p>
+				<p>
+					Iisque scaevola ius cu, pri fierent facilisi ad. Pro ne alterum fabulas, per ad quidam commodo moderatius. Vim ut nulla delicata, ei atqui persecuti has. Ius ei nominavi persecuti
+				</p>
+				<p>
+					Malorum legendos ea his. Est an prompta praesent definitionem. An sea cibo velit atomorum, ea cum erroribus torquatos. Ex sanctus appetere mediocritatem sed, quo ut possim adolescens vituperata, quo an homero feugiat. Dicant commodo voluptua te vim, te sea iudicabit abhorreant, pro ex ullamcorper vituperatoribus.
+				</p>
+				<p>
+					Ea vis iriure virtute. Pro at nibh augue, postea malorum et cum. Nisl atomorum ad mel. No posse labores sed.
+				</p>
+				<p>
+					Eu cetero laoreet incorrupte has, dolore detracto usu et. Cu his zril aliquando, te sea minimum voluptua. Ius atqui accusata ei, vix reque putant officiis ex. Usu debet dictas ut.
+				</p>
+			</div>
+		</div>
+		<div id="signin_overlay" class="layout fit" style="background-color:#FB8C00; z-index:1000;">
+
 		</div>
 	</template>
 </dom-module>
@@ -128,6 +167,36 @@
             },
 
         	/* Functions */
+            authomaticSignin: function () {
+            	//Checks sessionStorage, and then localStorage for an authData object, and if one exists, 
+            	//signs the user in automatically. Called in 'created' lifecycle event
+            	var sessionJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var sessionAuth = JSON.parse(sessionJSON);
+            	if (sessionAuth !== null && sessionAuth !== undefined && sessionAuth.uid !== null && sessionAuth.uid !== undefined && sessionAuth.uid !== '') {
+            		this.startIntroProcess(sessionAuth);
+            	}
+
+            	var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var localAuth = JSON.parse(localJSON);
+            	if (localAuth !== null && localAuth !== undefined && localAuth.uid !== null && localAuth.uid !== undefined && localAuth.uid !== '') {
+            		this.cacheLoginCredentials(localAuth);		//Have the authData stored in session
+            		this.startIntroProcess(localAuth);
+            	}
+
+				//if we reach here, sign in page should just load normally...
+            },
+
+            cacheLoginCredentials: function (authData) {
+            	sessionStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
+
+            	if (this.login.keepsignin) {
+            		var authData = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		if (authData == null || authData == undefined) {
+            			localStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
+            		}
+            	}
+            },
+
             getSteamAuthUrl: function () {
             	var customElem = this;
             	var url = window.lfg.config.getSteamVerifyUrl();
@@ -156,7 +225,7 @@
             			$(currElem.$.loginerror).openModal();
             		}
             		else {
-            			sessionStorage.setItem('authData', authData);
+            			currElem.cacheLoginCredentials(authData);
             			console.log("Authenticated Successfully via facebook with payload:", authData);
 
             			//Check to see if it's user's first time. If it is, create user object in db for them and display 
@@ -175,7 +244,7 @@
             			$(currElem.$.loginerror).openModal();
             		}
             		else {
-            			sessionStorage.setItem('authData', authData);
+            			currElem.cacheLoginCredentials(authData);
             			console.log("Authenticated Successfully via twitter with payload:", authData);
 
             			currElem.startIntroProcess(authData);
@@ -192,7 +261,7 @@
             			$(currElem.$.loginerror).openModal();
             		}
             		else {
-            			sessionStorage.setItem('authData', authData);
+            			currElem.cacheLoginCredentials(authData);
             			console.log("Authenticated Successfully via google with payload:", authData);
             			currElem.startIntroProcess(authData);
             		}
@@ -200,6 +269,7 @@
             },
 
             signInWithSteam: function () {
+				//See the callback from the Faye client for the second part of Steam signin. It's in the "init" function
             	if (this.steamAuthUrl !== null && this.steamAuthUrl !== undefined && this.steamAuthUrl !== '') {
             		this.steamWindow = window.open(
 								  this.steamAuthUrl,
@@ -236,16 +306,31 @@
             	this.steamAuthUrl = '';
             	this.getSteamAuthUrl();
 
+            	this.login = {
+            		keepsignin: true
+            	};
+
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
             	var faye_client = new Faye.Client('http://localhost:8089/faye');
             	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
-            		alert(message.steamIdUrl);
+
             		if (customElem.steamWindow != null && customElem.steamWindow != undefined) {
             			customElem.steamWindow.close();
-            			//TODO: process steam url claimedId
-						//...
+            			var authData = {
+            				auth: {
+            					provider: 'steam',
+            					uid: 'steam:' + message.steamid
+            				},
+            				provider: 'steam',
+            				uid: 'steam:' + message.steamid,
+							token: message.token
+            			};
+
+            			currElem.cacheLoginCredentials(authData);
+            			console.log("Authenticated Successfully via Steam with payload:", authData);
+            			customElem.startIntroProcess(authData);
             		}
             	});
             },
@@ -254,12 +339,17 @@
             	var polymer = this;
             },
 
-            registerPlugins: function() {
+            registerPlugins: function () {
+            	$('.modal-trigger').leanModal();
             },
 
-			/* Events */
+        	/* Events */
+            created: function () {
+            },
+
             ready: function () {
             	this.initializeData();
+            	this.authomaticSignin();
             },
 
             attached: function () {

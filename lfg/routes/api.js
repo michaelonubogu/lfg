@@ -1,11 +1,13 @@
 ﻿var express = require('express');
 var http = require('http');
-var giantbomb = require('../giantbomb');
+var url = require('url');
 var openid = require('openid');
 var faye = require('faye');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var giantbomb = require('../giantbomb');
 var config = require('../config');
 
-
+//Express stuff (routing, server info, etc)
 var app = express();
 var router = express.Router();
 var host = process.env.HOST;
@@ -13,12 +15,12 @@ var port = process.env.PORT || 1337;
 
 var origin = 'http://' + host + ':' + port;
 
+//Faye websocket init
 var server = http.createServer();
 var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
 console.log('Firing up faye server. . . ');
 faye_server.attach(server);
 server.listen(8089);
-
 
 var relyingParty = new openid.RelyingParty(
 							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
@@ -54,11 +56,25 @@ router.get('/steam/authenticate', function (req, res) {
 
 router.get('/steam/authenticate/verify', function (req, res) {
 	relyingParty.verifyAssertion(req, function (error, result) {
-		faye_server.getClient().publish('/steamSuccess', 
-		{
-			pageName: 'sign-in.html',
-			steamIdUrl: result.claimedIdentifier,
-		});
+		
+		var urlObj = url.parse(result.claimedIdentifier);
+		var pathArray = urlObj.pathname.split('/');
+		
+		if (pathArray !== null && pathArray !== undefined && pathArray.length > 0) {
+			var steamid = pathArray[(pathArray.length - 1)];
+			
+			//Generate a firebase token for our steam auth user info
+			var tokenGenerator = new FirebaseTokenGenerator(config.firebase.secret);
+			var token = tokenGenerator.createToken({ uid: "steam:" + steamid  });
+			
+			//Send token to the client
+			faye_server.getClient().publish('/steamSuccess', 
+			{
+				pageName: 'sign-in.html',
+				steamid: steamid,
+				token: token
+			});
+		}
 	});
 });
 

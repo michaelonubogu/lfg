@@ -58,7 +58,7 @@
 		.profile-overlay{  
 			background:rgba(0,0,0,.5);
             text-align:center;
-            padding:45px 0 66px 0;
+            padding:45px 0 0 0;
             opacity:0;
             -webkit-transition: opacity .25s ease;
 			-moz-transition: opacity .25s ease;
@@ -187,7 +187,7 @@
             box-shadow: 0 2px 5px 0 #e65100;
             border-radius:0px;
             padding:0px;
-			margin-top:40px;
+			margin-top:20px;
         }
 
 		.collection-modified li {
@@ -210,29 +210,38 @@
 			line-height: 1;
 		}
 
+		.photo-upload {
+			font-size:1rem;
+		}
+
+		.photo-upload material-icons:hover {
+			color: #ffff00 !important;
+		}
+
 	</style>
 
 	<template>
 		<neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			<neon-animatable>
-				<div id="profile_background" class="profile-background" layout vertical center style="height:60vh;">
+				<div id="profile_background" class="profile-background" layout vertical center>
 					<div class="profile-overlay">
+						<!-- Navigational Butons -->
 						<div layout horizontal center-justified style="opacity:1.0 !important;">
-							<div layout no-wrap style="visibility:hidden;">
+							<!--<div layout no-wrap style="visibility:hidden;">
 								<a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
 									<i class="material-icons white-text left">arrow_back</i>
 									Back
 								</a>
-							</div>
+							</div>-->
 							<div flex></div>
 							<div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Enter your Username & Email, and upload a profile picture</h6></div>
 							<div flex></div>
-							<div layout no-wrap>
+							<!--<div layout no-wrap>
 								<a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
 									<i class="material-icons white-text right thin">arrow_forward</i>
 									Next
 								</a>
-							</div>
+							</div>-->
 						</div>
 						<div class="row" style="margin-top: 20px; opacity:1.0 !important; z-index:1000;">
 							<div class="col s12 center center-aligned">
@@ -244,10 +253,10 @@
 
 							<div class="row">
 								<div class="col s12">
-									<div class="lfg-input input-field col s12 center" layout center style="margin-top:20px;">
+									<div class="lfg-input input-field col s12 center" layout center>
 										<div class="file-field" layout horizontal center-center>
-											<a class="btn center center-aligned orange darken-4">
-												<span><i class="material-icons left">person</i> Profile Picture</span>
+											<a class="btn-flat center center-aligned white-text light photo-upload">
+												<span><i class="material-icons left">backup</i> Upload Photo</span>
 												<input id="profile_upload" type="file" accept="image/*" capture="camera" />
 											</a>
 										</div>
@@ -255,7 +264,8 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<!-- Cover Photo Upload -->
+							<!--<div class="row">
 								<div class="col s12">
 									<div class="lfg-input input-field col s12 center" layout center>
 										<div class="file-field" layout horizontal center-center>
@@ -265,13 +275,8 @@
 											</a>
 										</div>
 									</div>
-									<!--<div class="file-field" layout horizontal center-center>
-							<a class="waves-effect waves-light btn" style="padding-left:42px; padding-right:42px;">
-								<span><i class="material-icons left">panorama</i></span> Cover Photo
-							</a>
-						</div>-->
 								</div>
-							</div>
+							</div>-->
 						</div>
 					</div>
 				</div>
@@ -281,24 +286,36 @@
 							<li class="collection-item avatar">
 								<div class="wizard-input row">
 									<div class="col s2"><i class="material-icons prefix">account_circle</i></div>
-									<div class="lfg-input input-field col s10">
-										<input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keyup="changeUsername" />
+									<div class="lfg-input input-field col s7">
+										<input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keypress="clearUsernameError"  on-keyup="changeUsername" />
+									</div>
+									<div class="col s3" style="margin-top:30px;">
+										<span id="username_error" class="red-text"><strong></strong></span>
 									</div>
 								</div>
 							</li>
 							<li class="collection-item avatar">
 								<div class="row">
 									<div class="col s2"><i class="material-icons prefix">email</i></div>
-									<div class="lfg-input input-field col s10">
-										<input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" />
+									<div class="lfg-input input-field col s7">
+										<input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+									</div>
+									<div class="col s3" style="margin-top:30px;">
+										<span id="email_error" class="red-text"><strong></strong></span>
 									</div>
 								</div>
 							</li>
 						</ul>
 					</div>
+					<br />
+					<div class="row">
+						<div class="col s12 center center-align">
+							<a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
+						</div>
+					</div>
 				</div>
 			</neon-animatable>
-			<neon-animatable>
+			<!--<neon-animatable>
 				<div layout vertical fit class="green darken-3" style="height:100vh;">
 					<div layout horizontal center-justified style="opacity:1.0 !important; margin-top:50px;">
 						<div layout no-wrap>
@@ -337,7 +354,7 @@
 					</div>
 				</div>
 			</neon-animatable>
-			<neon-animatable><h1>3</h1></neon-animatable>
+			<neon-animatable><h1>3</h1></neon-animatable>-->
 		</neon-animated-pages>
 	</template>
 </dom-module>
@@ -359,38 +376,63 @@
             	name: 'User Setup'
             },
 
+            clearValidatorErrors: function () {
+            	this.clearUsernameError();
+            	this.clearEmailError();
+            },
+
+            clearUsernameError: function () {
+            	$(this.$.username_error).find('strong').html('');
+            },
+
+            clearEmailError: function () {
+            	$(this.$.email_error).find('strong').html('');
+            },
+
         	/* Functions */
-            saveUserData: function () {
-            	//do some validation...
+            finishSetUp: function () {
+            	//Do some validation...
             	if (this.validateInput(this.user)) {
             		var authData = sessionStorage.getItem('authData');
             		var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
             		userRef.setvalue(this.user);
+            		document.querySelector('app-router').go('/requests');
             	}
             },
 
-            validateInput: function (userdata) {
+            saveUserData: function (userdata) {
+            },
+
+            validateInput: function () {
             	var valid = true;
+            	this.clearValidatorErrors();
 
-            	if (userdata.username === null || userdata.username === undefined || userdata.username === '') {
+            	var username = $(this.$.username).val();
+            	var email = $(this.$.email).val();
+
+            	if (username === null || username === undefined || username === '' ) {
+            		$(this.$.username_error).find('strong').html("*This can't be blank!");
             		valid = false;
             	}
 
-            	if (userdata.email === null || userdata.email === undefined || userdata.email === '' || !window.lfg.utils.checkEmail(userdata.email)) {
+            	if (email === null || email === undefined || email === '') {
+            		$(this.$.email_error).find('strong').html("*This can't be blank!");
+            		valid = false;
+            	}
+            	else if (!window.lfg.utils.checkEmail(email)) {
+            		$(this.$.email_error).find('strong').html("*This email isn't valid!");
             		valid = false;
             	}
 
-            	if (userdata.profilepic === null || userdata.profilepic === undefined) {
-            		valid = false;
-            	}
+            	//if (userdata.profilepic === null || userdata.profilepic === undefined) {
+            	//	valid = false;
+            	//}
             	return valid;
             },
 
 			/* Init */
             initializeData: function () {
-            	this.getSteamAuthUrl();		//Get the Steam Authentication Url
-
-            	this.selected = 0;
+				this.selected = 0;
             	this.user = {
             		username: "(What we'll call you)",
             		email: ''
@@ -402,7 +444,7 @@
 
             registerEvents: function () {
             	document.getElementById("profile_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
-            	document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
+            	//document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
             	$(this.$.username).focus();
             },
 

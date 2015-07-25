@@ -51,5 +51,6 @@ module.exports = {
 	},
 	"firebase" : {
 		"url" : 'https://lfgbase.firebaseio.com/',
+		"secret" : 'kr3DZhA9sGUbV8Gp09utU5jFiL4iqysnSBzCHfy0'
 	}
 }
