@@ -41,6 +41,10 @@
         :host{
         }
 
+		.system-tag {
+			font-size:0.7rem; padding:3px 10px; border-radius:5px;
+		}
+
 		.flaticon-update {
 			margin-top: 2px !important;
 			color: #424242;
@@ -92,10 +96,25 @@
 
 		.request-list-item {
 			cursor: pointer;
+			min-height:125px;
+			border: none !important;
+			padding-left:20px !important;
+			/*margin-bottom:7px;*/
+			/*margin-top:7px !important;*/
+		}
+
+		.item-content-container {
+			/*margin-left: -65px;*/
+		}
+
+		.request-list-image {
+			border-radius: 5px;
+			/*margin-left: -50px;*/
 		}
 
 		.request-list-item-container {
 			/*padding: 10px 20px 10px 20px;*/
+			padding-top:10px;
 		}
 
         .lfg-main-toolbar{
@@ -238,41 +257,55 @@
                     <div  class="bottom title" style="font-size:1.25rem; margin-left:0px;">Gaming Requests</div>
                 </paper-toolbar>
 
-                <div class="grey lighten-3">
+                <div class="white lighten-3">
 					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
-							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
+							<!--<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" style="padding-top:20px; padding-bottom:15px !important; height:auto !important;" on-click="loadRequest">
 								<i class="mdi-social-person circle"></i>
 								<i class$="[[item.sysicon]]"></i>
 								<span class="title" style="font-size:1.25rem;">[[item.gametitle]]</span>
 								<p style="font-size:0.875rem;">[[item.title]]</p>
 								<p class="grey-text truncate" style="font-size:0.8rem; margin-left:50px !important;">[[item.description]]</p>
 								<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
-							</li>
-							<!--<p class="grey-text secondary-content" style="margin-top:35px; font-weight:600; text-transform:uppercase;">[[item.system]]</p>-->
-							<!--<div class="card-panel white request-list-item request-card-item" data-request-key$="[[item.key]]" on-click="loadRequest">
-								<div class="row card-item">
-									<div class="col s12 m1"><img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid #ff9800;" class="circle" width="60" height="60"></div>
-									<div class="col s12 m9">
-										<div class="row">
-											<div class="col s12">
-												<div class="row">
-													<div class="s12 m1"><i class$="[[item.sysicon]]"></i></div>
-													<div class="s12 m11">
-														<h6 style="font-size:1.35rem;" class="orange-text text-darken-4">[[item.gametitle]]</h6>
-													</div>
-												</div>
+							</li>-->
+
+							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
+								<div class="row">
+									<div class="col s12 m2">
+										<img class="request-list-image" src="../assets/app/img/destiny.jpg" width="145" />
+									</div>
+									<div class="col s12 m10">
+										<div class="item-content-container">
+											<div><span class="grey-text text-lighten-1" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
+											<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
+											<div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
+											<div>
+												<span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
+												<span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">2 Gamers</span>
 											</div>
-											<div class="col s12" style="margin-top:-30px;"><p style="font-size:1.05rem;">[[item.title]]</p></div>
-											<div class="col s12" style="margin-top:-15px;"><p class="grey-text" style="font-size:0.85rem;">[[item.description]]</p></div>
 										</div>
 									</div>
-									<div class="col s12 m2">
-										<p class="grey-text secondary-content" style="font-size:0.85rem;">[[formatDate(item.created)]]</p>
+								</div>
+							</li>
+						</template>
+						<!--<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
+							<div class="row">
+								<div class="col s2">
+									<img class="request-list-image" src="../assets/app/img/destiny.jpg" width="145" />
+								</div>
+								<div class="col s9">
+									<div class="item-content-container">
+										<div><span class="grey-text text-lighten-1" style="font-size:0.75rem;">Destiny</span></div>
+										<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">Main Story - Venus!!</span></div>
+										<div><span class="grey-text" style="font-size:0.9rem;">Need 2 people to run through main story quests on Venus</span></div>
+										<div>
+											<span class="white-text center center-align" style="background-color:#01579b; font-size:0.7rem; padding:3px 10px; border-radius:5px;">PS4</span>
+											<span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">2 Gamers</span>
+										</div>
 									</div>
 								</div>
-							</div>-->
-						</template>
+							</div>
+						</li>-->
 					</ul>
                     <paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>
                 </div>
@@ -450,7 +483,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -468,7 +501,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -486,7 +519,7 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.priority = snapshot.getPriority();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -512,7 +545,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									customElem.push('requests', request);
 								});
             				break;
@@ -531,7 +564,7 @@
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									customElem.push('requests', request);
 								});
             				break;
@@ -547,7 +580,7 @@
 									var request = snapshot.val() || {};
 									request.priority = snapshot.getPriority();
 									request.key = snapshot.key();
-									request.sysicon = customElem.getSystemIcon(request.system);
+									request.systemColor = customElem.getSystemColor(request.system);
 									customElem.push('requests', request);
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -557,38 +590,70 @@
             	}
             },
 
-            getSystemIcon: function (system) {
-
-            	var classAppend = 'left flaticon-update';
+            getSystemType: function (system) {
 
             	switch (system) {
             	
             		case 'pc':
-            			return 'flaticon-monitor49 ' + classAppend;
+            			return 'PC';
             			break;
 
             		case 'ps3':
-            			return 'flaticon-ps46 ' + classAppend;
+            			return 'PS3';
             			break;
 
             		case 'ps4':
-            			return 'flaticon-game27 ' + classAppend;
+            			return 'PS4';
             			break;
 
             		case 'xbox360':
-            			return 'flaticon-xbox19 ' + classAppend;
+            			return 'XBOX 360';
             			break;
 
             		case 'xboxone':
-            			return 'flaticon-xbox12 ' + classAppend;
+            			return 'XBOX ONE';
             			break;
 
             		case 'wii':
-            			return 'flaticon-wii14 ' + classAppend;
+            			return 'Wii';
             			break;
 
             		case 'wiiu':
-            			return 'flaticon-wii12 ' + classAppend;
+            			return 'Wii U';
+            			break;
+            	}
+            },
+
+            getSystemColor: function (system) {
+
+            	switch (system) {
+
+            		case 'pc':
+            			return 'background-color: #f44336;';
+            			break;
+
+            		case 'ps3':
+            			return 'background-color: #01579b;';
+            			break;
+
+            		case 'ps4':
+            			return 'background-color: #01579b;';
+            			break;
+
+            		case 'xbox360':
+            			return 'background-color: #5DCB17;';
+            			break;
+
+            		case 'xboxone':
+            			return 'background-color: #5DCB17;';
+            			break;
+
+            		case 'wii':
+            			return 'background-color: #03a9f4;';
+            			break;
+
+            		case 'wiiu':
+            			return 'background-color: #03a9f4;';
             			break;
             	}
             },
