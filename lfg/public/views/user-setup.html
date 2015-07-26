@@ -392,15 +392,75 @@
         	/* Functions */
             finishSetUp: function () {
             	//Do some validation...
+            	var cusElem = this;
             	if (this.validateInput(this.user)) {
-            		var authData = sessionStorage.getItem('authData');
-            		var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
-            		userRef.setvalue(this.user);
-            		document.querySelector('app-router').go('/requests');
+            		cusElem.user.username = $(cusElem.$.username).val();
+            		cusElem.user.email = $(cusElem.$.email).val();
+
+            		cusElem.usernameExists = null;
+            		cusElem.emailExists = null;
+
+            		var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		var authData = JSON.parse(authJSON);
+
+            		//check to see if the same username exists within our db, or the same email exists
+            		var usersRef = this.firebaseRef.child('users');
+
+            		var checkUnique = function () {
+            			if (cusElem.usernameExists !== null && cusElem.emailExists !== null) {
+            				window.clearInterval(cusElem.intervalId);
+            				if (cusElem.usernameExists === false && cusElem.emailExists === false) {
+            					cusElem.saveUserData(authData, cusElem.user);
+            				}
+            				else {
+            					if (cusElem.usernameExists === true) {
+            						$(cusElem.$.username_error).find('strong').html('*The username exists already!');
+            					}
+
+            					if (cusElem.emailExists === true) {
+            						$(cusElem.$.email_error).find('strong').html('*The email exists already!');
+            					}
+            				}
+            			}
+            		};
+
+            		cusElem.intervalId = window.setInterval(checkUnique, 500);
+
+            		//Get the user profile info. If none exists, redirect to Onboarding process...
+            		usersRef
+						.equalTo(this.user.username)
+						.once('value', function (snapshot) {
+							var user = snapshot.val();
+
+							//redirect to user setup page
+							if (user !== null && user !== undefined) {
+								cusElem.usernameExists = true;
+							}
+							else {
+								cusElem.usernameExists = false;
+							}
+						});
+
+            		usersRef
+						.equalTo(this.user.email)
+						.once('value', function (snapshot) {
+							var user = snapshot.val();
+
+							//redirect to user setup page
+							if (user !== null && user !== undefined) {
+								cusElem.emailExists = true;
+							}
+							else {
+								cusElem.emailExists = false;
+							}
+						});
             	}
             },
 
-            saveUserData: function (userdata) {
+            saveUserData: function (authData, userdata) {
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+            	userRef.set(userdata);
+            	document.querySelector('app-router').go('/requests');
             },
 
             validateInput: function () {
@@ -437,6 +497,8 @@
             		username: "(What we'll call you)",
             		email: ''
             	};
+            	this.usernameExists = null;
+            	this.emailExists = null;
 
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());

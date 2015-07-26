@@ -144,7 +144,20 @@
 			</div>
 		</div>
 		<div id="signin_overlay" class="layout fit" style="background-color:#FB8C00; z-index:1000;">
-
+			<div layout vertical fit center-center>
+				<h4 class="yellow-text text-accent-2 light">Loading...</h4>
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-yellow-only" style="border-color:#ffff00;">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div><div class="gap-patch">
+							<div class="circle"></div>
+						</div><div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</template>
 </dom-module>
@@ -170,19 +183,26 @@
             authomaticSignin: function () {
             	//Checks sessionStorage, and then localStorage for an authData object, and if one exists, 
             	//signs the user in automatically. Called in 'created' lifecycle event
+            	var found = false;
             	var sessionJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var sessionAuth = JSON.parse(sessionJSON);
             	if (sessionAuth !== null && sessionAuth !== undefined && sessionAuth.uid !== null && sessionAuth.uid !== undefined && sessionAuth.uid !== '') {
+            		found = true;
             		this.startIntroProcess(sessionAuth);
             	}
-
-            	var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
-            	var localAuth = JSON.parse(localJSON);
-            	if (localAuth !== null && localAuth !== undefined && localAuth.uid !== null && localAuth.uid !== undefined && localAuth.uid !== '') {
-            		this.cacheLoginCredentials(localAuth);		//Have the authData stored in session
-            		this.startIntroProcess(localAuth);
+            	else {
+            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		var localAuth = JSON.parse(localJSON);
+            		if (localAuth !== null && localAuth !== undefined && localAuth.uid !== null && localAuth.uid !== undefined && localAuth.uid !== '') {
+            			found = true;
+            			this.cacheLoginCredentials(localAuth);		//Have the authData stored in session
+            			this.startIntroProcess(localAuth);
+            		}
             	}
 
+            	if (!found) {
+            		this.removeOverlay();
+            	}
 				//if we reach here, sign in page should just load normally...
             },
 
@@ -190,8 +210,8 @@
             	sessionStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
 
             	if (this.login.keepsignin) {
-            		var authData = localStorage.getItem(window.lfg.config.firebaseCacheKey);
-            		if (authData == null || authData == undefined) {
+            		var localAuthData = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		if (localAuthData == null || localAuthData == undefined) {
             			localStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
             		}
             	}
@@ -215,6 +235,10 @@
             			alert('Login through Steam is temporarily unavailable');
             		}
             	});
+            },
+
+            removeOverlay: function () {
+            	$(this.$.signin_overlay).fadeOut();
             },
 
             signInWithFacebook: function () {
@@ -282,11 +306,10 @@
             },
 
             startIntroProcess: function (authData) {
-            	var usersRef = this.firebaseRef.child('users');
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
 
 				//Get the user profile info. If none exists, redirect to Onboarding process...
-            	usersRef
-					.equalTo(authData.uid)
+            	userRef
 					.once('value', function (snapshot) {
 						var user = snapshot.val();
 
@@ -328,7 +351,7 @@
 							token: message.token
             			};
 
-            			currElem.cacheLoginCredentials(authData);
+            			customElem.cacheLoginCredentials(authData);
             			console.log("Authenticated Successfully via Steam with payload:", authData);
             			customElem.startIntroProcess(authData);
             		}
@@ -348,11 +371,12 @@
             },
 
             ready: function () {
-            	this.initializeData();
-            	this.authomaticSignin();
+            	
             },
 
             attached: function () {
+            	this.initializeData();
+            	this.authomaticSignin();
             	this.registerPlugins();
             	this.registerEvents();
             }
