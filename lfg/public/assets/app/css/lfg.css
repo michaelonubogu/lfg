@@ -14,6 +14,7 @@ html,body {
 
 #bottomBar.paper-toolbar {
 	z-index: 0 !important;
+
 }
 
 .picker__date-display, .picker__weekday-display{

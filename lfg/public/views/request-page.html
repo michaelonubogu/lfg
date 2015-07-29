@@ -50,6 +50,17 @@
 			color: #424242;
 		}
 
+		.filter-tags {
+			background-color:#ffffff; 
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 1px #BDBDBD; 
+			border-radius:5px;
+			cursor:pointer;
+			margin-left:15px;
+			max-height:30px !important;
+		}
+
 		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
 			margin-left:0px !important; 
 			font-size:35px !important;
@@ -125,8 +136,9 @@
 
         .lfg-drawer-toolbar{
 			--paper-toolbar:{
-				background: url('../assets/app/img/profile_background5.jpg');
-				background-size: 256px 192px;
+				background-color: #EF6C00;
+				/*background: url('../assets/app/img/profile_background5.jpg');
+				background-size: 256px 192px;*/
 			};
         }
 
@@ -142,11 +154,12 @@
 
         .lfg-paper-fab{
             --paper-fab: {
-                position: fixed;
+                /*position: fixed;
                 right: 0;
                 bottom: 0;
                  margin-right: 5%;
-                 margin-bottom: 3%;
+                 margin-bottom: 3%;*/
+				margin-top:-5px;
              };
             --paper-fab-background: #e65100;
         }
@@ -187,11 +200,12 @@
 
             .lfg-paper-fab{
                 --paper-fab: {
-                     position: fixed;
+                     /*position: fixed;
                      right: 0;
                      bottom: 0;
                      margin-right: 5%;
-                     margin-bottom: 3.5%;
+                     margin-bottom: 3.5%;*/
+					 margin-top:-5px;
                  };
                 --paper-fab-background: #e65100;
             }
@@ -219,9 +233,9 @@
 		<!-- ------------------------ Search Box --------------------------------- -->
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
-                <paper-toolbar class="tall lfg-drawer-toolbar">
-					<img src="../assets/app/img/images.jpg" alt="" style="border:solid 1px #ffffff; margin-top:130px;" class="circle" width="64" height="64">
-					<div class="bottom white-text" style="font-size:1.05rem;">Rammone-X</div>
+                <paper-toolbar class="medium-tall lfg-drawer-toolbar">
+					<!--<img src="../assets/app/img/images.jpg" alt="" style="border:solid 1px #ffffff; margin-top:130px;" class="circle" width="64" height="64">
+					<div class="bottom white-text" style="font-size:1.05rem;">Rammone-X</div>-->
                 </paper-toolbar>
                 <div fit class="orange darken-3">
 					<side-nav-contents></side-nav-contents>
@@ -237,12 +251,12 @@
 					</div>-->
 				</div>
             </paper-header-panel>
-            <paper-header-panel mode="waterfall-tall" main class="lfg-main-header-panel">
-                <paper-toolbar class="tall lfg-main-toolbar">
-					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            <paper-header-panel mode="waterfall" main class="lfg-main-header-panel">
+                <paper-toolbar class="medium-tall white lfg-main-toolbar">
+					<paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
                     <div flex></div>
-                    <paper-icon-button id="search_button" icon="search" on-click="showSearch"></paper-icon-button>
+                    <paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>
                     <!--<paper-icon-button id="sort_menu" icon="sort" data-activates='dropdown1'></paper-icon-button>-->
 					<!--<paper-icon-button id="filter_menu" icon="filter-list" on-click="showFilter"></paper-icon-button>-->
 					<ul id='dropdown1' class='dropdown-content'>
@@ -254,10 +268,27 @@
 					</ul>
                     <div class="middle">
                     </div>
-                    <div  class="bottom title" style="font-size:1.25rem; margin-left:0px;">Gaming Requests</div>
+					<div class="bottom" style="width:100%;">
+						<div layout horizontal>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">PS3</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">PS4</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">X360</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">X1</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">Wii</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">Wii U</span>
+							<span class="grey-text text-lighten-1 center center-align filter-tags">PC</span>
+							<span flex></span>
+							<span>
+								<paper-fab icon="add" mini  class="white-text text-darken-4 lfg-paper-fab" on-click="newRequest"></paper-fab>
+							</span>
+						</div>
+						<!--<span><a class="waves-effect waves-block waves-light orange darken-4 btn">New Request</a></span>-->
+					</div>
+                    <!--<div  class="bottom title" style="font-size:1.25rem; margin-left:0px;">Gaming Requests</div>-->
                 </paper-toolbar>
 
-                <div class="white lighten-3">
+
+                <div class="white lighten-3" style="margin-bottom:10%;">
 					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
 							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
@@ -279,26 +310,8 @@
 								</div>
 							</li>
 						</template>
-						<!--<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
-							<div class="row">
-								<div class="col s2">
-									<img class="request-list-image" src="../assets/app/img/destiny.jpg" width="145" />
-								</div>
-								<div class="col s9">
-									<div class="item-content-container">
-										<div><span class="grey-text text-lighten-1" style="font-size:0.75rem;">Destiny</span></div>
-										<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">Main Story - Venus!!</span></div>
-										<div><span class="grey-text" style="font-size:0.9rem;">Need 2 people to run through main story quests on Venus</span></div>
-										<div>
-											<span class="white-text center center-align" style="background-color:#01579b; font-size:0.7rem; padding:3px 10px; border-radius:5px;">PS4</span>
-											<span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">2 Gamers</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</li>-->
 					</ul>
-                    <paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>
+                    <!--<paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>-->
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
