@@ -88,8 +88,11 @@
 
         .lfg-input{
             color: #ffeb3b !important;
-
         }
+
+		.lfg-input-search {
+			color: #ef6c00;
+		}
 
 		.lfg-input.input-field textarea {
 			border-bottom: 1px solid #ffffff;
@@ -112,6 +115,18 @@
             font-size: 1.5rem;
         }
 
+		.lfg-input.input-field input[type=number]{
+            border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+            font-size: 1.5rem;
+        }
+
+		.lfg-input-search.input-field input[type=text]:focus {
+			color: #ef6c00;
+			border-bottom: 1px solid #f57c00 ;
+            box-shadow: 0 1px 0 0 #f57c00 ;
+		}
+
         /* label focus color */
         .lfg-input.input-field input[type=text]:focus + label {
             color: #ffeb3b;
@@ -122,13 +137,34 @@
             border-bottom: 1px solid #ffeb3b;
             box-shadow: 0 1px 0 0 #ffeb3b;
         }
+
+		.lfg-input.input-field input[type=number]:focus {
+            border-bottom: 1px solid #ffeb3b;
+            box-shadow: 0 1px 0 0 #ffeb3b;
+        }
         /* valid color */
         .lfg-input.input-field input[type=text].valid {
             border-bottom: 1px solid #ffffff;
             box-shadow: 0 1px 0 0 #ffffff;
         }
+
+		.lfg-input.input-field input[type=number].valid {
+            border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+        }
+
+		.lfg-input-search.input-field input[type=text].valid {
+			color: #ef6c00;
+			border-bottom: 1px solid #f57c00 ;
+            box-shadow: 0 1px 0 0 #f57c00 ;
+		}
         /* invalid color */
         .lfg-input.input-field input[type=text].invalid {
+            border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
+        }
+
+		.lfg-input.input-field input[type=number].invalid {
             border-bottom: 1px solid #f44336 !important;
             box-shadow: 0 1px 0 0 #f44336 !important;
         }
@@ -147,6 +183,14 @@
         .lfg-input.input-field .prefix.active {
             color: #ffeb3b;
         }
+
+		.lfg-input-search.input-field .prefix {
+			color: #9e9e9e ;
+		}
+
+		.lfg-input-search.input-field .prefix.active {
+			color: #f57c00;
+		}
 
 		.lfg-input .select-wrapper input.select-dropdown{
 			border-bottom: 1px solid #ffffff;
@@ -190,6 +234,9 @@
             margin-left: -35px !important;
         }
 
+		.search-image {
+			border-radius: 5px !important;
+		}
 
         @media (max-width: 640px){
             .logo-link{
@@ -251,16 +298,7 @@
                             <div class="lfg-input input-field col s12">
                                 <i class="mdi-action-grade prefix"></i>
                                 <input id="request_title" type="text" class="validate" value="{{request.title::input}}" />
-                                <label for="request_title">What is it you wanna do?</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="lfg-input input-field col s12">
-                                <i class="mdi-hardware-gamepad prefix"></i>
-                                <input id="request_game" type="text" class="validate" data-beloworigin="true" value={{request.game::input}}>
-								<input id="request_game_id" type="hidden" value={{request.gameid::input}}>
-                                <label for="request_game">In What Game?</label>
+                                <label for="request_title">What is it you want to do?</label>
                             </div>
                         </div>
 
@@ -270,36 +308,81 @@
 								<select id="request_system">
 									<option value="" disabled selected></option>
 								</select>
-								<label >For Which System?</label>
+								<label>For Which System?</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="lfg-input input-field col s12">
+								<i class="mdi-hardware-gamepad prefix"></i>
+								<div class="row" style="margin-left:2.2rem; margin-top:3rem;">
+									<div class="col s2">
+										<a class="waves-effect waves-block-light btn yellow accent-2 orange-text text-darken-3 modal-trigger" href="#game_tag">
+											<i class="material-icons">search</i>
+										</a>
+									</div>
+									<div class="col s10">
+										<h6 id="selected_game_error" style="font-size:1.35rem; display:none;" class="red-text ">*You must tag a game to your request</h6>
+										<h6 id="selected_game" style="font-size:1.35rem;" class="yellow-text text-accent-2">{{request.game::input}}</h6>
+									</div>
+								</div>
+								<label for="request_game">In What Game?</label>
 							</div>
 						</div>
 
                         <div class="row">
-                            <div class="lfg-input input-field col s7">
+							<div class="lfg-input input-field col s12 date-right-now" >
+								<i class="material-icons prefix">access_time</i>
+								<div class="row" style="margin-left:2.2rem; margin-top:3rem;">
+									<div class="col s3">
+										<h5 class="yellow-text text-accent-2">Now</h5>
+									</div>
+									<div class="col s1" style="margin-top:12px;">
+										<h6>or</h6>
+									</div>
+									<div class="col s6" style="margin-top:8px;">
+										<a class=" btn-flat white-text" on-click="showDateSelection">
+											<i class="material-icons left">today</i>
+											<span style="text-transform:none;">Select a Date & Time</span>
+										</a>
+									</div>
+								</div>
+								<label for="request_game">When do you want to play?</label>
+							</div>
+
+                            <div class="lfg-input input-field col s7 date-selection" style="display:none;">
                                 <i class="mdi-action-today prefix"></i>
                                 <input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
                                 <label for="request_date">On What Day?</label>
                             </div>
 
-							<div class="lfg-input input-field col s5">
+							<div class="lfg-input input-field col s5 date-selection" style="display:none;">
 								<i class="mdi-device-access-time prefix"></i>
 								<input id="request_time" type="text" class="validate" value={{request.time::input}}>
 								<label for="request_time">At What Time?</label>
 							</div>
                         </div>
 
+						<div class="row" >
+							<div class="lfg-input input-field col s12">
+								<i class="material-icons prefix">accessibility</i>
+								<input id="request_gamer_count" type="number" min="1" value={{request.gamercount::input}}>
+								<label for="request_gamer_count" class="active">How many players do you need?</label>
+							</div>
+						</div>
+
 						<div class="row">
 							<div class="lfg-input input-field col s12">
 								<i class="mdi-action-picture-in-picture prefix"></i>
 								<input id="request_gamertag" type="text" class="validate" value={{request.gamertag::input}}>
-								<label>Whats your Gamer Tag? (Optional)</label>
+								<label>What's your Gamer Tag? (Optional)</label>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="lfg-input input-field col s12">
 								<i class="mdi-action-assignment prefix"></i>
-								<textarea id="request_description" type="text" class="materialize-textarea" length="250" value={{request.description::input}}></textarea>
+								<textarea id="request_description" type="text" spellcheck="false" class="materialize-textarea" length="250" value={{request.description::input}}></textarea>
 								<label>Tell us more about what you wanna do (Optional)</label>
 							</div>
 						</div>
@@ -326,7 +409,7 @@
                             <div class="col s1" style="margin-top: -15px;">
                                 <i class="mdi-hardware-headset-mic white-text" style="font-size:2rem;"></i>
                             </div>
-                            <div class="col s5 mic-required"><label class="white-text" style="font-size:1rem;">Are Microphones Required?</label></div>
+                            <div class="col s5 mic-required"><label class="white-text" style="font-size:1rem;">Are microphones required?</label></div>
                             <div class="col s4">
                                 <div class="switch">
                                     <label class="white-text" style="font-size:1rem;">
@@ -338,17 +421,6 @@
                                 </div>
                             </div>
                         </div>
-						<!--<br />
-						<div class="row">
-							<div class="col s12">
-								<ul id="request_details_container" class="collapsible" data-collapsible="expandable">
-									<li>
-										<div class="collapsible-header"><i class="mdi-image-filter-drama"></i>First</div>
-										<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-									</li>
-								</ul>
-							</div>
-						</div>-->
 						<br />
 						<div class="row">
 							<div class="col s12">
@@ -358,6 +430,7 @@
 								</paper-button>
 							</div>
 						</div>
+						<br /><br />
                     </form>
 
 					<div id="success_message" class="center-align" style="display:none;">
@@ -375,6 +448,38 @@
                 </div>
             </paper-header-panel>
         </paper-drawer-panel>
+
+		<div id="game_tag" class="modal">
+			<div class="modal-content">
+				<h5>Tag a video game to your request</h5>
+
+				<div class="game-title-search" >
+					<div class="lfg-input-search input-field col s12">
+						<i class="material-icons prefix">search</i>
+						<input id="search_request_game" type="text" class="lfg-input-search validate" placeholder="The name of the game you want tagged to your request">
+					</div>
+				</div>
+				<br />
+				<div class="game-title-results">
+					<table id="search_results_table">
+						<tbody>
+							<tr><td>Results show up here :}</td></tr>
+							<!--<tr><td class="search-result-row">
+								<div class="row" style="margin-bottom:0px;">
+									<div class="col 3">
+										<img class="search-image" src="../assets/app/img/destiny.jpg" width="100" />
+									</div>
+									<div class="col 9" style="margin-top:18px;">
+										<span style="font-size:1.15rem;">Destiny</span>
+										<input class="search-item-id" />
+									</div>
+								</div>
+								</td></tr>-->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
     </template>
 </dom-module>
 
@@ -406,6 +511,59 @@
             	return window.lfg.utils.convertDateToUtc(date);
             },
 
+            doVideoGameSearch: function (e) {
+            	var query = $(e.target).val();
+            	var cusElem = this;
+
+            	if (query.length > 2) {
+            		//perform giantbomb search
+            		var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+            		var limit = 4;
+
+            		$.ajax({
+            			url: url,
+            			type: 'GET',
+            			cache: false,
+            			data: { search: query, limit: limit },
+            			dataType: 'json',
+            			success: function (data) {
+            				var listHtml = '';
+            				_.each(data.results, function (element, index) {
+            					listHtml += '<tr class="search-result-row"><td >';
+            					listHtml += '<div class="row" style="margin-bottom:0px;">';
+            					listHtml += '<div class="col 3">';
+
+            					if (
+									element.image !== null && element.image !== undefined &&
+									element.image.screen_url !== null &&
+									element.image.screen_url !== undefined &&
+									element.image.screen_url !== '') {
+            						listHtml += '<img class="search-image" style="border-radius: 5px !important;" src="' + element.image.screen_url + '" width="100" />';
+            					}
+            					else {
+            						listHtml += '<div style="background-color:#FB8C00; width:100px; height:56px;"></div>';
+            					}
+
+            					listHtml += '</div>';
+            					listHtml += '<div class="col 9" style="margin-top:18px;">';
+            					listHtml += '<span class="game-title" style="font-size:1.15rem;">' + element.name + '</span>';
+            					listHtml += '<input class="search-item-id" type="hidden" value="' + element.id + '" />';
+            					listHtml += '</div>';
+            					listHtml += '</div>';
+            					listHtml += '</td></tr>';
+            				});
+
+            				$(cusElem.$.search_results_table).find('tbody').html(listHtml);
+            			},
+            			error: function (err) {
+            			}
+            		});
+            	}
+            	else {
+					//Replace with searching row
+            	}
+            },
+
             getLookupData: function(){
                 //Gets lookup data from Giant Bomb
                 var config = window.lfg.config;
@@ -414,6 +572,32 @@
 
             goToList: function () {
             	document.querySelector('app-router').go('/requests');
+            },
+
+            searchRowClick: function (e) {
+            	
+            	var cusElem = this;
+            	$(cusElem.$.selected_game_error).hide();
+
+            	var element = e.target;
+            	if (element.tagName.toLowerCase() !== 'tr') {
+            		element = $(e.target).parents('tr').get(0);
+            	}
+
+            	//Get the url and the gametitle
+            	cusElem.request.game = $(element).find('.game-title').html();
+            	cusElem.request.gameid = $(element).find('.search-item-id').val();
+            	var imageUrl = $(element).find('.search-image').attr('src');
+
+            	if (imageUrl !== null && imageUrl !== undefined && imageUrl !== '') {
+            		//cusElem.request.images.list_url = window.lfg.utils.convertToBase64(imageUrl);
+            		cusElem.request.images.list_url = imageUrl;
+            	}
+            	
+            	$(cusElem.$.selected_game).html(cusElem.request.game);
+
+            	//close modal
+            	$(cusElem.$.game_tag).closeModal();
             },
 
             initializeData: function () {
@@ -427,9 +611,15 @@
             		system: '',
             		date: '',
             		time: '',
+            		gamercount: '1',
             		gamertag: '',
 					description: '',
-            		mic: false
+					mic: false,
+					images: {
+						list_url: '',
+						profile_url: ''
+					},
+					customDate: false
             	};
 
             	this.systems = [
@@ -438,7 +628,6 @@
 					{ name: 'PS4', value: 'ps4' },
 					{ name: 'Xbox 360', value: 'xbox360' },
 					{ name: 'Xbox One', value: 'xboxOne' },
-					{ name: 'Steam Machine', value: 'steam' },
 					{ name: 'Wii', value: 'wii' },
 					{ name: 'Wii U', value: 'wiiu' }
             	];
@@ -457,7 +646,11 @@
             	$('#request_system').parent().find('.select-dropdown').removeClass('invalid');
             },
 
+			
             registerPlugins: function () {
+
+            	$('.modal-trigger').leanModal();
+
             	$(this.$.request_date).pickadate({
             		selectMonths: true,
 					selectYears: 15
@@ -515,6 +708,10 @@
             	$(document).on('change', '#' + this.$.request_date.id, function () {
             		$(this).removeClass('invalid');
             	});
+
+            	$(document).on('keypress', '#request_gamer_count', this.verifyDigitOnly.bind(this));
+            	$(document).on('input', '#search_request_game', this.doVideoGameSearch.bind(this));
+            	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
             },
 
             registerDropListPlugin: function () {
@@ -546,6 +743,7 @@
             	var time_date = $(this.$.request_time).timeEntry('getTime');
             	this.request.date = $(this.$.request_date).pickadate('picker').get('select', 'mm/dd/yyyy');
             	this.request.time = time_date !== null && time_date !== undefined && time_date !== '' ? time_date : null;
+
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var authData = JSON.parse(authJSON);
 
@@ -556,12 +754,17 @@
 
             	if (this.validateGameRequest(this.request) !== false && authData !== null && authData !== undefined) {
 
-            		var request_date = Date.parse(this.request.date);
+					//If the date or time is null, do this
+            		if (this.request.time == null || this.request.time) {
+            			this.request.time = Date.now();
+            		}
+
+            		var request_date = this.request.date == null || this.request.date == undefined || this.request.date == '' ? Date.now() : Date.parse(this.request.date);
 
             		this.request.time.setFullYear(request_date.getFullYear());
             		this.request.time.setMonth(request_date.getMonth(), request_date.getDate());
             		this.request.time.setDate(request_date.getDate());
-
+            		
             		var utcDate = this.convertDateToUtc(this.request.time);
             		var createdUTC = this.convertDateToUtc(new Date.now());
 
@@ -571,12 +774,14 @@
             			game: this.request.game.toLowerCase(),
             			gametitle: this.request.game,
             			giantbombid: this.request.gameid,
+            			gamercount: this.request.gamercount,
             			system: this.request.system,
             			datetime: utcDate,
             			mic: this.request.mic,
             			description: this.request.description,
             			created: createdUTC,
-						uid: authData.uid
+            			uid: authData.uid,
+            			images: this.request.images
             		}
 
 					//custom index for searching & ordering games & giantbomb ids in lexicographical/chronologic order really just a hack
@@ -594,8 +799,20 @@
             	}
             },
 
+            showDateSelection: function () {
+            	this.request.customDate = true;
+            	$('.date-right-now').hide(0, function () {
+            		$('.date-selection').show();
+            	});
+            },
+
             validateGameRequest: function (request) {
             	var valid = true;
+
+            	if (request.gameid == null || request.gameid == undefined || request.gameid == '') {
+            		$(this.$.selected_game_error).show();
+            		valid = false;
+            	}
 
             	if (request.title === null || request.title === undefined || request.title === '') {
             		$(this.$.request_title).addClass('invalid');
@@ -607,22 +824,39 @@
             		valid = false;
             	}
 
+            	if (request.gamercount !== null && request.gamercount !== undefined && request.gamercount !== '') {
+            		if (!$.isNumeric(request.gamercount)) {
+            			$(this.$.request_gamer_count).addClass('invalid');
+            			valid = false;
+            		}
+            	}
+
             	if (request.system === null || request.system === undefined || request.system === '') {
             		$(this.$.request_system).parent().find('.select-dropdown').addClass('invalid');
             		valid = false;
             	}
 
-            	if (request.date === null || request.date === undefined || request.date === '') {
-            		$(this.$.request_date).addClass('invalid');
-            		valid = false;
-            	}
+            	if (request.customDate) {
+            		if (request.date === null || request.date === undefined || request.date === '') {
+            			$(this.$.request_date).addClass('invalid');
+            			valid = false;
+            		}
 
-            	if (request.time === null || request.time === undefined || request.time === '') {
-            		$(this.$.request_time).addClass('invalid');
-            		valid = false;
+            		if (request.time === null || request.time === undefined || request.time === '') {
+            			$(this.$.request_time).addClass('invalid');
+            			valid = false;
+            		}
             	}
 
             	return valid;
+            },
+
+            verifyDigitOnly: function (e) {
+            	//if the letter is not digit then display error and don't type anything
+            	if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            		return false;
+            	}
+            	return true;
             },
 
             created: function () {

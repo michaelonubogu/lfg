@@ -123,4 +123,14 @@ ul.ui-autocomplete .ui-menu-item:hover {
 	display:none;
 }
 
+.search-result-row {
+	border-radius:3px;
+}
+
+.search-result-row:hover {
+	color: #e65100 !important;
+	background-color: #ffe0b2;
+	cursor: pointer;
+}
+
 

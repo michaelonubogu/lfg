@@ -103,6 +103,16 @@
 					return date.toString('MMM dd, yyyy h:mm tt');
 				},
 				
+				convertToBase64: function (imageUrl) {
+					var image = new Image();
+					var canvas = document.createElement('canvas');
+					var context = canvas.getContext('2d');
+					
+					image.src = imageUrl;
+					context.drawImage(image, 0, 0);
+					return canvas.toDataURL();
+				},
+				
 				clearWhiteSpace: function (str) {
 					var re = / /g;
 					return str.toString().replace(re, '');
