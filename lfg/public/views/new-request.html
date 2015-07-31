@@ -38,9 +38,13 @@
         :host{
         }
 
+		.row .col {
+			padding-left:0 !important;
+		}
+
         .logo-link{
             text-decoration: none;
-            font-size:2rem;
+            font-size:1.5rem;
             color:#ffffff;
             margin-left:-15px !important;
         }
@@ -112,7 +116,7 @@
         .lfg-input.input-field input[type=text]{
             border-bottom: 1px solid #ffffff;
             box-shadow: 0 1px 0 0 #ffffff;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
         }
 
 		.lfg-input.input-field input[type=number]{
@@ -268,7 +272,7 @@
     <template>
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
-                <paper-toolbar class="tall lfg-drawer-toolbar">
+                <paper-toolbar class="medium-tall lfg-drawer-toolbar">
 
                 </paper-toolbar>
                 <div fit class="orange darken-3">
@@ -276,7 +280,7 @@
 				</div>
             </paper-header-panel>
             <paper-header-panel mode="scroll" main class="lfg-main-header-panel">
-                <paper-toolbar class="tall lfg-main-toolbar">
+                <paper-toolbar class="medium-tall lfg-main-toolbar">
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-icon-button icon="arrow-back" on-click="goToList"></paper-icon-button>
                     <div flex></div>
@@ -292,137 +296,143 @@
                 </paper-toolbar>
                 <div fit class="content-area">
                     <br>
-                    <form id="new_request_form" class="col s12">
-						<!--<input value="{{request.title}}" />-->
-                        <div class="row">
-                            <div class="lfg-input input-field col s12">
-                                <i class="mdi-action-grade prefix"></i>
-                                <input id="request_title" type="text" class="validate" value="{{request.title::input}}" />
-                                <label for="request_title">What is it you want to do?</label>
-                            </div>
-                        </div>
 
+					<div id="new_request_form">
+						<!--Request Activity-->
 						<div class="row">
+							<div class="col s12">
+								<i class="mdi-action-grade white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">What is it you want to do?</label>
+							</div>
+							<div class="lfg-input input-field col s12">
+								<input id="request_title" type="text" class="validate" value="{{request.title::input}}" />
+							</div>
+						</div>
+
+						<!--System-->
+						<div class="row">
+							<div class="col s12">
+								<i class="mdi-hardware-tv white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">For which system?</label>
+							</div>
 							<div class="lfg-input select input-field col s12">
-								<i class="mdi-hardware-tv prefix"></i>
 								<select id="request_system">
 									<option value="" disabled selected></option>
 								</select>
-								<label>For Which System?</label>
 							</div>
 						</div>
 
-						<div class="row">
-							<div class="lfg-input input-field col s12">
-								<i class="mdi-hardware-gamepad prefix"></i>
-								<div class="row" style="margin-left:2.2rem; margin-top:3rem;">
-									<div class="col s2">
-										<a class="waves-effect waves-block-light btn yellow accent-2 orange-text text-darken-3 modal-trigger" href="#game_tag">
-											<i class="material-icons">search</i>
-										</a>
-									</div>
-									<div class="col s10">
-										<h6 id="selected_game_error" style="font-size:1.35rem; display:none;" class="red-text ">*You must tag a game to your request</h6>
-										<h6 id="selected_game" style="font-size:1.35rem;" class="yellow-text text-accent-2">{{request.game::input}}</h6>
-									</div>
+						<!--Video Game-->
+						<div class="row" style="margin-top:40px;">
+							<div class="col s12">
+								<i class="mdi-hardware-gamepad white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">In what game?</label>
+							</div>
+							<div class="row" style="margin-top:40px;">
+								<div class="lfg-input input-field col s10">
+									<input id="selected_game" type="text" class="validate" readonly placeholder="Click the yellow search button">
 								</div>
-								<label for="request_game">In What Game?</label>
-							</div>
-						</div>
-
-                        <div class="row">
-							<div class="lfg-input input-field col s12 date-right-now" >
-								<i class="material-icons prefix">access_time</i>
-								<div class="row" style="margin-left:2.2rem; margin-top:3rem;">
-									<div class="col s3">
-										<h5 class="yellow-text text-accent-2">Now</h5>
-									</div>
-									<div class="col s1" style="margin-top:12px;">
-										<h6>or</h6>
-									</div>
-									<div class="col s6" style="margin-top:8px;">
-										<a class=" btn-flat white-text" on-click="showDateSelection">
-											<i class="material-icons left">today</i>
-											<span style="text-transform:none;">Select a Date & Time</span>
-										</a>
-									</div>
+								<div class="col s2" style="margin-top: 26px;">
+									<a style="width:100%;" class="waves-effect waves-block-light btn yellow accent-2 orange-text text-darken-3 modal-trigger" href="#game_tag">
+										<i class="material-icons">search</i>
+									</a>
 								</div>
-								<label for="request_game">When do you want to play?</label>
-							</div>
-
-                            <div class="lfg-input input-field col s7 date-selection" style="display:none;">
-                                <i class="mdi-action-today prefix"></i>
-                                <input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
-                                <label for="request_date">On What Day?</label>
-                            </div>
-
-							<div class="lfg-input input-field col s5 date-selection" style="display:none;">
-								<i class="mdi-device-access-time prefix"></i>
-								<input id="request_time" type="text" class="validate" value={{request.time::input}}>
-								<label for="request_time">At What Time?</label>
-							</div>
-                        </div>
-
-						<div class="row" >
-							<div class="lfg-input input-field col s12">
-								<i class="material-icons prefix">accessibility</i>
-								<input id="request_gamer_count" type="number" min="1" value={{request.gamercount::input}}>
-								<label for="request_gamer_count" class="active">How many players do you need?</label>
 							</div>
 						</div>
 
-						<div class="row">
+
+						<!--Time-->
+						<div class="row date-right-now" style="margin-top:35px;">
+							<div class="col s12 m6 l4">
+								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">access_time</i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">When do you want to play?</label>
+							</div>
+							<div class="col s12 m6 l8">
+								<label class="yellow-text text-accent-2 light" style="font-size:1.5rem; margin-right:2rem;">Right Now (Default)</label>
+								<span class="white-text thin">or</span>
+								<span>
+									<a class=" btn-flat white-text" on-click="showDateSelection">
+										<i class="material-icons left">today</i>
+										<span style="text-transform:none;">Pick a Date & Time</span>
+									</a>
+								</span>
+							</div>
+						</div>
+
+						<div class="row date-selection" style="margin-top:45px; display:none;">
+							<div class="col s7" style="margin-left:0;">
+								<div class="col s12">
+									<i class="mdi-action-today white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+									<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">On what day?</label>
+								</div>
+								<div class="lfg-input input-field col s12">
+									<input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
+								</div>
+							</div>
+							<div class="col s5">
+								<div class="col s12">
+									<i class="mdi-device-access-time white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+									<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">At what time?</label>
+								</div>
+								<div class="lfg-input input-field col s12">
+									<input id="request_time" type="text" class="validate" value={{request.time::input}}>
+								</div>
+							</div>
+						</div>
+
+						<!--Players-->
+						<div class="row" style="margin-top:40px;">
+							<div class="col s12">
+								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">accessibility</i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">Players needed?</label>
+							</div>
 							<div class="lfg-input input-field col s12">
-								<i class="mdi-action-picture-in-picture prefix"></i>
+								<input id="request_gamer_count" type="text" min="1" value={{request.gamercount::input}}>
+							</div>
+						</div>
+
+						<!--Gamer tag-->
+						<div class="row" style="margin-top:40px;">
+							<div class="col s12">
+								<i class="mdi-action-picture-in-picture white-text" style="margin-right:10px; font-size:1.5rem;"></i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">What's your gamer tag? (Optional)</label>
+							</div>
+							<div class="lfg-input input-field col s12">
 								<input id="request_gamertag" type="text" class="validate" value={{request.gamertag::input}}>
-								<label>What's your Gamer Tag? (Optional)</label>
 							</div>
 						</div>
 
-						<div class="row">
+
+						<!--Description-->
+						<div class="row" style="margin-top:40px;">
+							<div class="col s12">
+								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">assignment</i>
+								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">Tell us more about what you want to do (Optional)</label>
+							</div>
 							<div class="lfg-input input-field col s12">
-								<i class="mdi-action-assignment prefix"></i>
 								<textarea id="request_description" type="text" spellcheck="false" class="materialize-textarea" length="250" value={{request.description::input}}></textarea>
-								<label>Tell us more about what you wanna do (Optional)</label>
 							</div>
 						</div>
 
-						<!--<div class="row">
-							<div class="lfg-input select input-field col s8">
-								<i class="mdi-maps-place prefix"></i>
-								<select id="request_city">
-									<option value="" disabled selected></option>
-								</select>
-								<label>In What City?</label>
+						<!--Mics-->
+						<div class="row" style="margin-top:40px;">
+							<div class="col s1" style="margin-top: -15px;">
+								<i class="mdi-hardware-headset-mic white-text" style="font-size:2rem;"></i>
 							</div>
+							<div class="col s5 mic-required"><label class="white-text" style="font-size:1rem;">Are microphones required?</label></div>
+							<div class="col s4">
+								<div class="switch">
+									<label class="white-text" style="font-size:1rem;">
+										<span class="negative">No</span>
+										<input type="checkbox" checked="{{request.mic::change}}">
+										<span class="lever"></span>
+										<span class="positive">Yes</span>
+									</label>
+								</div>
+							</div>
+						</div>
 
-							<div class="lfg-input select input-field col s4">
-								<i class="prefix"></i>
-								<select id="request_state">
-									<option value="" disabled selected></option>
-								</select>
-								<label>And Which State?</label>
-							</div>
-						</div>-->
-                        <br>
-                        <div class="row">
-                            <div class="col s1" style="margin-top: -15px;">
-                                <i class="mdi-hardware-headset-mic white-text" style="font-size:2rem;"></i>
-                            </div>
-                            <div class="col s5 mic-required"><label class="white-text" style="font-size:1rem;">Are microphones required?</label></div>
-                            <div class="col s4">
-                                <div class="switch">
-                                    <label class="white-text" style="font-size:1rem;">
-                                        <span class="negative">No</span>
-                                        <input type="checkbox" checked="{{request.mic::change}}">
-                                        <span class="lever"></span>
-                                        <span class="positive">Yes</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-						<br />
-						<div class="row">
+						<div class="row" style="margin-top:40px;">
 							<div class="col s12">
 								<paper-button id="request_create_button" raised on-click="saveRequest">
 									<iron-icon icon="done"></iron-icon>
@@ -431,7 +441,7 @@
 							</div>
 						</div>
 						<br /><br />
-                    </form>
+					</div>
 
 					<div id="success_message" class="center-align" style="display:none;">
 						<h4 class="white-text">Your Gaming Request was created!</h4>
@@ -577,6 +587,7 @@
             searchRowClick: function (e) {
             	
             	var cusElem = this;
+            	$(this.$.selected_game).removeClass('invalid');
             	$(cusElem.$.selected_game_error).hide();
 
             	var element = e.target;
@@ -594,7 +605,7 @@
             		cusElem.request.images.list_url = imageUrl;
             	}
             	
-            	$(cusElem.$.selected_game).html(cusElem.request.game);
+            	$(cusElem.$.selected_game).val(cusElem.request.game);
 
             	//close modal
             	$(cusElem.$.game_tag).closeModal();
@@ -784,9 +795,13 @@
             			images: this.request.images
             		}
 
-					//custom index for searching & ordering games & giantbomb ids in lexicographical/chronologic order really just a hack
-            		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
-            		newRequest.giantbombindex = newRequest.giantbombid + window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
+					//Firebase Search Indexes
+            		//custom index for searching & ordering requests in lexicographical/chronologic order -  really just a hack
+            		var lexicoIndex = window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
+
+            		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + lexicoIndex;
+            		newRequest.giantbombindex = newRequest.giantbombid + lexicoIndex;
+            		newRequest.systemgameindex = newRequest.system + newRequest.gameindex;
 
             		//Save new request content;
             		var newRequestRef = requestsRef.push(newRequest);
@@ -810,7 +825,7 @@
             	var valid = true;
 
             	if (request.gameid == null || request.gameid == undefined || request.gameid == '') {
-            		$(this.$.selected_game_error).show();
+            		$(this.$.selected_game).addClass('invalid');
             		valid = false;
             	}
 

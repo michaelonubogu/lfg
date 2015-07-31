@@ -50,14 +50,63 @@
 			color: #424242;
 		}
 
-		.filter-tags {
+		.tag-neutral {
 			background-color:#ffffff; 
+			color: #bdbdbd;
 			font-size:1rem; 
 			padding:3px 13px; 
-			border:solid 1px #BDBDBD; 
+			border:solid 2px #BDBDBD; 
 			border-radius:5px;
 			cursor:pointer;
-			margin-left:15px;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.psn-filter-tag {
+			background-color:#01579B; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #01579B; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.xbox-filter-tag {
+			background-color:#5DCB17; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #5DCB17; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.wii-filter-tag {
+			background-color:#03A9F4; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #03A9F4; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.pc-filter-tag {
+			background-color:#F44336; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #F44336; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
 			max-height:30px !important;
 		}
 
@@ -109,7 +158,7 @@
 			cursor: pointer;
 			min-height:125px;
 			border: none !important;
-			padding-left:20px !important;
+			padding-left:10px !important;
 			/*margin-bottom:7px;*/
 			/*margin-top:7px !important;*/
 		}
@@ -131,7 +180,7 @@
         .lfg-main-toolbar{
             --paper-toolbar-background:{
                  background-color: transparent !important;
-             };
+             }; 
         }
 
         .lfg-drawer-toolbar{
@@ -213,6 +262,16 @@
 			.flaticon-update {
 				margin-top: 2px !important;
 			}
+
+			.profile-icon-row {
+				margin-top:-150px !important;
+			}
+        }
+
+		@media (min-width: 640px) and (max-width: 992px){
+			.profile-icon-row {
+				margin-top:-150px !important;
+			}
         }
     </style>
 
@@ -251,7 +310,7 @@
 					</div>-->
 				</div>
             </paper-header-panel>
-            <paper-header-panel mode="waterfall" main class="lfg-main-header-panel">
+            <paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
                 <paper-toolbar class="medium-tall white lfg-main-toolbar">
 					<paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
                     <!--<paper-icon-button icon="arrow-back"></paper-icon-button>-->
@@ -270,16 +329,17 @@
                     </div>
 					<div class="bottom" style="width:100%;">
 						<div layout horizontal>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">PS3</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">PS4</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">X360</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">X1</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">Wii</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">Wii U</span>
-							<span class="grey-text text-lighten-1 center center-align filter-tags">PC</span>
+							<!--style="background-color:#01579B; border-color:#01579B; color:#ffffff !important;"-->
+							<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="wii">Wii</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
 							<span flex></span>
 							<span>
-								<paper-fab icon="add" mini  class="white-text text-darken-4 lfg-paper-fab" on-click="newRequest"></paper-fab>
+								<paper-fab  icon="add" style="margin-right:18px;" mini  class="white-text text-darken-4 lfg-paper-fab" on-click="newRequest"></paper-fab>
 							</span>
 						</div>
 						<!--<span><a class="waves-effect waves-block waves-light orange darken-4 btn">New Request</a></span>-->
@@ -294,9 +354,16 @@
 							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
 								<div class="row">
 									<div class="col s12 m12 l2">
-										<img class="request-list-image" src="[[item.images.list_url]]" width="160" />
+										<template is="dom-if" if="{{item.images.list_url}}">
+											<img class="request-list-image" src="[[item.images.list_url]]" width="160" />
+										</template>
+										<template is="dom-if" if="{{isImageBlank(item.images.list_url)}}">
+											<div layout vertical center-center class="white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+												<label class="white-text">{{item.gametitle}}</label>
+											</div>
+										</template>
 									</div>
-									<div class="col s12 m12 l10">
+									<div class="col s12 m12 l7">
 										<div class="item-content-container">
 											<div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
 											<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
@@ -306,6 +373,9 @@
 												<span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.gamercount)]]</span>
 											</div>
 										</div>
+									</div>
+									<div class="col s12 m12 l2 right right-align profile-icon-row" style="margin-top:30px;">
+										<img id$="{{getImageId(item.key)}}" alt="" style="position:relative;" class="circle" width="60" height="60">
 									</div>
 								</div>
 							</li>
@@ -394,6 +464,117 @@
             },
 
         	/* Functions */
+            addNeutralTag: function (node) {
+            	$(node).addClass('tag-neutral');
+            },
+
+            activateFilterTag: function (e) {
+            	var cusElem = this;
+            	var system = e.target.dataset.system;
+
+            	$('.filter-tags').each(function () {
+            		cusElem.clearSystemTagClass($(this).get(0));
+            	});
+
+            	switch (system) {
+
+            		case 'pc':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('pc-filter-tag');
+            			cusElem.systemFilter = 'pc';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'ps3':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('psn-filter-tag');
+            			cusElem.systemFilter = 'ps3';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'ps4':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('psn-filter-tag');
+            			cusElem.systemFilter = 'ps4';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'xbox360':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('xbox-filter-tag');
+            			cusElem.systemFilter = 'xbox360';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'xboxOne':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('xbox-filter-tag');
+            			cusElem.systemFilter = 'xboxOne';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'wii':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('wii-filter-tag');
+            			cusElem.systemFilter = 'wii';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+
+            		case 'wiiu':
+            			cusElem.clearNeutralTagClass(e.target);
+            			$(e.target).addClass('wii-filter-tag');
+            			cusElem.systemFilter = 'wiiu';
+            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			break;
+            	}
+            },
+
+            clearNeutralTagClass: function (node) {
+            	$(node).removeClass('tag-neutral');
+            },
+
+            clearSystemTagClass: function (node) {
+            	var system = node.dataset.system;
+
+            	switch (system) {
+
+            		case 'pc':
+            			$(node).removeClass('pc-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps3':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps4':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xbox360':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xboxOne':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wii':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wiiu':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+            	}
+            },
+
             changeSort: function (e) {
             	var anchor_elem = e.target;
             	this.dataops.sort = anchor_elem.dataset.sort;
@@ -488,6 +669,8 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
 								});
             				break;
@@ -506,7 +689,25 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
+								});
+            				break;
+
+            			case this.querytype.bysystem:
+            				requestsRef
+								.orderByChild('systemgameindex')
+								.startAt(this.systemFilter)
+								.endAt(this.systemFilter + '~')
+								.limitToFirst(this.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									request.key = snapshot.key();
+									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
+									if (request.systemgameindex !== lastrequest.systemgameindex) { customElem.push('requests', request); };
 								});
             				break;
 
@@ -524,6 +725,8 @@
 									request.key = snapshot.key();
 									request.priority = snapshot.getPriority();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -550,6 +753,8 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									customElem.push('requests', request);
 								});
             				break;
@@ -569,6 +774,25 @@
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
+									customElem.push('requests', request);
+								});
+            				break;
+
+
+            			case this.querytype.bysystem:
+            				requestsRef
+								.orderByChild('systemgameindex')
+								.startAt(this.systemFilter)
+								.endAt(this.systemFilter + '~')
+								.limitToFirst(this.dataops.limit)
+								.on('child_added', function (snapshot) {
+									var request = snapshot.val() || {};
+									request.key = snapshot.key();
+									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									customElem.push('requests', request);
 								});
             				break;
@@ -585,6 +809,8 @@
 									request.priority = snapshot.getPriority();
 									request.key = snapshot.key();
 									request.systemColor = customElem.getSystemColor(request.system);
+									request.description = customElem.truncateText(request.description, 65);
+									customElem.getUserProfile(request);
 									customElem.push('requests', request);
 								}, function (errorObject) {
 									console.log("The read failed: " + errorObject.code);
@@ -592,6 +818,21 @@
             				break;
             		}
             	}
+            },
+
+            getImageId: function (key) {
+            	return 'img' + key;
+            },
+
+            getUserProfile: function (request) {
+            	var cusElem = this;
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
+            	userRef.once("value", function (snapshot) {
+            		var user = snapshot.val() || {};
+            		if (user) {
+            			document.getElementById("img" + request.key).src = user.profilepic;
+            		}
+            	});
             },
 
             getGamerCount: function (count) {
@@ -620,11 +861,11 @@
             			break;
 
             		case 'xbox360':
-            			return 'XBOX 360';
+            			return 'X360';
             			break;
 
             		case 'xboxOne':
-            			return 'XBOX ONE';
+            			return 'X1';
             			break;
 
             		case 'wii':
@@ -671,6 +912,10 @@
             	}
             },
 
+            isImageBlank: function (url) {
+            	return (url == null || url == undefined || url == '');
+            },
+
             loadRequest: function (e) {
             	var listelem = e.target;
             	if (listelem.className.indexOf('request-card-item') === -1 && listelem.className.indexOf('request-list-item') === -1) {
@@ -692,6 +937,11 @@
                 $(this.$.search_dropdown).fadeIn(100, function () {
                     $('#search_input').focus();
                 });
+            },
+
+            truncateText: function (text, limit) {
+				//TODO: Factor in the window/screen size
+            	return text.length <= limit ? text : text.substring(0, limit) + '...';
             },
 
             containerScroll: function (e) {
@@ -726,8 +976,11 @@
             	this.querytype = {
             		bygame: 'bygame',
             		byid: 'byid',
+					bysystem: 'bysystem',
 					none: 'none'
             	};
+
+            	this.systemFilter = 'none';
 
             	this.dataops = {
 					orderby: '',
@@ -754,6 +1007,7 @@
             	$('#search_input').on('keypress', this.doSearch.bind(this));
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
             	$(document).on('click', '.search-result-link', this.doResultSearchWithClick.bind(this));
+            	$(document).on('click', '.filter-tags', this.activateFilterTag.bind(this));
             },
 
             registerPlugins: function() {

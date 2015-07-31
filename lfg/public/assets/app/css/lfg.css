@@ -35,12 +35,12 @@ html,body {
     outline: none;
     height: 3rem;
     line-height: 3rem;
-    width: calc(100% - 3rem);
+    /*width: calc(100% - 3rem);*/
     font-size: 1.5rem;
     margin: 0 0 15px 0;
     padding: 0;
     display: block; 
-	margin-left: 3rem;
+	/*margin-left: 3rem;*/
 }
 
 .lfg-input .select-wrapper i {
@@ -52,7 +52,7 @@ html,body {
 }
 
 .lfg-input .select-wrapper .dropdown-content {
-	margin-left: 3rem;
+	/*margin-left: 3rem;*/
 }
 
 .lfg-input .select-wrapper .dropdown-content li span {
