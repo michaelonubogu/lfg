@@ -479,54 +479,195 @@
             	switch (system) {
 
             		case 'pc':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('pc-filter-tag');
-            			cusElem.systemFilter = 'pc';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('pc-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'pc';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'ps3':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('psn-filter-tag');
-            			cusElem.systemFilter = 'ps3';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'ps3';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'ps4':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('psn-filter-tag');
-            			cusElem.systemFilter = 'ps4';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'ps4';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'xbox360':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('xbox-filter-tag');
-            			cusElem.systemFilter = 'xbox360';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'xbox360';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'xboxOne':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('xbox-filter-tag');
-            			cusElem.systemFilter = 'xboxOne';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'xboxOne';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'wii':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('wii-filter-tag');
-            			cusElem.systemFilter = 'wii';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'wii';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
 
             		case 'wiiu':
-            			cusElem.clearNeutralTagClass(e.target);
-            			$(e.target).addClass('wii-filter-tag');
-            			cusElem.systemFilter = 'wiiu';
-            			cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'wiiu';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
             			break;
             	}
+            },
+
+            clearActiveTag: function (exceptionNode) {
+            	$('.filter-tags').each(function () {
+            		if ($(this).data('system') !== $(exceptionNode).data('system')) {
+            			$(this).removeClass('filter-active');
+            		}
+            	});
             },
 
             clearNeutralTagClass: function (node) {
@@ -583,6 +724,33 @@
             	this.getRequests(null, this.querytype.none, false);
             },
 
+            containerScroll: function (e) {
+            	var cusElem = this;
+            	var container = e.target;
+            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
+            		// reached bottom of page - run our call for pagination
+
+            		if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+            				cusElem.getRequests(null, cusElem.querytype.bysystem, true);
+            			}
+            			else {
+            				cusElem.getRequests(null, this.querytype.none, true);
+            				/*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
+            			}
+            		}
+            		else {
+            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
+            			}
+            			else {
+            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
+            				/*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
+            			}
+            		}
+            	}
+            },
+
             doSearch: function (e) {
             	var query = $('#search_input').val();
 
@@ -594,10 +762,23 @@
 					 * autocomplete ties to a gameid.
 					 *
 					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :| */
-
+            		query = query !== null && query !== undefined && query !== '' ? window.lfg.utils.clearWhiteSpace(query) : '';
             		this.dataops.query = query;		//save the query incase we need it for scrolling
             		//this.getRequests(this.dataops.sort, true, query.toLowerCase());
-            		this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+
+            		//Account for the system filters
+            		if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+            			this.getRequests(query.toLowerCase(), this.querytype.bysystem, false);
+            		}
+            		else {
+            			if (query !== null && query !== undefined && query !== '') {
+            				this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+            			}
+            			else {
+            				this.getRequests(null, this.querytype.none, false);
+            			}
+            		}
+            		//this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
             		$('#search_dropdown').fadeOut(100);
             	}
             	else {
@@ -633,9 +814,13 @@
             	var game = $(anchor).html().toLowerCase();
             	game = window.lfg.utils.clearWhiteSpace(game);
 
-            	//polymer.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
-            	//polymer.getRequests(giantbombid, this.querytype.byid, false);
-            	polymer.getRequests(game, this.querytype.bygame, false);
+            	//Account for the system filters
+            	if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+            		polymer.getRequests(game, polymer.querytype.bysystem, false);
+            	}
+            	else {
+            		polymer.getRequests(game, polymer.querytype.bygame, false);
+            	}
             	e.preventDefault();
             },
 
@@ -645,14 +830,14 @@
 
             getRequests: function (query, querytype, paginate) {
             	var customElem = this
-            	var requestsRef = this.firebaseRef.child('requests');
+            	var requestsRef = customElem.firebaseRef.child('requests');
 
             	if (paginate) {
-            		var lastrequest = this.requests[this.requests.length - 1];
+            		var lastrequest = customElem.requests[customElem.requests.length - 1];
 
             		//determine query type
             		switch (querytype) {
-            			case this.querytype.bygame:
+            			case customElem.querytype.bygame:
             				query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
 
             				//save the query & type (for pagination)
@@ -664,7 +849,7 @@
 								.orderByChild('gameindex')
 								.startAt(lastrequest.gameindex)
 								.endAt(query + '~')
-								.limitToFirst(this.dataops.limit + 1)
+								.limitToFirst(customElem.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -675,16 +860,16 @@
 								});
             				break;
 
-            			case this.querytype.byid:
+            			case customElem.querytype.byid:
             				//save the query & type (for pagination)
-            				this.dataops.query = query;
-            				this.dataops.querytype = querytype;
+            				customElem.dataops.query = query;
+            				customElem.dataops.querytype = querytype;
 
             				requestsRef
 								.orderByChild('giantbombindex')
 								.startAt(lastrequest.giantbombindex.toString())
 								.endAt(lastrequest.giantbombindex + '~')
-								.limitToFirst(this.dataops.limit + 1)
+								.limitToFirst(customElem.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -695,12 +880,14 @@
 								});
             				break;
 
-            			case this.querytype.bysystem:
+            			case customElem.querytype.bysystem:
             				requestsRef
 								.orderByChild('systemgameindex')
-								.startAt(this.systemFilter)
-								.endAt(this.systemFilter + '~')
-								.limitToFirst(this.dataops.limit + 1)
+								.startAt(lastrequest.systemgameindex.toString())
+								.endAt(lastrequest.systemgameindex.toString() + '~')
+								//.startAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query : customElem.systemFilter)
+								//.endAt(customElem.systemFilter + '~')
+								.limitToFirst(customElem.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -714,12 +901,12 @@
             			default:
             				//no query, so just go by priority
             				//save the query & type (for pagination)
-            				this.dataops.querytype = querytype;
+            				customElem.dataops.querytype = querytype;
 
             				requestsRef
 								.orderByPriority()
 								.startAt(lastrequest.priority)
-								.limitToFirst(this.dataops.limit + 1)
+								.limitToFirst(customElem.dataops.limit + 1)
 								.on("child_added", function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -735,20 +922,20 @@
             		}
             	}
             	else {
-            		this.requests = [];
+            		customElem.requests = [];
             		switch (querytype) {
-            			case this.querytype.bygame:          				
+            			case customElem.querytype.bygame:
             				query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
 
             				//save the query & type (for pagination)
-            				this.dataops.query = query;
-            				this.dataops.querytype = querytype;
+            				customElem.dataops.query = query;
+            				customElem.dataops.querytype = querytype;
 
             				requestsRef				
 								.orderByChild('gameindex')
 								.startAt(query)
 								.endAt(query + '~')
-								.limitToFirst(this.dataops.limit)
+								.limitToFirst(customElem.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -759,17 +946,17 @@
 								});
             				break;
 
-            			case this.querytype.byid:
+            			case customElem.querytype.byid:
 
             				//save the query & type (for pagination)
-            				this.dataops.query = query;
-            				this.dataops.querytype = querytype;
+            				customElem.dataops.query = query;
+            				customElem.dataops.querytype = querytype;
 
             				requestsRef
 								.orderByChild('giantbombindex')
 								.startAt(query.toString())
 								.endAt(query + '~')
-								.limitToFirst(this.dataops.limit)
+								.limitToFirst(customElem.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -781,12 +968,14 @@
             				break;
 
 
-            			case this.querytype.bysystem:
+            			case customElem.querytype.bysystem:
             				requestsRef
 								.orderByChild('systemgameindex')
-								.startAt(this.systemFilter)
-								.endAt(this.systemFilter + '~')
-								.limitToFirst(this.dataops.limit)
+								.startAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query : customElem.systemFilter)
+								.endAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query + '~' : customElem.systemFilter + '~')
+								//.startAt(customElem.systemFilter)
+								//.endAt(customElem.systemFilter + '~')
+								.limitToFirst(customElem.dataops.limit)
 								.on('child_added', function (snapshot) {
 									var request = snapshot.val() || {};
 									request.key = snapshot.key();
@@ -799,11 +988,11 @@
 
             			default:
             				//save the query & type (for pagination)
-            				this.dataops.querytype = querytype;
+            				customElem.dataops.querytype = querytype;
 
             				requestsRef
 								.orderByPriority()
-								.limitToFirst(this.dataops.limit)
+								.limitToFirst(customElem.dataops.limit)
 								.on("child_added", function (snapshot) {
 									var request = snapshot.val() || {};
 									request.priority = snapshot.getPriority();
@@ -830,7 +1019,11 @@
             	userRef.once("value", function (snapshot) {
             		var user = snapshot.val() || {};
             		if (user) {
-            			document.getElementById("img" + request.key).src = user.profilepic;
+            			var profileImage = document.getElementById("img" + request.key);
+
+            			if (profileImage !== null && profileImage !== undefined) {
+            				document.getElementById("img" + request.key).src = user.profilepic;
+            			}
             		}
             	});
             },
@@ -944,15 +1137,7 @@
             	return text.length <= limit ? text : text.substring(0, limit) + '...';
             },
 
-            containerScroll: function (e) {
-            	var container = e.target;
-            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
-            		// reached bottom of page - run our call for pagination
-            		//this.getRequests(polymer.dataops.sort, true, game.toLowerCase(), giantbombid);
-            		this.getRequests(this.dataops.query, this.dataops.querytype, true);
-            	}
-            },
-
+            
 			/* Init */
             initializeData: function () {
 

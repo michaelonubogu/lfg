@@ -337,6 +337,8 @@
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
             	var faye_client = new Faye.Client('http://localhost:8089/faye');
+
+				//Callback for Steam Authentication
             	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
 
             		if (customElem.steamWindow != null && customElem.steamWindow != undefined) {
