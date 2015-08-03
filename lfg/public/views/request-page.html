@@ -62,6 +62,31 @@
 			max-height:30px !important;
 		}
 
+		.new-request-button {
+			display:block;
+			background-color:transparent; 
+			color: #ffffff;
+			font-size:1rem; 
+			padding:6px 18px; 
+			border:solid 2px #ffffff; 
+			border-radius:5px;
+			cursor:pointer;
+			/*width:100%;*/
+			margin: 0 15px !important;
+			margin-top:10px !important;
+			max-height:60px !important;
+			text-align:center;
+			cursor:pointer;
+		}
+
+		.new-request-button:hover {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight:500;
+			box-shadow: 0 2px 5px 0 #e65100;
+		}
+
 		.psn-filter-tag {
 			background-color:#01579B; 
 			color:#ffffff !important;
@@ -158,10 +183,11 @@
 			cursor: pointer;
 			min-height:125px;
 			border: none !important;
-			padding-left:10px !important;
+			/*padding-left:20px !important;*/
 			/*margin-bottom:7px;*/
 			/*margin-top:7px !important;*/
 		}
+
 
 		.item-content-container {
 			/*margin-left: -65px;*/
@@ -170,6 +196,15 @@
 		.request-list-image {
 			border-radius: 5px;
 			/*margin-left: -50px;*/
+		}
+
+		.request-profile-image {
+			width: 42px;
+			height: 42px;
+			overflow: hidden;
+			left: 15px;
+			display: inline-block;
+			vertical-align: middle;
 		}
 
 		.request-list-item-container {
@@ -297,6 +332,8 @@
 					<div class="bottom white-text" style="font-size:1.05rem;">Rammone-X</div>-->
                 </paper-toolbar>
                 <div fit class="orange darken-3">
+					<a class="new-request-button" on-click="newRequest">Create a Request</a>
+
 					<side-nav-contents></side-nav-contents>
 					<!--<div style="padding-top:20px; height:45vh; border-bottom:1px solid #f57f17;">
 						<paper-item><iron-icon icon="view-day"></iron-icon>Requests</paper-item>
@@ -339,7 +376,7 @@
 							<span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
 							<span flex></span>
 							<span>
-								<paper-fab  icon="add" style="margin-right:18px;" mini  class="white-text text-darken-4 lfg-paper-fab" on-click="newRequest"></paper-fab>
+								<!--<paper-fab  icon="add" style="margin-right:18px;" mini  class="white-text text-darken-4 lfg-paper-fab" on-click="newRequest"></paper-fab>-->
 							</span>
 						</div>
 						<!--<span><a class="waves-effect waves-block waves-light orange darken-4 btn">New Request</a></span>-->
@@ -351,7 +388,7 @@
                 <div class="white lighten-3" style="margin-bottom:10%;">
 					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0;">						
 						<template is="dom-repeat" items="{{requests}}">
-							<li data-request-key$="[[item.key]]" class="collection-item request-list-item avatar" on-click="loadRequest">
+							<li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
 								<div class="row">
 									<div class="col s12 m12 l2">
 										<template is="dom-if" if="{{item.images.list_url}}">
@@ -375,7 +412,7 @@
 										</div>
 									</div>
 									<div class="col s12 m12 l2 right right-align profile-icon-row" style="margin-top:30px;">
-										<img id$="{{getImageId(item.key)}}" alt="" style="position:relative;" class="circle" width="60" height="60">
+										<img id$="{{getImageId(item.key)}}" alt="" style="position:relative;" class="circle request-profile-image" width="60" height="60">
 									</div>
 								</div>
 							</li>
@@ -1173,7 +1210,7 @@
             		filter: '',
             		query: '',
             		type: this.querytype.none,
-					limit: 50,
+					limit: 20,
             	}
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
@@ -1191,8 +1228,8 @@
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
             	$('#search_input').on('keypress', this.doSearch.bind(this));
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
-            	$(document).on('click', '.search-result-link', this.doResultSearchWithClick.bind(this));
-            	$(document).on('click', '.filter-tags', this.activateFilterTag.bind(this));
+            	$('.search-result-link').click(this.doResultSearchWithClick.bind(this));
+            	$('.filter-tags').click(this.activateFilterTag.bind(this));
             },
 
             registerPlugins: function() {
@@ -1207,7 +1244,8 @@
             },
 
 			/* Events */
-            newRequest: function(){
+            newRequest: function (e) {
+            	e.preventDefault();
                 document.querySelector('app-router').go('/new');
             },
 
