@@ -59,3 +59,4 @@ lfg/.ntvs_analysis.dat.tmp
 lfg/lfg.njsproj
 lfg/.ntvs_analysis.dat
 *.suo
+lfg/config.js
