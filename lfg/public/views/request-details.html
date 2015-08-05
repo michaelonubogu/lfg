@@ -24,7 +24,7 @@
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
 
 <!--Custom Imports-->
-<link rel="import" href="../imports/font-awesome.html">
+<link rel="import" href="../imports/font-awesome.html" />
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/materialize.html" />
 <link rel="import" href="../imports/side-nav-contents.html" />
@@ -42,6 +42,7 @@
 			margin-left: -15px !important;
 		}
 
+		
 		.tag-facebook {
 			background-color:#3B5998; 
 			color: #ffffff;
@@ -53,6 +54,7 @@
 			margin:0 5px;
 			max-height:30px !important;
 			z-index:1000;
+			width:40px;
 		}
 
 		.tag-twitter {
@@ -66,6 +68,62 @@
 			margin:0 5px;
 			max-height:30px !important;
 			z-index:1000;
+			width:40px;
+		}
+
+		.tag-neutral {
+			background-color:#ffffff; 
+			color: #bdbdbd;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #BDBDBD; 
+			border-radius:5px;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.psn-filter-tag {
+			background-color:#01579B; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #01579B; 
+			border-radius:5px;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.xbox-filter-tag {
+			background-color:#5DCB17; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #5DCB17; 
+			border-radius:5px;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.wii-filter-tag {
+			background-color:#03A9F4; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #03A9F4; 
+			border-radius:5px;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.pc-filter-tag {
+			background-color:#F44336; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #F44336; 
+			border-radius:5px;
+			margin:0 5px;
+			max-height:30px !important;
 		}
 
 		.profile-background {
@@ -98,6 +156,22 @@
 			width:100%;
 		}
 
+		.switch label.request-details input[type=checkbox].request-details:checked + .lever.request-details{
+            background-color: #7ED321;
+        }
+
+        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .lever.request-details:after{
+            background-color:#ccff90;
+        }
+
+        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .positive.request-details{
+            background-color:#ffff00 !important;
+        }
+
+        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .negative.request-details:after{
+            background-color:#ffff00 !important;
+        }
+
 		.request-list-image {
 			border-radius: 5px;
 			border:2px solid #ffffff;
@@ -112,11 +186,8 @@
 			margin-left: 0 !important;
 		}
 
-		.comment-area {
-			/*height: 200px;
-			max-height: 200px !important;
-			padding:0px 20px 10px 20px;
-			overflow-y: scroll !important;*/
+		.details-area {
+			padding:0px 20px 20px 20px;
 			
 		}
 
@@ -232,14 +303,18 @@
 			padding:0;
 		}
 
+		.request-profile-image {
+			width: 50px;
+			height: 50px;
+			overflow: hidden;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
 
 		@media (max-width: 640px) {
 			.logo-link {
 				margin-left: 0px;
-			}
-
-			.content-area {
-				padding: 0;
 			}
 
 			.lfg-paper-fab {
@@ -266,14 +341,14 @@
 				</div>
 			</paper-header-panel>
 			<paper-header-panel mode="scroll" main class="lfg-main-header-panel white">
-				<paper-toolbar class="tall lfg-main-toolbar">
+				<paper-toolbar class="tall lfg-main-toolbar request-details-party">
 					<div id="request_header_dopple" class="profile-background-dopple"></div>
 					<div id="request_header" class="profile-background"></div>
 					<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
 					<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
 					<div flex></div>
-					<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
-					<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
+					<span class="center center-align filter-tags tag-facebook"><i class="fa fa-facebook"></i></span>
+					<span class="center center-align filter-tags tag-twitter"><i class="fa fa-twitter"></i></span>
 					<div style="display:table-cell; text-align:center;" class="middle title">
 						<template is="dom-if" if="{{request.images.list_url}}">
 							<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
@@ -289,8 +364,42 @@
 					</div>
 				</paper-toolbar>
 
-				<div fit class="white content-area"></div>
-
+				<div fit class="white details-area request-details-party">
+					<div class="row" style="margin-top:30px !important;">
+						<div class="col s3 left left-align" >
+							<div class="switch">
+								<label class="white-text" style="font-size:1rem;">
+									<span class="negative">No</span>
+									<input type="checkbox">
+									<span class="lever"></span>
+									<span class="positive">Yes</span>
+								</label>
+							</div>
+						</div>
+						<div class="col s6 center center-align">
+							<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
+							<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+						</div>
+						<div class="col s3 right right-align">
+							<h6 class="grey-text" style="font-size:0.85rem;">10 mins ago</h6>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col s12 center center-aligned">
+							<img id="profile_image" alt="" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col s12 center center-align">
+							<h4 class="grey-text text-darken-2 light">[[request.title]]</h4>
+						</div>
+						<div class="col s12 center center-align">
+							<h6 class="grey-text text-darken-2">[[request.description]]</h6>
+						</div>
+					</div>
+				</div>
 
 				<!--<div fit class="content-area">
 			<div class="row">
@@ -405,8 +514,24 @@
 				</div>
 			</div>
 		</div>-->
-</paper-header-panel>
+			</paper-header-panel>
 		</paper-drawer-panel>
+
+		<div id="signin_overlay" class="layout fit" style="position:absolute; top:0; left:0; height:100%; width:100%; background-color:#ffffff; z-index:10000;">
+			<div layout vertical fit center-center>
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div><div class="gap-patch">
+							<div class="circle"></div>
+						</div><div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</template>
 </dom-module>
 
@@ -492,6 +617,86 @@
             	});
             },
 
+            getGamerCount: function (count) {
+            	if (count <= 1) {
+            		return '1 Gamer';
+            	}
+            	else {
+            		return count + ' Gamers';
+            	}
+            },
+
+            getSystemType: function (system) {
+
+            	switch (system) {
+
+            		case 'pc':
+            			return 'PC';
+            			break;
+
+            		case 'ps3':
+            			return 'PS3';
+            			break;
+
+            		case 'ps4':
+            			return 'PS4';
+            			break;
+
+            		case 'xbox360':
+            			return 'X360';
+            			break;
+
+            		case 'xboxOne':
+            			return 'X1';
+            			break;
+
+            		case 'wii':
+            			return 'Wii';
+            			break;
+
+            		case 'wiiu':
+            			return 'Wii U';
+            			break;
+            	}
+            },
+
+            getSystemClass: function (system) {
+
+            	var tagClass = "center center-align ";
+
+            	switch (system) {
+
+            		case 'pc':
+            			return tagClass + 'pc-filter-tag';
+            			break;
+
+            		case 'ps3':
+            			return tagClass + 'psn-filter-tag';
+            			break;
+
+            		case 'ps4':
+            			return tagClass + 'psn-filter-tag';
+            			break;
+
+            		case 'xbox360':
+            			return tagClass + 'xbox-filter-tag';
+            			break;
+
+            		case 'xboxOne':
+            			return tagClass + 'xbox-filter-tag';
+            			break;
+
+            		case 'wii':
+            			return tagClass + 'wii-filter-tag';
+            			break;
+
+            		case 'wiiu':
+            			return tagClass + 'wii-filter-tag';
+            			break;
+            	}
+            },
+
+            
             goToList: function () {
             	document.querySelector('app-router').go('/requests');
             },
@@ -571,6 +776,24 @@
             		//Set the request changed handler for any new comments
             		customElem.getComments(request.id);
             		customElem.setCoverImage();
+            		customElem.getUserProfile(request);
+
+            		$(customElem.$.signin_overlay).fadeOut();
+            	});
+            },
+
+            getUserProfile: function (request) {
+            	var cusElem = this;
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
+            	userRef.once("value", function (snapshot) {
+            		var user = snapshot.val() || {};
+            		if (user) {
+            			var profileImage = document.getElementById("profile_image");
+
+            			if (profileImage !== null && profileImage !== undefined) {
+            				profileImage.src = user.profilepic;
+            			}
+            		}
             	});
             },
 
