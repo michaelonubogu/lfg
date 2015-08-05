@@ -36,6 +36,7 @@
     <Compile Include="giantbomb.js" />
     <Compile Include="public\assets\app\js\app-config.js" />
     <Compile Include="public\assets\app\js\app-utils.js" />
+    <Compile Include="public\assets\app\js\blur.js" />
     <Compile Include="public\assets\app\js\date.js" />
     <Compile Include="public\assets\app\js\documentdbclient-1.0.0-min.js" />
     <Compile Include="public\assets\app\js\dweet.io.js" />

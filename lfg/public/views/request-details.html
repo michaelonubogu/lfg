@@ -42,6 +42,76 @@
 			margin-left: -15px !important;
 		}
 
+		.tag-facebook {
+			background-color:#3B5998; 
+			color: #ffffff;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #3B5998; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+			z-index:1000;
+		}
+
+		.tag-twitter {
+			background-color:#55ACEE; 
+			color: #ffffff;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #55ACEE; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+			z-index:1000;
+		}
+
+		.profile-background {
+			/*background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');*/
+			top:0;
+			left:0;
+			position: absolute !important;
+			height: 200px ;
+			background-size:cover;
+			border-bottom:solid 1px #ffee58;
+			width:100%;
+
+			filter: blur(8px);
+			-webkit-filter: blur(8px);
+			-moz-filter: blur(8px);
+			-o-filter: blur(8px);
+			-ms-filter: blur(8px);
+		}
+
+		.profile-background-dopple {
+			/*background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');*/
+			top:0;
+			left:0;
+			position: absolute !important;
+			height: 200px ;
+			background-size:cover;
+			border-bottom:solid 1px #ffee58;
+			width:100%;
+		}
+
+		.request-list-image {
+			border-radius: 5px;
+			border:2px solid #ffffff;
+		}
+
+		.text-shadow {
+			text-shadow: 0px 1px 1px #000;
+			mix-blend-mode: difference;
+		}
+
+		.title {
+			margin-left: 0 !important;
+		}
+
 		.comment-area {
 			/*height: 200px;
 			max-height: 200px !important;
@@ -96,7 +166,7 @@
 
 		.lfg-main-toolbar {
 			--paper-toolbar-background:{
-				background-color: transparent !important;
+				background-color: #ffffff !important;
 			};
 		}
 
@@ -123,6 +193,15 @@
 				margin-bottom: 3%;
 			}; 
 			--paper-fab-background: #e65100;
+		}
+
+		.lfg-menu-icon {
+			--paper-icon-button:{
+				/*text-shadow: 0px 5px 5px #00ff21;
+				border: 5px solid #00ff21;
+				color: #e65100;*/
+				mix-blend-mode: difference;
+			}
 		}
 
 		.collection-item {
@@ -186,133 +265,147 @@
 					<side-nav-contents></side-nav-contents>
 				</div>
 			</paper-header-panel>
-			<paper-header-panel mode="scroll" main class="lfg-main-header-panel">
+			<paper-header-panel mode="scroll" main class="lfg-main-header-panel white">
 				<paper-toolbar class="tall lfg-main-toolbar">
-					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-					<paper-icon-button icon="arrow-back" on-click="goToList"></paper-icon-button>
+					<div id="request_header_dopple" class="profile-background-dopple"></div>
+					<div id="request_header" class="profile-background"></div>
+					<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
+					<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
 					<div flex></div>
-					<!--<paper-icon-button icon="more-vert"></paper-icon-button>-->
-					<div class="middle"></div>
-					<div title class="bottom bottom-bar"></div>
-				</paper-toolbar>
-				<div fit class="content-area">
-					<div class="row">
-						<div class="col s12 m1">
-							<img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid white;" class="circle" width="60" height="60">
-						</div>
-						<div class="col s12 m8 white-text"><h5 style="font-weight:200;"><span class="yellow-text">[[user.username]]</span>'s Gaming Request</h5></div>
-						<div class="col s12 m3 white-text" style="margin-top:10px;">
-							<i class="fa fa-facebook-square fa-2x white-text" style="padding-right:10px;"></i>
-							<i class="fa fa-twitter-square fa-2x white-text" style="padding-right:10px;"></i>
-							<i class="fa fa-google-plus-square fa-2x white-text" style="padding-right:10px;"></i>
-							<!--<i class="fa fa-comment fa-2x white-text" style="padding-right:10px;"></i>-->
-							<!--<i class="fa fa-envelope fa-2x white-text" style="padding-right:10px;"></i>-->
-						</div>
+					<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
+					<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
+					<div style="display:table-cell; text-align:center;" class="middle title">
+						<template is="dom-if" if="{{request.images.list_url}}">
+							<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
+						</template>
+						<template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
+							<div layout vertical center-center class="white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+								<label class="white-text">{{request.gametitle}}</label>
+							</div>
+						</template>
 					</div>
-					<br /><br />
-					<div class="row request-details">
-						<div class="col s12 m4">
-							<div class="card-panel white requests-card-panel">
-							</div>
-						</div>
-						<div class="col s12 m8">
-							<div class="row">
-								<div class="col s12" style="margin-top:10px;"><h6 class="yellow-text" style="font-size:1.5rem; font-weight:300;">[[request.gametitle]]</h6></div>
-								<div class="col s12"><h4 class="white-text">[[request.title]]</h4>
-								</div>
-							</div>
-							<br />
-							<div class="row">
-								<div class="col s12 m2 input-field">
-									<h6 class="yellow-text" style="font-weight:300;">
-									<i class="fa fa-clock-o yellow-text" style="padding-right:5px;"></i>When</h6>
-								</div>
-								<div class="col s12 m9 input-field">
-									<h6 class="white-text">[[formatDate(request.datetime)]]</h6>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col s12 m2 input-field">
-									<h6 class="yellow-text" style="font-weight:300;">
-										<i class="fa fa-gamepad yellow-text" style="padding-right:5px;"></i>System</h6>
-								</div>
-								<div class="col s12 m9 input-field">
-									<h6 class="white-text">[[formatSystem(request.system)]]</h6>
-								</div>
-							</div>
-							<template is="dom-if" if="[[request.gamertag]]">
-								<div class="row">
-									<div class="col s12 m2 input-field">
-										<h6 class="yellow-text" style="font-weight:300;">
-											<i class="fa fa-tag yellow-text" style="padding-right:5px;"></i>Gamertag
-										</h6>
-									</div>
-									<div class="col s12 m9 input-field">
-										<h6 class="white-text">Rammone-X</h6>
-									</div>
-								</div>
-							</template>
-							<div class="row">
-								<div class="col s12 m2 input-field">
-									<h6 class="yellow-text" style="font-weight:300;">
-										<i class="fa fa-microphone yellow-text" style="padding-right:5px;"></i>Mic</h6>
-								</div>
-								<div class="col s12 m9 input-field">
-									<h6 class="white-text">[[formatMicRequest(request.mic)]]</h6>
-								</div>
-							</div>
+					<div class="bottom title bottom-bar">
+						<h5 class="white-text text-shadow">{{request.gametitle}}</h5>
+					</div>
+				</paper-toolbar>
+
+				<div fit class="white content-area"></div>
+
+
+				<!--<div fit class="content-area">
+			<div class="row">
+				<div class="col s12 m1">
+					<img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid white;" class="circle" width="60" height="60">
+				</div>
+				<div class="col s12 m8 white-text"><h5 style="font-weight:200;"><span class="yellow-text">[[user.username]]</span>'s Gaming Request</h5></div>
+				<div class="col s12 m3 white-text" style="margin-top:10px;">
+					<i class="fa fa-facebook-square fa-2x white-text" style="padding-right:10px;"></i>
+					<i class="fa fa-twitter-square fa-2x white-text" style="padding-right:10px;"></i>
+					<i class="fa fa-google-plus-square fa-2x white-text" style="padding-right:10px;"></i>
+				</div>
+			</div>
+			<br /><br />
+			<div class="row request-details">
+				<div class="col s12 m4">
+					<div class="card-panel white requests-card-panel">
+					</div>
+				</div>
+				<div class="col s12 m8">
+					<div class="row">
+						<div class="col s12" style="margin-top:10px;"><h6 class="yellow-text" style="font-size:1.5rem; font-weight:300;">[[request.gametitle]]</h6></div>
+						<div class="col s12"><h4 class="white-text">[[request.title]]</h4>
 						</div>
 					</div>
 					<br />
 					<div class="row">
-						<div class="col s12 input-field">
+						<div class="col s12 m2 input-field">
 							<h6 class="yellow-text" style="font-weight:300;">
-								<i class="fa fa-file-text yellow-text" style="padding-right:5px;"></i>Description
-							</h6>
-							<p class="white-text" style="font-weight:300; font-size: 1.15rem;">[[request.description]]</p>
+							<i class="fa fa-clock-o yellow-text" style="padding-right:5px;"></i>When</h6>
+						</div>
+						<div class="col s12 m9 input-field">
+							<h6 class="white-text">[[formatDate(request.datetime)]]</h6>
 						</div>
 					</div>
-					<br /><br />
-					<div class="white-text col s12 center-align"><h5 style="font-weight:300;">Comments</h5></div>
 					<div class="row">
-						<!--Text Editor-->
-						<textarea id="comment_editor">
-							
-						</textarea>
-					</div>
-					<div class="row comment-button-row">
-						<div class="col s6">
-							<a class="waves-effect waves-light btn orange darken-4 white-text" on-click="addComment">Post Comment</a>
+						<div class="col s12 m2 input-field">
+							<h6 class="yellow-text" style="font-weight:300;">
+								<i class="fa fa-gamepad yellow-text" style="padding-right:5px;"></i>System</h6>
+						</div>
+						<div class="col s12 m9 input-field">
+							<h6 class="white-text">[[formatSystem(request.system)]]</h6>
 						</div>
 					</div>
-
-					<div class="row" style="margin-top:10% !important;">
-						<div class="input-field card-panel comments-card-panel">
-							<ul id="request_comments_list" class="collection">
-								<!--<li class="collection-item avatar">
-									<i class="mdi-file-folder circle"></i>
-									<span class="title"><strong>CoolGamer</strong> wrote:</span><br /><br />
-									<p>
-										Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
-										Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
-										Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
-									</p>
-									<a href="" class="grey-text secondary-content">June 23rd, 2015 @ 6:30AM</a>
-								</li>-->
-								<!--template is="dom-repeat" items="[[request.comments]]">
-									<li class="collection-item avatar">
-										<img src="images/yuna.jpg" alt="" class="circle">
-										<i class="mdi-file-folder circle"></i>
-										<span class="title"><strong>[[getCommenter(item.userkey)]]</strong> wrote:</span><br /><br />
-										<div id="[[setCommentId(item.id)]]" class="comment-placeholder" changed="[[setComment(item.id, item.comment)]]"></div>
-										<a href="" class="grey-text secondary-content">[[formatDate(item.created)]]</a>
-									</li>
-								</!--template>-->
-							</ul>
+					<template is="dom-if" if="[[request.gamertag]]">
+						<div class="row">
+							<div class="col s12 m2 input-field">
+								<h6 class="yellow-text" style="font-weight:300;">
+									<i class="fa fa-tag yellow-text" style="padding-right:5px;"></i>Gamertag
+								</h6>
+							</div>
+							<div class="col s12 m9 input-field">
+								<h6 class="white-text">Rammone-X</h6>
+							</div>
+						</div>
+					</template>
+					<div class="row">
+						<div class="col s12 m2 input-field">
+							<h6 class="yellow-text" style="font-weight:300;">
+								<i class="fa fa-microphone yellow-text" style="padding-right:5px;"></i>Mic</h6>
+						</div>
+						<div class="col s12 m9 input-field">
+							<h6 class="white-text">[[formatMicRequest(request.mic)]]</h6>
 						</div>
 					</div>
 				</div>
-			</paper-header-panel>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col s12 input-field">
+					<h6 class="yellow-text" style="font-weight:300;">
+						<i class="fa fa-file-text yellow-text" style="padding-right:5px;"></i>Description
+					</h6>
+					<p class="white-text" style="font-weight:300; font-size: 1.15rem;">[[request.description]]</p>
+				</div>
+			</div>
+			<br /><br />
+			<div class="white-text col s12 center-align"><h5 style="font-weight:300;">Comments</h5></div>
+			<div class="row">
+				<textarea id="comment_editor">
+
+				</textarea>
+			</div>
+			<div class="row comment-button-row">
+				<div class="col s6">
+					<a class="waves-effect waves-light btn orange darken-4 white-text" on-click="addComment">Post Comment</a>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top:10% !important;">
+				<div class="input-field card-panel comments-card-panel">
+					<ul id="request_comments_list" class="collection">
+						<li class="collection-item avatar">
+							<i class="mdi-file-folder circle"></i>
+							<span class="title"><strong>CoolGamer</strong> wrote:</span><br /><br />
+							<p>
+								Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
+								Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
+								Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
+							</p>
+							<a href="" class="grey-text secondary-content">June 23rd, 2015 @ 6:30AM</a>
+						</li>
+						template is="dom-repeat" items="[[request.comments]]">
+							<li class="collection-item avatar">
+								<img src="images/yuna.jpg" alt="" class="circle">
+								<i class="mdi-file-folder circle"></i>
+								<span class="title"><strong>[[getCommenter(item.userkey)]]</strong> wrote:</span><br /><br />
+								<div id="[[setCommentId(item.id)]]" class="comment-placeholder" changed="[[setComment(item.id, item.comment)]]"></div>
+								<a href="" class="grey-text secondary-content">[[formatDate(item.created)]]</a>
+							</li>
+					</ul>
+				</div>
+			</div>
+		</div>-->
+</paper-header-panel>
 		</paper-drawer-panel>
 	</template>
 </dom-module>
@@ -403,6 +496,10 @@
             	document.querySelector('app-router').go('/requests');
             },
 
+            isImageBlank: function (url) {
+            	return (url == null || url == undefined || url == '');
+            },
+
             setCommentId: function (id) {
             	return 'div_' + id;
             },
@@ -473,6 +570,7 @@
 
             		//Set the request changed handler for any new comments
             		customElem.getComments(request.id);
+            		customElem.setCoverImage();
             	});
             },
 
@@ -489,6 +587,19 @@
                 $.get(config.appUrl)
             },
 
+            setCoverImage: function () {
+            	var images = this.request !== null && this.request !== undefined ? this.request.images : {};
+
+            	if (images.list_url !== null && images.list_url !== undefined && images.list_url !== '') {
+            		//set the contents to our property
+            		var toolbar = document.getElementById("request_header");
+            		var toolbarDopple = document.getElementById("request_header_dopple");
+
+            		toolbar.style.backgroundImage = "url('" + images.list_url + "')";
+            		toolbarDopple.style.backgroundImage = "url('" + images.list_url + "')";
+            	}
+            },
+
             initializeData: function () {
             	this.getRequestKey();
             	this.request = {
@@ -501,16 +612,22 @@
             },
 
             registerPlugins: function () {
-            	CKEDITOR.replace('comment_editor', {
-            		toolbarGroups: [
-						{ name: 'document', groups: ['mode', 'document'] },			// Displays document group with its two subgroups.
- 						{ name: 'clipboard', groups: ['clipboard', 'undo'] },		// Group's name will be used to create voice label.
- 						{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
- 						{ name: 'links' }
-            		],
-            		uiColor: '#ffffff',
-            		htmlEncodeOutput: false
-            	});
+            	//CKEDITOR.replace('comment_editor', {
+            	//	toolbarGroups: [
+				//		{ name: 'document', groups: ['mode', 'document'] },			// Displays document group with its two subgroups.
+ 				//		{ name: 'clipboard', groups: ['clipboard', 'undo'] },		// Group's name will be used to create voice label.
+ 				//		{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+ 				//		{ name: 'links' }
+            	//	],
+            	//	uiColor: '#ffffff',
+            	//	htmlEncodeOutput: false
+            	//});
+
+            	//$(this.$.request_header).blurjs({
+            	//	source: 'body',
+            	//	radius: 7,
+            	//	overlay: 'rgba(255,255,255,0.4)'
+            	//});
             },
 
             registerEvents: function () {
@@ -525,13 +642,13 @@
 
             ready: function () {
             	this.initializeData();
-            	this.getRequest(this.requestkey);
             },
 
             attached: function () {
             	//called after ready();
             	this.registerPlugins();
             	this.registerEvents();
+            	this.getRequest(this.requestkey);
             }
         });
     })(window);
