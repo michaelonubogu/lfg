@@ -1,6 +1,6 @@
 html,body {
     margin: 0;
-    background-color: #ffffff ;
+    background-color: #ffffff;
 }
 
 #search_dropdown li.search-input-container:hover {
@@ -133,5 +133,21 @@ ul.ui-autocomplete .ui-menu-item:hover {
 	background-color: #ffe0b2;
 	cursor: pointer;
 }
+
+.reply-circle {
+
+			font-size: 18px;
+			line-height: 55px;
+			color: #fff;
+			background-color: #bdbdbd;
+			text-align: center;
+			width: 55px;
+			height: 55px;
+			overflow: hidden;
+			left: 15px;
+			display: inline-block;
+			vertical-align: middle;
+			border-radius:50%;
+		}
 
 

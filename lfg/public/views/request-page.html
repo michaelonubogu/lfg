@@ -410,6 +410,9 @@
 											
 						<template is="dom-repeat" items="{{requests}}">
 							<li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
+								<div style="width:100%" class="right right-align">
+									<h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 10px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.datetime)]]</h6>
+								</div>
 								<div class="row">
 									<div class="col s12 m12 l2">
 										<template is="dom-if" if="{{item.images.list_url}}">
@@ -439,7 +442,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col s12 m12 l2 right right-align profile-icon-row" style="margin-top:30px;">
+									<div class="col s12 m12 l2 right right-align profile-icon-row" style="margin-top:40px;">
 										<img id$="{{getImageId(item.key)}}" alt="" style="position:relative;" class="circle request-profile-image" width="60" height="60">
 									</div>
 								</div>
@@ -1206,6 +1209,11 @@
 
             getImageId: function (key) {
             	return 'img' + key;
+            },
+
+            getTimeLapse: function (date) {
+            	var convDate = new Date(date);
+            	return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
             },
 
             getUserProfile: function (request) {

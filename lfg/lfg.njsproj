@@ -47,6 +47,7 @@
     <Compile Include="public\assets\app\js\jquery.timeentry.js" />
     <Compile Include="public\assets\app\js\modernizr.custom.52158.js" />
     <Compile Include="public\assets\app\js\sha256-min.js" />
+    <Compile Include="public\assets\app\js\timeago.js" />
     <Compile Include="public\assets\app\js\underscore-min.js" />
     <Compile Include="public\assets\app\js\window.resizeStop.js" />
     <Compile Include="public\components\bower_components\app-router\app-router.js" />

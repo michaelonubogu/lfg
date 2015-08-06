@@ -156,6 +156,19 @@
 			width:100%;
 		}
 
+		.profile-background-overlay {
+			background:rgba(0,0,0,.75);
+            opacity:0.25;
+            -webkit-transition: opacity .25s ease;
+			-moz-transition: opacity .25s ease;
+
+			top:0;
+			left:0;
+			position: absolute !important;
+			height: 200px;
+			width:100%;
+		}
+
 		.switch label.request-details input[type=checkbox].request-details:checked + .lever.request-details{
             background-color: #7ED321;
         }
@@ -179,7 +192,7 @@
 
 		.text-shadow {
 			text-shadow: 0px 1px 1px #000;
-			mix-blend-mode: difference;
+			/*mix-blend-mode: difference;*/
 		}
 
 		.title {
@@ -201,34 +214,19 @@
 		    margin-top: 20px !important;
 		}
 
-		input[type=text].request-page {
-			background-color: transparent;
-			border: none;
-			border-bottom: none !important;
-			border-radius: 0;
-			outline: none;
-			height: 3rem;
-			width: 100%;
-			font-size: 1.5rem !important;
-			font-weight: 400;
-			margin: 0 0 15px 0;
-			padding: 0;
+		.lfg-input.input-field textarea {
+			color: #e65100;
+			border-bottom: 1px solid #bdbdbd;
 		}
 
-		/* label underline focus color */
-		input[type=text].request-page:focus {
-			border-bottom: none;
-			box-shadow: none;
+		.lfg-input.input-field textarea:focus {
+			border-bottom: 1px solid #f57c00;
+            box-shadow: 0 1px 0 0 #f57c00;
 		}
-		/* valid color */
-		input[type=text].request-page.valid {
-			border-bottom: none !important;
-			box-shadow: none !important;
-		}
-		/* invalid color */
-		input[type=text].request-page.invalid {
-			border-bottom: none;
-			box-shadow: none;
+
+		.lfg-input.input-field textarea.invalid {
+			border-bottom: 1px solid #f44336;
+            box-shadow: 0 1px 0 0 #f44336;
 		}
 
 		.request-list-item {
@@ -271,7 +269,7 @@
 				/*text-shadow: 0px 5px 5px #00ff21;
 				border: 5px solid #00ff21;
 				color: #e65100;*/
-				mix-blend-mode: difference;
+				/*mix-blend-mode: difference;*/
 			}
 		}
 
@@ -311,6 +309,33 @@
 			vertical-align: middle;
 		}
 
+		.reply-circle {
+
+			font-size: 18px;
+			line-height: 55px;
+			color: #fff;
+			background-color: #bdbdbd;
+			text-align: center;
+			width: 55px;
+			height: 55px;
+			overflow: hidden;
+			left: 15px;
+			display: inline-block;
+			vertical-align: middle;
+			border-radius:50%;
+		}
+
+		.request-info-area {
+			padding:0 10%;
+		}
+
+		.comment-row {
+			margin-top:40px !important;
+		}
+
+		.add-comment-row {
+			cursor:pointer;
+		}
 
 		@media (max-width: 640px) {
 			.logo-link {
@@ -344,6 +369,7 @@
 				<paper-toolbar class="tall lfg-main-toolbar request-details-party">
 					<div id="request_header_dopple" class="profile-background-dopple"></div>
 					<div id="request_header" class="profile-background"></div>
+					<div class="profile-background-overlay"></div>
 					<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
 					<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
 					<div flex></div>
@@ -381,22 +407,57 @@
 							<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
 						</div>
 						<div class="col s3 right right-align">
-							<h6 class="grey-text" style="font-size:0.85rem;">10 mins ago</h6>
+							<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>
 						</div>
 					</div>
 					<br />
-					<div class="row">
-						<div class="col s12 center center-aligned">
-							<img id="profile_image" alt="" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
+
+					<div class="request-info-area">
+						<div class="row">
+							<div class="col s12 center center-aligned">
+								<img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
+							</div>
+							<div class="col s12 center center-align">
+								<h6 class="light grey-text">[[user.username]]</h6>
+							</div>
 						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col s12 center center-align">
-							<h4 class="grey-text text-darken-2 light">[[request.title]]</h4>
+						
+						<div class="row">
+							<div class="col s12 center center-align">
+								<h4 class="grey-text text-darken-2 light">[[request.title]]</h4>
+							</div>
+							<div class="col s12 center center-align">
+								<h6 class="grey-text text-darken-2">[[request.description]]</h6>
+							</div>
 						</div>
-						<div class="col s12 center center-align">
-							<h6 class="grey-text text-darken-2">[[request.description]]</h6>
+
+						<br /><div class="divider"></div><br />
+
+						<div class="row add-comment-row">
+							<div class="col s12  add-comment-message">
+								<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
+								<label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
+							</div>
+
+							<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
+								<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
+							</div>
+							<div class="col s12 center center-align add-comment-control add-comment-button" style="display:none;">
+								<a class="waves-effect waves-light btn orange darken-4 white-text" style="text-transform:none;" on-click="addComment">Post Comment</a>
+							</div>
+						</div>
+
+						<div id="request_comments_list" class="row comment-row">
+							<!--<template is="dom-repeat" items="{{request.comments}}">
+								<div class="col s12">
+									<img id$="{{item.userimgid}}" src$="{{item.user.profilepic}}" class="reply-circle" style="margin-right:30px;" />
+									<span>
+										<label id$="{{item.userlabelid}}" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>
+										<label class="grey-text" style="font-size:0.85rem;">{{item.created}}</label>
+									</span>
+									<p style="padding:0 0 0 88px; font-size:0.85rem; margin-top:-6px;">{{item.comment}}</p>
+								</div>
+							</template>-->
 						</div>
 					</div>
 				</div>
@@ -566,57 +627,43 @@
             addComment: function () {
             	var customElem = this;
             	var requestkey = customElem.request.id;
-            	var authData = sessionStorage.getItem('authData');
+            	
+            	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var authData = JSON.parse(authJSON);
+
+            	if (authData == null || authData == undefined) {
+            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		authData = JSON.parse(localJSON);
+            	}
 
             	if (authData !== null && authData !== undefined) {
-            		var comment = CKEDITOR.instances.comment_editor.getData();
-            		if (comment == null || comment == undefined || comment == '') {
-            			//throw error
+            		var userComment = $(customElem.$.comment_text).val();
+
+            		if (userComment === null || userComment === undefined || userComment === '') {
+            			$(customElem.$.comment_text).addClass('invalid');
             			return;
             		}
-
-            		//Escape user input from ckEditor
-            		comment = filterXSS(comment);
 
             		var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
             		var newCommentRef = requestCommentRef.push({
             			requestkey: requestkey,
             			uid: authData.uid,
-            			comment: comment,
+            			comment: userComment,
             			created: this.convertDateToUtc(new Date.now())
             		});
             		var key = newCommentRef.key();
             		if (key !== null && key !== undefined && key !== '')
             			Materialize.toast('Comment Added', 4000);
+
+            		$('.add-comment-control').hide();
+            		$('.add-comment-message').fadeIn();
             	}
             	else {
-					//display error message
+					//display error message for no user signed in
             	}
             },
 
-            getComments: function (requestkey) {
-            	var customElem = this;
-            	var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
-
-            	//Get the latest comment added
-            	commentsRef.orderByChild('requestkey').equalTo(requestkey).on('child_added', function (childsnapshot) {
-            		var commentHtml = '';
-            		var comment = childsnapshot.val();
-            		comment.id = childsnapshot.key();
-
-            		if (comment !== null && comment !== undefined) {
-            			commentHtml += '<li class="collection-item avatar" style="padding-top: 20px; padding-bottom: 40px;">';
-            			commentHtml += '<i class="mdi-file-folder circle"></i>';
-            			commentHtml += '<span class="title"><strong>' + customElem.getCommenter(comment.userkey) + '</strong> wrote:</span><br /><br />';
-            			commentHtml += '<div id="' + customElem.setCommentId(comment.id) + '" class="comment-placeholder" >' + comment.comment + '</div>';
-            			commentHtml += '<a href="" class="grey-text secondary-content">' + customElem.formatDate(comment.created) + '</a>';
-            			commentHtml += '</li>';
-
-            			$(customElem.$.request_comments_list).append(commentHtml);
-            		}
-            	});
-            },
-
+            
             getGamerCount: function (count) {
             	if (count <= 1) {
             		return '1 Gamer';
@@ -696,6 +743,10 @@
             	}
             },
 
+            getTimeLapse: function (date) {
+            	var convDate = new Date(date);
+            	return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
+            },
             
             goToList: function () {
             	document.querySelector('app-router').go('/requests');
@@ -757,8 +808,73 @@
             	}
             },
 
-            getCommenter: function (username) {
-            	return 'CoolGamer';
+            getCommenter: function (comment) {
+            	var cusElem = this;
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + comment.uid);
+            	userRef.once("value", function (snapshot) {
+            		var user = snapshot.val();
+            		if (user !== null && user !== undefined) {
+            			var profileImage = document.getElementById('img_' + comment.id);
+            			var userLabel = document.getElementById('label_' + comment.id);
+
+            			if (profileImage !== null && profileImage !== undefined) {
+            				profileImage.src = user.profilepic;
+            			}
+
+            			if (userLabel !== null && userLabel !== undefined) {
+            				$(userLabel).html(user.username);
+            			}
+
+            			//update the comment
+            			var commentObj = _.findWhere(cusElem.request.comments, { id: comment.id });
+
+            			if (commentObj !== null && commentObj !== undefined) {
+            				commentObj.user = user;
+            				cusElem.notifyPath('request.comments', cusElem.request.comments);
+            			}
+            		}
+            	});
+            },
+
+            getComments: function (requestkey) {
+            	var customElem = this;
+            	var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
+
+            	//Get the latest comment added
+            	commentsRef.orderByChild('requestkey').equalTo(requestkey).on('child_added', function (childsnapshot) {
+            		var commentHtml = '';
+            		var comment = childsnapshot.val();
+            		comment.id = childsnapshot.key();
+
+            		var requestcomment = {
+            			id: comment.id,
+            			comment: comment.comment,
+            			created: customElem.getTimeLapse(comment.created),
+            			requestkey: comment.requestkey,
+            			uid: comment.uid,
+            			userimgid: 'img_' + comment.id,
+            			userlabelid: 'label_' + comment.id,
+            			user: {}
+            		}
+
+            		//customElem.request.comments.push(requestcomment);
+            		//customElem.notifyPath('request.comments', customElem.request.comments);
+
+            		customElem.request.comments.push(requestcomment);
+            		
+            		commentHtml += '<div class="col s12" style="margin-bottom:30px;">';
+            		commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" style="margin-right:30px;" />';
+            		commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>';
+            		commentHtml +=	'<label class="grey-text" style="font-size:0.85rem;">' + requestcomment.created + '</label>';
+            		commentHtml +=	'</span>';
+            		commentHtml +=	'<p style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
+            		commentHtml += '</div>';
+
+            		$(customElem.$.request_comments_list).prepend(commentHtml);
+
+            		//Get Commenter and their profile image
+            		customElem.getCommenter(requestcomment);
+            	});
             },
 
             getRequest: function (key) {
@@ -772,7 +888,8 @@
             		request.id = snapshot.key();
 
             		customElem.request = request;
-
+            		customElem.request.comments = comments;
+					
             		//Set the request changed handler for any new comments
             		customElem.getComments(request.id);
             		customElem.setCoverImage();
@@ -788,6 +905,7 @@
             	userRef.once("value", function (snapshot) {
             		var user = snapshot.val() || {};
             		if (user) {
+            			cusElem.user = user;
             			var profileImage = document.getElementById("profile_image");
 
             			if (profileImage !== null && profileImage !== undefined) {
@@ -823,15 +941,19 @@
             	}
             },
 
+            showCommentField: function () {
+            	$(this.$.comment_text).val('');
+            	$('.add-comment-message').hide(0, function () {
+            		$('.add-comment-control').fadeIn();
+            	});
+            },
+
             initializeData: function () {
             	this.getRequestKey();
             	this.request = {
             		comments: []
             	};
-            	this.user = {
-            		username: 'Rammone-X',
-					id: ''
-            	};
+            	this.user = {};
             },
 
             registerPlugins: function () {
@@ -857,6 +979,11 @@
             	$('.comment-hidden-trigger').on('change', function () {
             		alert($(this).val());
             	})
+
+            	$(document).on('click', '.add-comment-message', this.showCommentField.bind(this));
+            	$(document).on('input', this.$.comment_text, function () {
+            		$(this).removeClass('invalid');
+            	});
             },
 
             created: function () {

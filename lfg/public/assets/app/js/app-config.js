@@ -102,6 +102,11 @@
 				);
 			},
 			
+			convertUtcToLocalDate: function (utcDate) {
+				var date = new Date(utcDate);
+				return date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+			},
+			
 			convertUtcToLocal: function (utcDate) {
 				var date = new Date(utcDate);
 				date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -145,6 +150,10 @@
 						return this.indexMapping[i].value;
 					}
 				}
+			},
+
+			timeSince: function(date) {
+				return jQuery.timeago(date);
 			}
 
 		}
