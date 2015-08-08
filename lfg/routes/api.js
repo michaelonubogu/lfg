@@ -1,6 +1,7 @@
 ﻿var express = require('express');
 var http = require('http');
 var url = require('url');
+var path = require('path');
 var openid = require('openid');
 var faye = require('faye');
 var FirebaseTokenGenerator = require("firebase-token-generator");
@@ -33,6 +34,18 @@ var relyingParty = new openid.RelyingParty(
 
 router.get('/', function (req, res) {
 	res.send('respond with a resource');
+});
+
+router.get('/request/:id', function (req, res) {
+	var filePath = path.join(__dirname, "/../public");
+	//res.send({ 'requestid' : req.params.id });
+	res.sendFile(filePath + '/request.html');	//Send the home page - we have logic to route there.
+});
+
+router.get('/game/:id', function (req, res) {
+	var filePath = path.join(__dirname, "/../public");
+	//res.send({ 'gameid' : req.params.id });
+	res.sendFile(filePath + '/game.html');
 });
 
 router.get('/steam/authenticate', function (req, res) {
@@ -88,16 +101,16 @@ router.get('/giantbomb/search', function (req, res) {
 	});
 });
 
-router.get('/giantbomb/games', function (req, res) {
-//...
-});
+//router.get('/giantbomb/games', function (req, res) {
+////...
+//});
 
-router.get('/giantbomb/game/:id', function (req, res) {
-//...
-});
+//router.get('/giantbomb/game/:id', function (req, res) {
+////...
+//});
 
-router.get('/giantbomb/platforms', function (req, res) {
-//...
-});
+//router.get('/giantbomb/platforms', function (req, res) {
+////...
+//});
 
 module.exports = router;

@@ -46,6 +46,7 @@
     <Compile Include="public\assets\app\js\jquery.plugin.min.js" />
     <Compile Include="public\assets\app\js\jquery.timeentry.js" />
     <Compile Include="public\assets\app\js\modernizr.custom.52158.js" />
+    <Compile Include="public\assets\app\js\page-director.js" />
     <Compile Include="public\assets\app\js\sha256-min.js" />
     <Compile Include="public\assets\app\js\timeago.js" />
     <Compile Include="public\assets\app\js\underscore-min.js" />
@@ -4131,6 +4132,7 @@
     <Content Include="public\components\d-calendar\demo.html" />
     <Content Include="public\components\d-calendar\index.html" />
     <Content Include="public\components\d-calendar\README.md" />
+    <Content Include="public\game.html" />
     <Content Include="public\imports\crypto-js.html" />
     <Content Include="public\imports\flaticons.html" />
     <Content Include="public\imports\font-awesome.html" />
@@ -4140,6 +4142,7 @@
     <Content Include="public\imports\material_icons.html" />
     <Content Include="public\imports\side-nav-contents.html" />
     <Content Include="public\imports\side-nav-profile.html" />
+    <Content Include="public\request.html" />
     <Content Include="public\views\user-setup.html" />
     <Content Include="public\index.html" />
     <Content Include="public\views\landing-page.html" />

@@ -30,6 +30,8 @@
 				users: 'users'
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
+			tunneling: true,
+			tempSecureTunnel: 'http://0cfaf200.ngrok.io',
 			getFirebaseUrl: function () {
 				return this.firebaseUrl;
 			},
@@ -150,6 +152,22 @@
 						return this.indexMapping[i].value;
 					}
 				}
+			},
+			
+			postToFacebook: function (options) {
+				var href = '';
+				if (config.tunneling === true) {
+					href = config.tempSecureTunnel + '/api/' + options.entityType + '/' + options.entityId
+				}
+				else {
+					href = window.location.protocol + '//' + window.location.host + '/api/' + options.entityType + '/' + options.entityId
+				}
+
+				FB.ui(
+					{
+						method: 'share',
+						href: href
+					}, function (response) { });
 			},
 
 			timeSince: function(date) {

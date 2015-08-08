@@ -4,6 +4,14 @@
     <title>LFG - Find people to play games with</title>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
+	<!--Open Graph Meta Tags-->
+	<meta property="og:title"content="Gaming Request" />
+	<meta property="og:site_name" content="Parallel" />
+	<meta property="og:description" content="Parellel is an app that helps you find other gamers online to play your favorite games with. 
+		  Create gaming requests for your favorite games, search for other players, respond to gaming requests by other gamers, & track your favorite games" />
+	<meta property="fb:app_id" content="857142311041951" />
+	<meta property="og:type" content="website" />
+
     <!-- Web Components Polyfils -->
     <script src="components/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
@@ -15,29 +23,6 @@
 
     <!-- Polymer & Polymer Core Components -->
 	<link rel='import' href='components/bower_components/polymer/polymer.html'>
-    <!--<link rel="import" href="components/bower_components/iron-a11y-keys/iron-a11y-keys.html">
-    <link rel="import" href="components/bower_components/iron-flex-layout/iron-flex-layout.html">
-    <link rel="import" href="components/bower_components/iron-pages/iron-pages.html">
-    <link rel="import" href="components/bower_components/iron-ajax/iron-ajax.html">
-
-    <link rel="import" href="components/bower_components/iron-icons/iron-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/av-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/communication-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/iron-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/editor-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/hardware-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/image-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/maps-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/notification-icons.html">
-    <link rel="import" href="components/bower_components/iron-icons/social-icons.html">-->
-
-    <!-- Polymer Paper Components -->
-    <!--<link rel="import" href="components/bower_components/paper-ripple/paper-ripple.html">
-    <link rel="import" href="components/bower_components/paper-item/paper-item.html">
-    <link rel="import" href="components/bower_components/paper-input/paper-input.html">
-    <link rel="import" href="components/bower_components/paper-button/paper-button.html">
-    <link rel="import" href="components/bower_components/paper-dialog/paper-dialog.html">
-    <link rel="import" href="components/bower_components/paper-icon-button/paper-icon-button.html">-->
 
     <!-- Scripts & Other dependencies -->
     <script src="components/bower_components/jquery/dist/jquery.min.js"></script>
@@ -48,13 +33,14 @@
 	<!-- Html sanitization-->
 	<script src="components/bower_components/xss/dist/xss.min.js"></script>
 
+	<script src="assets/app/js/app-config.js"></script>
+	<script src="assets/app/js/page-director.js"></script>
 	<script src="assets/app/js/jquery.plugin.min.js"></script>
 	<script src="assets/app/js/jquery.timeentry.js"></script>
     <script src="assets/app/js/underscore-min.js"></script>
 	<script src="assets/app/js/timeago.js"></script>
     <script src="assets/app/js/date.js"></script>
 	<script src="components/bower_components/ckeditor/ckeditor.js"></script>
-    <script src="assets/app/js/app-config.js"></script>
 	
 
     <!-- Custom Imports -->
@@ -77,12 +63,14 @@
     <app-route path="*" import="/views/not-found-page.html"></app-route>
 </app-router>
 
+<script src="assets/app/js/page-director.js"></script>
+
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId      : '857142311041951',
-			xfbml      : true,
-			version    : 'v2.3'
+			appId: '857142311041951',
+			xfbml: true,
+			version: 'v2.4'
 		});
 	};
 
@@ -93,9 +81,11 @@
 		js.src = "//connect.facebook.net/en_US/sdk.js";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
+
 </script>
 
 <script>
+
     //var DEFAULT_ROUTE = 'home';
     document.addEventListener('WebComponentsReady', function() {
     	document.querySelector('app-router').init();

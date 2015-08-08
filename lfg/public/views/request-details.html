@@ -373,8 +373,12 @@
 					<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
 					<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
 					<div flex></div>
-					<span class="center center-align filter-tags tag-facebook"><i class="fa fa-facebook"></i></span>
-					<span class="center center-align filter-tags tag-twitter"><i class="fa fa-twitter"></i></span>
+					<a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+						<i class="fa fa-facebook"></i>
+					</a>
+					<a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
+						<i class="fa fa-twitter"></i>
+					</a>
 					<div style="display:table-cell; text-align:center;" class="middle title">
 						<template is="dom-if" if="{{request.images.list_url}}">
 							<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
@@ -928,6 +932,39 @@
                 $.get(config.appUrl)
             },
 
+            postToFacebook: function () {
+            	//message : options.message,
+            	//name : options.title,
+            	//link : options.url,
+            	//description : options.description,
+            	//picture : options.image
+
+            	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var authData = JSON.parse(authJSON);
+
+            	if (authData == null || authData == undefined) {
+            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		authData = JSON.parse(localJSON);
+            	}
+
+            	var message = 'Check out this gaming request for ' + this.request.gametitle + ' created on the Parallel app';
+
+            	if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
+            		message = 'I created a gaming request for ' + this.request.gametitle + ' on the Parallel app';
+            	}
+
+            	var options = {
+            		entityId: this.request.id,
+					entityType: 'request'
+            	};
+
+            	window.lfg.utils.postToFacebook(options);
+            },
+
+            postToTwitter: function () {
+            	alert('Post to Twitter');
+            },
+
             setCoverImage: function () {
             	var images = this.request !== null && this.request !== undefined ? this.request.images : {};
 
@@ -949,6 +986,7 @@
             },
 
             initializeData: function () {
+
             	this.getRequestKey();
             	this.request = {
             		comments: []
@@ -984,6 +1022,9 @@
             	$(document).on('input', this.$.comment_text, function () {
             		$(this).removeClass('invalid');
             	});
+
+            	//$(document).on('click', this.$.to_facebook, this.postToFacebook.bind(this));
+            	//$(document).on('click', this.$.to_twitter, this.postToTwitter.bind(this));
             },
 
             created: function () {
