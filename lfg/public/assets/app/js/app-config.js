@@ -31,7 +31,7 @@
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
 			tunneling: true,
-			tempSecureTunnel: 'http://0cfaf200.ngrok.io',
+			tempSecureTunnel: 'http://7b90c658.ngrok.io',
 			getFirebaseUrl: function () {
 				return this.firebaseUrl;
 			},
@@ -165,9 +165,32 @@
 
 				FB.ui(
 					{
-						method: 'share',
-						href: href
+						method: 'feed',
+						name: 'Gaming Request for ' + options.gametitle + ' on ' + options.system,
+						link: href,
+						description: options.description,
+						picture: options.photo
 					}, function (response) { });
+			},
+			
+			tweetOnTwitter: function (options) {
+				//Get app url
+				var href = '';
+				if (config.tunneling === true) {
+					href = config.tempSecureTunnel + '/api/' + options.entityType + '/' + options.entityId
+				}
+				else {
+					href = window.location.protocol + '//' + window.location.host + '/api/' + options.entityType + '/' + options.entityId
+				}
+				
+				options.message += ('%20' + encodeURIComponent(href));
+				
+				var url = 'https://twitter.com/intent/tweet?text=' + options.message;
+
+				window.open(
+					url,
+							'_blank' // <- This is what makes it open in a new window.
+				);
 			},
 
 			timeSince: function(date) {

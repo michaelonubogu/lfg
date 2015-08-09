@@ -947,22 +947,49 @@
             		authData = JSON.parse(localJSON);
             	}
 
-            	var message = 'Check out this gaming request for ' + this.request.gametitle + ' created on the Parallel app';
+            	var message = 'Find gamers to play ' + this.request.gametitle + ' on ' + this.formatSystem(this.request.system) + ' with Parallel';
 
-            	if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
-            		message = 'I created a gaming request for ' + this.request.gametitle + ' on the Parallel app';
-            	}
+            	//if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
+            	//	message = 'I created a gaming request for ' + this.request.gametitle + ' on the Parallel app';
+            	//}
 
             	var options = {
             		entityId: this.request.id,
-					entityType: 'request'
+            		entityType: 'request',
+            		gametitle: this.request.gametitle,
+            		system: this.formatSystem(this.request.system),
+            		description: message,
+            		photo: this.request.images.list_url
             	};
 
             	window.lfg.utils.postToFacebook(options);
             },
 
             postToTwitter: function () {
-            	alert('Post to Twitter');
+            
+            	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            	var authData = JSON.parse(authJSON);
+
+            	if (authData == null || authData == undefined) {
+            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		authData = JSON.parse(localJSON);
+            	}
+
+            	var message = 'Check out this gaming request to play ' + this.request.gametitle + ' for ' + this.formatSystem(this.request.system) + ' on the Parallel app';
+
+            	if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
+            		message = 'I created a gaming request to play ' + this.request.gametitle + ' on ' + this.formatSystem(this.request.system) + ' with the Parallel app. Check it out';
+            	}
+
+            	var encodedMessage = encodeURIComponent(message);
+
+            	var options = {
+            		entityId: this.request.id,
+            		entityType: 'request',
+            		message: encodedMessage
+            	};
+
+            	window.lfg.utils.tweetOnTwitter(options);
             },
 
             setCoverImage: function () {
