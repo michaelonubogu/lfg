@@ -48,7 +48,6 @@
 </head>
 <body unresolved>
 <app-router init="manual">
-    <!--<app-route path="/" import="/views/landing-page.html"></app-route>-->
 	<app-route path="/" import="/views/sign-in.html"></app-route>
     <app-route path="/requests" import="/views/request-page.html"></app-route>
     <app-route path="/new" import="/views/new-request.html"></app-route>
@@ -56,9 +55,6 @@
     <app-route path="/discover" import="/views/discover.html"></app-route>
 	<app-route path="/setup" import="/views/user-setup.html"></app-route>
 	<app-route path="/request/:requestkey" import="/views/request-details.html"></app-route>
-    <!--<app-route path="/new/:thingName" import="/views/new-profile.html"></app-route>
-    <app-route path="/nothing" import="/views/no-thing.html"></app-route>
-    <app-route path="/profile/:id" import="/views/profile.html"></app-route>-->
     <app-route path="*" import="/views/not-found-page.html"></app-route>
 </app-router>
 

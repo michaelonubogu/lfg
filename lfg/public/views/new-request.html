@@ -1,7 +1,6 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
 <link rel="import" href="../imports/layout.html">
 
-<!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
 <link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
@@ -25,8 +24,9 @@
 <link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../components/bower_components/paper-toggle-button/paper-toggle-button.html">
 
-<!-- Custom Imports -->
+
 <link rel="import" href="../imports/font-awesome.html">
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/materialize.html" />
@@ -42,17 +42,110 @@
 			padding-left:0 !important;
 		}
 
+		.selected-game {
+			color: #FB8C00 !important;
+			font-weight:400;
+		}
+
         .logo-link{
             text-decoration: none;
-            font-size:1.5rem;
-            color:#ffffff;
-            margin-left:-15px !important;
+            font-size:2rem;
+			/*margin-left:2%;*/
         }
+
+		.filter-tags {
+			width:65px;
+		}
+
+		.game-image {
+			border-radius: 5px;
+		}
+		
+		.tag-neutral {
+			background-color:#ffffff; 
+			color: #bdbdbd;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #BDBDBD; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.time-tag {
+			background-color:#ffffff; 
+			color: #bdbdbd;
+			font-size:1rem; 
+			padding:2px 13px 5px 13px; 
+			border:solid 2px #BDBDBD; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.time-tag.active {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight:500;
+			box-shadow: 0 1px 5px 0 #e65100;
+		}
+
+		.psn-filter-tag {
+			background-color:#01579B; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #01579B; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.xbox-filter-tag {
+			background-color:#5DCB17; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #5DCB17; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.wii-filter-tag {
+			background-color:#03A9F4; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #03A9F4; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
+
+		.pc-filter-tag {
+			background-color:#F44336; 
+			color:#ffffff !important;
+			font-size:1rem; 
+			padding:3px 13px; 
+			border:solid 2px #F44336; 
+			border-radius:5px;
+			cursor:pointer;
+			margin:0 5px;
+			max-height:30px !important;
+		}
 
 		#request_create_button {
 			background-color: #EF6C00;
 			color: #ffeb3b;
-			width:100%;
+			text-transform:none;
+			width:35%;
 		}
 
 		#paper-header-panel{
@@ -61,6 +154,11 @@
 
 		.picker__date-display {
 			background-color: #fb8c00 !important;
+		}
+
+		.lfg-toggle-button {
+			--paper-toggle-button-checked-button-color: #ffff00;
+			--paper-toggle-button-checked-bar-color: #fbc02d;
 		}
 
         .lfg-main-toolbar{
@@ -90,22 +188,44 @@
             --paper-fab-background: #e65100;
         }
 
+		.input-field {
+			margin-top:0 !important;
+			height:45px !important;
+		}
+
         .lfg-input{
-            color: #ffeb3b !important;
+			color: #757575 !important;
+			border:solid 2px #D5D5D5; 
+			border-radius:5px;
+            /*color: #ffeb3b !important;*/
         }
 
+		.lfg-input-details {
+			color: #757575 !important;
+			border:solid 2px #D5D5D5; 
+			border-radius:5px;
+			height:150px !important;
+			padding-right:5px;
+			overflow-y:auto;
+			overflow-x:hidden;
+		}
+
 		.lfg-input-search {
-			color: #ef6c00;
+			border:solid 2px #D5D5D5; 
+			border-radius:5px;
+			color: #f57c00;
 		}
 
-		.lfg-input.input-field textarea {
-			border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+		.lfg-input-details.input-field textarea {
+			border-bottom: none;
+            box-shadow: none;
+			margin:-2px 10px 0 10px !important;
+			height:40px;
 		}
 
-		.lfg-input.input-field textarea:focus {
-			border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+		.lfg-input-details.input-field textarea:focus {
+			border-bottom:none;
+            box-shadow: none;
 		}
 
         /* label color */
@@ -114,9 +234,17 @@
         }
 
         .lfg-input.input-field input[type=text]{
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
-            font-size: 1.75rem;
+            border-bottom: none;
+            box-shadow: none;
+			margin:-2px 10px 0 10px !important;
+            /*font-size: 1.75rem;*/
+        }
+
+		.lfg-input-search.input-field input[type=text]{
+            border: none !important;
+            box-shadow: none;
+			margin:-2px 10px 0 10px !important;
+            /*font-size: 1.75rem;*/
         }
 
 		.lfg-input.input-field input[type=number]{
@@ -126,9 +254,8 @@
         }
 
 		.lfg-input-search.input-field input[type=text]:focus {
-			color: #ef6c00;
-			border-bottom: 1px solid #f57c00 ;
-            box-shadow: 0 1px 0 0 #f57c00 ;
+			border-bottom: none;
+            box-shadow:none;
 		}
 
         /* label focus color */
@@ -138,8 +265,8 @@
 
         /* label underline focus color */
         .lfg-input.input-field input[type=text]:focus {
-            border-bottom: 1px solid #ffeb3b;
-            box-shadow: 0 1px 0 0 #ffeb3b;
+            border-bottom: none;
+            box-shadow:none;
         }
 
 		.lfg-input.input-field input[type=number]:focus {
@@ -148,8 +275,8 @@
         }
         /* valid color */
         .lfg-input.input-field input[type=text].valid {
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 0 1px 0 0 #ffffff;
+            border-bottom: none;
+            box-shadow:none;
         }
 
 		.lfg-input.input-field input[type=number].valid {
@@ -158,9 +285,8 @@
         }
 
 		.lfg-input-search.input-field input[type=text].valid {
-			color: #ef6c00;
-			border-bottom: 1px solid #f57c00 ;
-            box-shadow: 0 1px 0 0 #f57c00 ;
+			border-bottom: none;
+            box-shadow: none;
 		}
         /* invalid color */
         .lfg-input.input-field input[type=text].invalid {
@@ -189,6 +315,8 @@
         }
 
 		.lfg-input-search.input-field .prefix {
+			margin-top: 5px;
+			margin-left: 5px;
 			color: #9e9e9e ;
 		}
 
@@ -224,8 +352,8 @@
 
         .content-area{
             width:100%;
-            padding:0 10% 10% 10%;
-            background-color:#fb8c00;
+            padding:0 2.5% 10% 2.5%;
+            background-color:#ffffff;
         }
 
         .requests-card-panel{
@@ -279,164 +407,141 @@
 					<side-nav-contents></side-nav-contents>
 				</div>
             </paper-header-panel>
-            <paper-header-panel mode="scroll" main class="lfg-main-header-panel">
+            <paper-header-panel mode="scroll" main class="lfg-main-header-panel white">
                 <paper-toolbar class="medium-tall lfg-main-toolbar">
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-icon-button icon="arrow-back" on-click="goToList"></paper-icon-button>
                     <div flex></div>
-                    <!--<paper-icon-button icon="search"></paper-icon-button>
-                    <paper-icon-button icon="more-vert"></paper-icon-button>-->
                     <div class="middle">
                     </div>
-                    <div class="title bottom">
+                    <div class="bottom">
                         <template is="dom-if" if="{{!saveSuccess}}">
-							<a href="/" class="logo-link">New Gaming Request</a>
+							<label class="logo-link grey-text text-darken-2 light" style="margin-left: 12px;">New Gaming Request</label>
 						</template>
                     </div>
                 </paper-toolbar>
                 <div fit class="content-area">
-                    <br>
+					<div>Fill out this really short form and get your request going</div>
+                    <br><br />
 
 					<div id="new_request_form">
-						<!--Request Activity-->
+						<!--Game-->
+						<div id="search_row" class="row" style="cursor:pointer;">
+							<div class="col s12" style="margin-bottom:10px;">
+								<label class="grey-text text-darken-2" style="font-size:1rem;">Game</label>
+							</div>
+							<div layout horizontal class="col s12">
+								<span layout vertical center-center class="game-image-placeholder grey lighten-2 white-text" style="width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px;">
+									<i class="fa fa-search"></i>
+								</span>
+								<span id="selected_game_image_placeholder" layout vertical center-center class="game-image-placeholder white-text" style="display:none; background-color:#FB8C00; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px; font-size:0.75rem;"></span>
+								<img id="selected_game_image" class="game-image" style="display:none; margin-right:15px;" width="160" height="90"/>
+								<span id="selected_game" class="grey-text light" style="font-size:1.5rem; margin-top:30px;">Select Game</span>
+							</div>
+						</div>
+
+						<br />
+
+						<!--Console-->
 						<div class="row">
-							<div class="col s12">
-								<i class="mdi-action-grade white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">What is it you want to do?</label>
+							<div class="col s12" style="margin-bottom:10px;">
+								<label class="grey-text text-darken-2" style="font-size:1rem;">Console</label>
 							</div>
-							<div class="lfg-input input-field col s12">
-								<input id="request_title" type="text" class="validate" value="{{request.title::input}}" />
-							</div>
-						</div>
-
-						<!--System-->
-						<div class="row">
-							<div class="col s12">
-								<i class="mdi-hardware-tv white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">For which system?</label>
-							</div>
-							<div class="lfg-input select input-field col s12">
-								<select id="request_system">
-									<option value="" disabled selected></option>
-								</select>
+							<div layout horizontal class="col s12">
+								<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="wii">Wii</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</span>
+								<span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
 							</div>
 						</div>
 
-						<!--Video Game-->
-						<div class="row" style="margin-top:40px;">
-							<div class="col s12">
-								<i class="mdi-hardware-gamepad white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">In what game?</label>
-							</div>
-							<div class="row" style="margin-top:40px;">
-								<div class="lfg-input input-field col s10">
-									<input id="selected_game" type="text" class="validate" readonly placeholder="Click the yellow search button">
-								</div>
-								<div class="col s2" style="margin-top: 26px;">
-									<a style="width:100%;" class="waves-effect waves-block-light btn yellow accent-2 orange-text text-darken-3 modal-trigger" href="#game_tag">
-										<i class="material-icons">search</i>
-									</a>
-								</div>
-							</div>
-						</div>
-
+						<br />
 
 						<!--Time-->
-						<div class="row date-right-now" style="margin-top:35px;">
-							<div class="col s12 m6 l4">
-								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">access_time</i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">When do you want to play?</label>
+						<div class="row">
+							<div class="col s12" style="margin-bottom:10px;">
+								<label class="grey-text text-darken-2" style="font-size:1rem;">Time</label>
 							</div>
-							<div class="col s12 m6 l8">
-								<label class="yellow-text text-accent-2 light" style="font-size:1.5rem; margin-right:2rem;">Right Now (Default)</label>
-								<span class="white-text thin">or</span>
-								<span>
-									<a class=" btn-flat white-text" on-click="showDateSelection">
-										<i class="material-icons left">today</i>
-										<span style="text-transform:none;">Pick a Date & Time</span>
-									</a>
-								</span>
+							<div id="time_options" layout horizontal class="col s12">
+								<span id="time_right_now" class="center center-align time-tag">Right Now</span>
+								<span class="grey-text text-lighten-1" style="margin:3px 10px 0 10px;">or</span>
+								<span id="time_future_date" class="center center-align time-tag">Future Date</span>
 							</div>
-						</div>
-
-						<div class="row date-selection" style="margin-top:45px; display:none;">
-							<div class="col s7" style="margin-left:0;">
-								<div class="col s12">
-									<i class="mdi-action-today white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-									<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">On what day?</label>
+							<div id="time_fields" style="display:none;">
+								<div class="lfg-input input-field col s4" style="margin-right:10px;">
+									<input id="request_date" type="date" class="datepicker" placeholder="Date" />
 								</div>
-								<div class="lfg-input input-field col s12">
-									<input id="request_date" type="date" class="datepicker" value={{request.date::input}}>
-								</div>
-							</div>
-							<div class="col s5">
-								<div class="col s12">
-									<i class="mdi-device-access-time white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-									<label class="white-text light" style="font-size:1rem; margin-top: 7.5px; position:absolute;">At what time?</label>
-								</div>
-								<div class="lfg-input input-field col s12">
-									<input id="request_time" type="text" class="validate" value={{request.time::input}}>
+								<div class="lfg-input input-field col s3">
+									<input id="request_time" type="text" placeholder="Time" />
 								</div>
 							</div>
 						</div>
 
-						<!--Players-->
-						<div class="row" style="margin-top:40px;">
-							<div class="col s12">
-								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">accessibility</i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">Players needed?</label>
+						<br />
+
+						<!--Title-->
+						<div class="row">
+							<div class="col s12" style="margin-bottom:10px;">
+								<label class="grey-text text-darken-2" style="font-size:1rem;">Title</label>
 							</div>
 							<div class="lfg-input input-field col s12">
-								<input id="request_gamer_count" type="text" min="1" value={{request.gamercount::input}}>
+								<input id="request_title" type="text" placeholder="Title of your request" class="validate" value="{{request.title::input}}" />
 							</div>
 						</div>
 
-						<!--Gamer tag-->
-						<div class="row" style="margin-top:40px;">
-							<div class="col s12">
-								<i class="mdi-action-picture-in-picture white-text" style="margin-right:10px; font-size:1.5rem;"></i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">What's your gamer tag? (Optional)</label>
-							</div>
-							<div class="lfg-input input-field col s12">
-								<input id="request_gamertag" type="text" class="validate" value={{request.gamertag::input}}>
-							</div>
-						</div>
-
+						<br />
 
 						<!--Description-->
-						<div class="row" style="margin-top:40px;">
-							<div class="col s12">
-								<i class="material-icons white-text" style="margin-right:10px; font-size:1.5rem;">assignment</i>
-								<label class="white-text light" style="font-size:1rem; margin-top: 3px; position:absolute;">Tell us more about what you want to do (Optional)</label>
+						<div class="row">
+							<div class="col s12" style="margin-bottom:10px;">
+								<label class="grey-text text-darken-2" style="font-size:1rem;">Details</label>
 							</div>
-							<div class="lfg-input input-field col s12">
-								<textarea id="request_description" type="text" spellcheck="false" class="materialize-textarea" length="250" value={{request.description::input}}></textarea>
+							<div class="lfg-input-details input-field col s12">
+								<textarea id="request_description" class="materialize-textarea validate" placeholder="Details of your request" value="{{request.description::input}}"></textarea>
 							</div>
 						</div>
 
-						<!--Mics-->
-						<div class="row" style="margin-top:40px;">
-							<div class="col s1" style="margin-top: -15px;">
-								<i class="mdi-hardware-headset-mic white-text" style="font-size:2rem;"></i>
-							</div>
-							<div class="col s5 mic-required"><label class="white-text" style="font-size:1rem;">Are microphones required?</label></div>
-							<div class="col s4">
-								<div class="switch">
-									<label class="white-text" style="font-size:1rem;">
-										<span class="negative">No</span>
-										<input type="checkbox" checked="{{request.mic::change}}">
-										<span class="lever"></span>
-										<span class="positive">Yes</span>
-									</label>
+						<br />
+
+						<!--Players & Mics-->
+						<div class="row">
+							<div layout horizontal class="col s12" style="margin-bottom:10px;">
+								<div style="margin-right:50px;">
+									<div><label class="grey-text text-darken-2" style="font-size:1rem;">Players</label></div>
+									<div>
+										<div class="lfg-input input-field" style="width:60px;">
+											<input id="request_gamer_count" type="text" min="1"  class="validate" value="{{request.gamercount::input}}" />
+										</div>
+									</div>
+								</div>
+								<div layout vertical left>
+									<div>
+										<label class="grey-text text-darken-2" style="font-size:1rem;">Mic</label>
+										<i style="font-size:1.0rem; margin-left:3px;" class="material-icons grey-text">mic</i>
+									</div>
+									<div>
+										<paper-toggle-button class="lfg-toggle-button" checked="{{request.mic::change}}" style="margin-top:15px;"></paper-toggle-button>
+										<!--<div class="switch">
+											<label class="white-text" style="font-size:1rem;">
+												<span class="negative">No</span>
+												<input type="checkbox" checked="{{request.mic::change}}">
+												<span class="lever"></span>
+												<span class="positive">Yes</span>
+											</label>
+										</div>-->
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="row" style="margin-top:40px;">
-							<div class="col s12">
+						<div class="row">
+							<div class="col s12 center center-align">
 								<paper-button id="request_create_button" raised on-click="saveRequest">
-									<iron-icon icon="done"></iron-icon>
-									Create Gaming Request
+									<iron-icon icon="social:mood"></iron-icon>
+									Submit Request
 								</paper-button>
 							</div>
 						</div>
@@ -466,25 +571,29 @@
 				<div class="game-title-search" >
 					<div class="lfg-input-search input-field col s12">
 						<i class="material-icons prefix">search</i>
-						<input id="search_request_game" type="text" class="lfg-input-search validate" placeholder="The name of the game you want tagged to your request">
+						<input style="margin-left:40px !important;" id="search_request_game" type="text" class="lfg-input-search validate" placeholder="The name of the game you want tagged to your request">
 					</div>
 				</div>
 				<br />
+				<div class="search-loading-container center center-align" style="display:none;">
+					<div class="preloader-wrapper active">
+						<div class="spinner-layer spinner-yellow-only">
+							<div class="circle-clipper left">
+								<div class="circle"></div>
+							</div>
+							<div class="gap-patch">
+								<div class="circle"></div>
+							</div>
+							<div class="circle-clipper right">
+								<div class="circle"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="game-title-results">
 					<table id="search_results_table">
 						<tbody>
-							<tr><td>Results show up here :}</td></tr>
-							<!--<tr><td class="search-result-row">
-								<div class="row" style="margin-bottom:0px;">
-									<div class="col 3">
-										<img class="search-image" src="../assets/app/img/destiny.jpg" width="100" />
-									</div>
-									<div class="col 9" style="margin-top:18px;">
-										<span style="font-size:1.15rem;">Destiny</span>
-										<input class="search-item-id" />
-									</div>
-								</div>
-								</td></tr>-->
+							<!--<tr><td>Results show up here :}</td></tr>-->
 						</tbody>
 					</table>
 				</div>
@@ -517,8 +626,66 @@
                  */
             },
 
+            addNeutralTag: function (node) {
+            	$(node).addClass('tag-neutral');
+            },
+
             convertDateToUtc: function (date) {
             	return window.lfg.utils.convertDateToUtc(date);
+            },
+
+            clearSystemTagClass: function (node) {
+            	var system = node.dataset.system;
+
+            	switch (system) {
+
+            		case 'pc':
+            			$(node).removeClass('pc-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps3':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps4':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xbox360':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xboxOne':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wii':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wiiu':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+            	}
+            },
+
+            clearActiveTag: function (exceptionNode) {
+            	$('.filter-tags').each(function () {
+            		if ($(this).data('system') !== $(exceptionNode).data('system')) {
+            			$(this).removeClass('filter-active');
+            		}
+            	});
+            },
+
+            clearNeutralTagClass: function (node) {
+            	$(node).removeClass('tag-neutral');
             },
 
             doVideoGameSearch: function (e) {
@@ -526,6 +693,10 @@
             	var cusElem = this;
 
             	if (query.length > 2) {
+
+            		$('.game-title-results').hide();
+            		$('.search-loading-container').show();
+
             		//perform giantbomb search
             		var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
             		var limit = 4;
@@ -564,6 +735,8 @@
             				});
 
             				$(cusElem.$.search_results_table).find('tbody').html(listHtml);
+            				$('.search-loading-container').hide();
+            				$('.game-title-results').show();
             			},
             			error: function (err) {
             			}
@@ -602,10 +775,25 @@
 
             	if (imageUrl !== null && imageUrl !== undefined && imageUrl !== '') {
             		//cusElem.request.images.list_url = window.lfg.utils.convertToBase64(imageUrl);
-            		cusElem.request.images.list_url = imageUrl;
+            		cusElem.request.images.list_url = imageUrl;            		
             	}
-            	
-            	$(cusElem.$.selected_game).val(cusElem.request.game);
+
+				            	
+				//Set the selected game and it's image
+            	$(cusElem.$.selected_game).html(cusElem.request.game);
+            	$(cusElem.$.selected_game).addClass('selected-game');
+            	$('.game-image-placeholder').hide();
+
+            	if (imageUrl !== null && imageUrl !== undefined && imageUrl !== '') {
+            		$(cusElem.$.selected_game_image).get(0).src = imageUrl;
+            		$(cusElem.selected_game_image_placeholder).hide();
+            		$(cusElem.$.selected_game_image).show();
+            	}
+            	else {
+            		$(cusElem.$.selected_game_image_placeholder).html(cusElem.request.game);
+            		$(cusElem.$.selected_game_image).hide();
+            		$(cusElem.$.selected_game_image_placeholder).show();
+            	}
 
             	//close modal
             	$(cusElem.$.game_tag).closeModal();
@@ -716,13 +904,17 @@
             },
 
             registerEvents: function () {
-            	$(document).on('change', '#' + this.$.request_date.id, function () {
-            		$(this).removeClass('invalid');
-            	});
+            	//$(document).on('change', '#' + this.$.request_date.id, function () {
+            	//	$(this).removeClass('invalid');
+            	//});
 
             	$(document).on('keypress', '#request_gamer_count', this.verifyDigitOnly.bind(this));
             	$(document).on('input', '#search_request_game', this.doVideoGameSearch.bind(this));
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
+            	$(document).on('click', '#search_row', this.showSearchModal.bind(this));
+            	$(document).on('click', '#time_right_now', function () { $(this).addClass('active'); })
+            	$(document).on('click', '#time_future_date', this.showDateSelection.bind(this));
+            	$('.filter-tags').click(this.selectConsole.bind(this));
             },
 
             registerDropListPlugin: function () {
@@ -739,7 +931,118 @@
 				$(this.$.request_state).material_select();
 
 				//option selected event
-				$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
+				//$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
+            },
+
+            selectConsole: function (e) {
+            	var cusElem = this;
+            	var system = e.target.dataset.system;
+
+            	$('.filter-tags').each(function () {
+            		cusElem.clearSystemTagClass($(this).get(0));
+            	});
+
+            	switch (system) {
+
+            		case 'pc':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('pc-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				
+            				this.request.system = 'pc';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'ps3':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'ps3';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'ps4':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'ps4';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'xbox360':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'xbox360';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'xboxOne':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'xboxOne';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'wii':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'wii';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+
+            		case 'wiiu':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				this.request.system = 'wiiu';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				this.request.system = 'none';
+            			}
+            			break;
+            	}
             },
 
             showSuccessMessage: function () {
@@ -747,6 +1050,11 @@
             	$(this.$.new_request_form).hide(0, function () {
             		$('#success_message').fadeIn();
             	});
+            },
+
+            showSearchModal: function () {
+            	$(this.$.game_tag).openModal();
+            	this.$.search_request_game.focus();
             },
 
             saveRequest: function () {
@@ -815,9 +1123,10 @@
             },
 
             showDateSelection: function () {
-            	this.request.customDate = true;
-            	$('.date-right-now').hide(0, function () {
-            		$('.date-selection').show();
+            	var customElem = this;
+            	customElem.request.customDate = true;
+            	$(customElem.$.time_options).hide(0, function () {
+            		$(customElem.$.time_fields).show();
             	});
             },
 

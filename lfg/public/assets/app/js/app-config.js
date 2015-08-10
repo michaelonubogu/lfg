@@ -30,7 +30,7 @@
 				users: 'users'
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
-			tunneling: true,
+			tunneling: false,
 			tempSecureTunnel: 'http://7b90c658.ngrok.io',
 			getFirebaseUrl: function () {
 				return this.firebaseUrl;
