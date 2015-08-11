@@ -43,15 +43,23 @@
 	<template>
 		<div style="padding-top:20px; height:45vh;">
 			<paper-item class="waves-effect waves-light">
-				<iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span>
+				<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
 			</paper-item>
-			<paper-item class="waves-effect waves-light"><iron-icon icon="star"></iron-icon><span class="thin">Games</span></paper-item>
+			<paper-item class="waves-effect waves-light">
+				<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
+			</paper-item>
+			<paper-item class="waves-effect waves-light">
+				<a href="#/users" class="white-text"><iron-icon icon="social:mood"></iron-icon><span class="thin">Players</span></a>
+			</paper-item>
+			<paper-item class="waves-effect waves-light">
+				<a href="#/myrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
+			</paper-item>
 			<!--<paper-item class="waves-effect waves-light"><iron-icon icon="event"></iron-icon><span class="thin">Schedule</span></paper-item>-->
 		</div>
 		<div style="padding-top:20px;">
-			<!--<paper-item class="waves-effect waves-light"><iron-icon icon="settings"></iron-icon><span class="thin">Settings</span></paper-item>
-			<paper-item class="waves-effect waves-light"><iron-icon icon="build"></iron-icon><span class="thin">Support</span></paper-item>
-			<paper-item class="waves-effect waves-light"><iron-icon icon="info"></iron-icon><span class="thin">About</span></paper-item>-->
+			<paper-item class="waves-effect waves-light">
+				<a href="#/about" class="white-text"><iron-icon icon="info"></iron-icon><span class="thin">About Us</span></a>
+			</paper-item>
 			<paper-item class="waves-effect waves-light"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></paper-item>
 		</div>
 	</template>
