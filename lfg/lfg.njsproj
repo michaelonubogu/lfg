@@ -4144,6 +4144,7 @@
     <Content Include="public\imports\side-nav-profile.html" />
     <Content Include="public\request.html" />
     <Content Include="public\views\games-page.html" />
+    <Content Include="public\views\request-details-overlay.html" />
     <Content Include="public\views\user-setup.html" />
     <Content Include="public\index.html" />
     <Content Include="public\views\landing-page.html" />

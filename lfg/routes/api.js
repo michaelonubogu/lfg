@@ -36,17 +36,17 @@ router.get('/', function (req, res) {
 	res.send('respond with a resource');
 });
 
-router.get('/request/:id', function (req, res) {
-	var filePath = path.join(__dirname, "/../public");
-	//res.send({ 'requestid' : req.params.id });
-	res.sendFile(filePath + '/request.html');	//Send the home page - we have logic to route there.
-});
+//router.get('/request/:id', function (req, res) {
+//	var filePath = path.join(__dirname, "/../public");
+//	//res.send({ 'requestid' : req.params.id });
+//	res.sendFile(filePath + '/request.html');	//Send the home page - we have logic to route there.
+//});
 
-router.get('/game/:id', function (req, res) {
-	var filePath = path.join(__dirname, "/../public");
-	//res.send({ 'gameid' : req.params.id });
-	res.sendFile(filePath + '/game.html');
-});
+//router.get('/game/:id', function (req, res) {
+//	var filePath = path.join(__dirname, "/../public");
+//	//res.send({ 'gameid' : req.params.id });
+//	res.sendFile(filePath + '/game.html');
+//});
 
 router.get('/steam/authenticate', function (req, res) {
 	

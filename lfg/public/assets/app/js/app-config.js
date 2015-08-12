@@ -154,13 +154,25 @@
 				}
 			},
 			
+			isLoggedIn: function () {
+				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+				var authData = JSON.parse(authJSON);
+				
+				if (authData == null || authData == undefined) {
+					var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+					authData = JSON.parse(localJSON);
+				}
+
+				return (authData !== null && authData !== undefined);
+			},
+			
 			postToFacebook: function (options) {
 				var href = '';
 				if (config.tunneling === true) {
-					href = config.tempSecureTunnel + '/api/' + options.entityType + '/' + options.entityId
+					href = config.tempSecureTunnel + '/#/request/' + options.entityId
 				}
 				else {
-					href = window.location.protocol + '//' + window.location.host + '/api/' + options.entityType + '/' + options.entityId
+					href = window.location.protocol + '//' + window.location.host + '/#/request/' + options.entityId
 				}
 
 				FB.ui(
@@ -177,10 +189,10 @@
 				//Get app url
 				var href = '';
 				if (config.tunneling === true) {
-					href = config.tempSecureTunnel + '/api/' + options.entityType + '/' + options.entityId
+					href = config.tempSecureTunnel + '/#/request/' + options.entityId
 				}
 				else {
-					href = window.location.protocol + '//' + window.location.host + '/api/' + options.entityType + '/' + options.entityId
+					href = window.location.protocol + '//' + window.location.host + '/#/request/' + options.entityId
 				}
 				
 				options.message += ('%20' + encodeURIComponent(href));

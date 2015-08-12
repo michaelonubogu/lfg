@@ -435,11 +435,11 @@
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Game</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
-								<div layout horizontal class="col s12">
-									<span layout vertical center-center class="game-image-placeholder grey lighten-2 white-text" style="width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px;">
+								<div class="layout horizontal col s12">
+									<span class="layout vertical center-center game-image-placeholder grey lighten-2 white-text" style="width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px;">
 										<i class="fa fa-search"></i>
 									</span>
-									<span id="selected_game_image_placeholder" layout vertical center-center class="game-image-placeholder white-text" style="display:none; background-color:#FB8C00; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px; font-size:0.75rem;"></span>
+									<span id="selected_game_image_placeholder" class="layout vertical center-center game-image-placeholder white-text" style="display:none; background-color:#FB8C00; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px; font-size:0.75rem;"></span>
 									<img id="selected_game_image" class="game-image" style="display:none; margin-right:15px;" width="160" height="90" />
 									<span id="selected_game" class="grey-text light" style="font-size:1.5rem; margin-top:30px;">Select Game</span>
 								</div>
@@ -453,7 +453,7 @@
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Console</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
-								<div layout horizontal class="col s12">
+								<div class="layout horizontal col s12">
 									<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
@@ -472,7 +472,7 @@
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Time</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
-								<div id="time_options" layout horizontal class="col s12">
+								<div id="time_options" class="layout horizontal col s12">
 									<span id="time_right_now" class="center center-align time-tag active">Right Now</span>
 									<span class="grey-text text-lighten-1" style="margin:3px 10px 0 10px;">or</span>
 									<span id="time_future_date" class="center center-align time-tag">Future Date</span>
@@ -520,7 +520,7 @@
 
 							<!--Players & Mics-->
 							<div class="row">
-								<div layout horizontal class="col s12" style="margin-bottom:10px;">
+								<div class="layout horizontal col s12" style="margin-bottom:10px;">
 									<div style="margin-right:50px;">
 										<div><label class="grey-text text-darken-2" style="font-size:1rem;">Players</label></div>
 										<div>
@@ -529,7 +529,7 @@
 											</div>
 										</div>
 									</div>
-									<div layout vertical left>
+									<div class="layout vertical left">
 										<div>
 											<label class="grey-text text-darken-2" style="font-size:1rem;">Mic</label>
 											<i style="font-size:1.0rem; margin-left:3px;" class="material-icons grey-text">headset_mic</i>
@@ -803,6 +803,10 @@
             		$(customElem.$.time_options).show();
             		customElem.request.customDate = false;
             	});
+            },
+
+            isLoggedIn: function () {
+            	return window.lfg.utils.isLoggedIn();
             },
 
             searchRowClick: function (e) {
@@ -1311,7 +1315,13 @@
             },
 
             ready: function () {
-            	this.initializeData();
+            	if (this.isLoggedIn()) {
+            		this.initializeData();
+            	}
+            	else {
+            		//redirect to sign-in
+            		document.querySelector('app-router').go('/login');
+            	}
             },
 
             attached: function () {

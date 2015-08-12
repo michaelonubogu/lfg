@@ -33,6 +33,7 @@
 
 	<style>
 		:host {
+
 		}
 
 		.logo-link {
@@ -384,7 +385,7 @@
 							<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
 						</template>
 						<template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
-							<div layout vertical center-center class="white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+							<div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
 								<label class="white-text">{{request.gametitle}}</label>
 							</div>
 						</template>
@@ -583,7 +584,7 @@
 		</paper-drawer-panel>
 
 		<div id="signin_overlay" class="layout fit" style="position:absolute; top:0; left:0; height:100%; width:100%; background-color:#ffffff; z-index:10000;">
-			<div layout vertical fit center-center>
+			<div class="layout vertical fit center-center">
 				<div class="preloader-wrapper big active">
 					<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
 						<div class="circle-clipper left">
@@ -922,8 +923,11 @@
 
             getRequestKey: function(){
             	//app-router doesn support Polymer 1.0. Get hash and requestkey manually
-            	var hash = window.location.hash;
-            	this.requestkey = hash.substring(hash.lastIndexOf('/') + 1);
+
+            	if (this.requestkey === null || this.requestkey === undefined || this.requestkey === '') {
+            		var hash = window.location.hash;
+            		this.requestkey = hash.substring(hash.lastIndexOf('/') + 1);
+            	}
             },
 
             getLookupData: function(){

@@ -957,6 +957,10 @@
             	}
             },
 
+            isLoggedIn: function () {
+            	return window.lfg.utils.isLoggedIn();
+            },
+
             saveTaggedGame: function (tagged) {
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var authData = JSON.parse(authJSON);
@@ -1057,7 +1061,13 @@
 
 			/* Events */
             ready: function () {
-            	this.initializeData();
+            	if (this.isLoggedIn()) {
+            		this.initializeData();
+            	}
+            	else {
+            		//redirect to sign-in
+            		document.querySelector('app-router').go('/login');
+            	}
             },
 
             attached: function () {
