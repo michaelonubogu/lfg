@@ -33,6 +33,7 @@
 <link rel="import" href="../imports/font-awesome.html" />
 <link rel="import" href="../imports/flaticons.html" />
 <link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/sign-in-button.html" />
 <link rel="import" href="../views/request-details-overlay.html" />
 
 <dom-module id="request-page">
@@ -298,7 +299,7 @@
 			rgba(0, 0, 0, 0.12),0 3px 1px -2px 
 			rgba(0, 0, 0, 0.2);
 
-			border-radius:2px;
+			border-radius:4px;
 		}
 
         @media (max-width: 640px){
@@ -361,6 +362,7 @@
 					<template is="dom-if" if="{{isLoggedIn()}}">
 						<a class="new-request-button" on-click="newRequest">New Request</a>
 					</template>
+					<sign-in-button></sign-in-button>
 					<side-nav-contents></side-nav-contents>
 				</div>
             </paper-header-panel>
@@ -439,7 +441,7 @@
 											</div>
 										</template>
 									</div>
-									<div class="col s12 m12 l7">
+									<div class="col s12 m12 l8">
 										<div class="item-content-container">
 											<div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
 											<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
@@ -469,49 +471,6 @@
             </paper-header-panel>
         </paper-drawer-panel>
 
-		<div id="filter_modal" class="modal bottom-sheet" style="display: block; opacity: 0; bottom: -100%;">
-			<div class="modal-content">
-				<h5>Filter Requests</h5>
-				<ul class="collection">
-					<li class="collection-item avatar">
-						<i class="mdi-file-folder circle"></i>
-						<span class="title">Title</span>
-						<p>
-							First Line <br>
-							Second Line
-						</p>
-						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
-					</li>
-					<li class="collection-item avatar">
-						<i class="mdi-file-folder circle"></i>
-						<span class="title">Title</span>
-						<p>
-							First Line <br>
-							Second Line
-						</p>
-						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
-					</li>
-					<li class="collection-item avatar">
-						<i class="mdi-action-assessment circle green"></i>
-						<span class="title">Title</span>
-						<p>
-							First Line <br>
-							Second Line
-						</p>
-						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
-					</li>
-					<li class="collection-item avatar">
-						<i class="mdi-av-play-arrow circle red"></i>
-						<span class="title">Title</span>
-						<p>
-							First Line <br>
-							Second Line
-						</p>
-						<a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>
-					</li>
-				</ul>
-			</div>
-		</div>
 
 		<!-- Request Details Overlay-->
 		<div id="details_overlay" class="overlay-cover" style="width:100%; height:100% !important; z-index:10000 !important; position:absolute; display:none;">
@@ -911,7 +870,20 @@
             				$('#search_dropdown').find('.search-result-item').remove();
 
             				_.each(data.results, function (result) {
-            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</a></li>';
+            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;">';
+
+            					if (
+									result.image !== null && result.image !== undefined &&
+									result.image.screen_url !== null &&
+									result.image.screen_url !== undefined &&
+									result.image.screen_url !== '') {
+            						html += '<span><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px;" /></span>';
+            					}
+            					else {
+            						html += '<span style="background-color:#FB8C00; width:100px; height:56px;"></span>';
+            					}
+
+            					html += '<span style="margin-top:-7px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
             				});
             				$('#search_dropdown').append(html);
             			},
@@ -1087,7 +1059,7 @@
             	}
             	else {
             		customElem.requests = [];
-            		customElem.addSpinnerRoo();
+            		//customElem.addSpinnerRoo();
 
             		switch (querytype) {
             			case customElem.querytype.bygame:

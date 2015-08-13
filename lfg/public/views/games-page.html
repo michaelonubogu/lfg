@@ -52,6 +52,14 @@
 
 		.filter-tags {
 			width: 65px;
+			margin-top:2px !important;
+			margin-bottom:1px !important;
+		}
+
+		.add-filter-tags {
+			width: 65px;
+			margin-top:2px !important;
+			margin-bottom:1px !important;
 		}
 
 		.tag-neutral {
@@ -62,7 +70,7 @@
 			border: solid 2px #BDBDBD;
 			border-radius: 5px;
 			cursor: pointer;
-			margin: 0 5px;
+			margin: 0 5px 0 0;
 			max-height: 30px !important;
 		}
 
@@ -99,7 +107,7 @@
 			border: solid 2px #01579B;
 			border-radius: 5px;
 			cursor: pointer;
-			margin: 0 5px;
+			margin: 0 5px 0 0;
 			max-height: 30px !important;
 		}
 
@@ -111,7 +119,7 @@
 			border: solid 2px #5DCB17;
 			border-radius: 5px;
 			cursor: pointer;
-			margin: 0 5px;
+			margin: 0 5px 0 0;
 			max-height: 30px !important;
 		}
 
@@ -123,7 +131,7 @@
 			border: solid 2px #03A9F4;
 			border-radius: 5px;
 			cursor: pointer;
-			margin: 0 5px;
+			margin: 0 5px 0 0;
 			max-height: 30px !important;
 		}
 
@@ -135,8 +143,72 @@
 			border: solid 2px #F44336;
 			border-radius: 5px;
 			cursor: pointer;
+			margin: 0 5px 0 0;
+			max-height: 30px !important;
+		}
+
+		.pc-tag {
+			background-color: #F44336;
+			color: #ffffff !important;
+			font-size: 0.85rem;
+			padding: 3px 7px;
+			border: solid 1px #F44336;
+			border-radius: 3px;
+			cursor: pointer;
+			max-height: 20px !important;
+			text-align:center !important;
+		}
+
+		.psn-tag {
+			background-color: #01579B;
+			color: #ffffff !important;
+			font-size: 0.85rem;
+			padding: 3px 7px;
+			border: solid 1px #01579B;
+			border-radius: 3px;
+			cursor: pointer;
 			margin: 0 5px;
 			max-height: 30px !important;
+			text-align:center !important;
+		}
+
+		.xbox-tag {
+			background-color: #5DCB17;
+			color: #ffffff !important;
+			font-size: 0.85rem;
+			padding: 3px 7px;
+			border: solid 1px #5DCB17;
+			border-radius: 3px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+			text-align:center !important;
+		}
+
+		.wii-tag {
+			background-color: #03A9F4;
+			color: #ffffff !important;
+			font-size: 0.85rem;
+			padding: 3px 7px;
+			border: solid 1px #03A9F4;
+			border-radius: 3px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+			text-align:center !important;
+		}
+
+		.na-tag {
+			background-color: #fb8c00;
+			color: #ffffff !important;
+			font-size: 0.85rem;
+			padding: 3px 7px;
+			border: solid 1px #fb8c00;
+			border-radius: 3px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+			text-align:center !important;
 		}
 
 		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
@@ -442,7 +514,7 @@
 					<div class="middle">
 					</div>
 					<div class="bottom black-text" style="width:100%;">
-						<div class="layout horizontal">
+						<div class="layout horizontal wrap">
 							<!--style="background-color:#01579B; border-color:#01579B; color:#ffffff !important;"-->
 							<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
 							<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
@@ -463,16 +535,31 @@
 										<img class="activator" src="{{item.imageUrl}}">
 									</div>
 									<div class="card-content">
-										<label class="grey-text text-darken-2 activator" style="font-size:1rem; cursor:pointer;">{{truncateText(item.gametitle, 28)}}<!--<i class="material-icons right">more_vert</i>-->
+										<span class$="{{getSystemLabelClass(item.system)}}" data-system="pc" style="margin-right:5px;">{{getSystemType(item.system)}}</span>
+										<label class="grey-text text-darken-2 activator" style="font-size:1rem; cursor:pointer;">{{truncateText(item.gametitle, 20)}}
 										</label>
 									</div>
 									<div class="card-reveal">
 										<span class="card-title grey-text text-darken-4">{{item.gametitle}}<i class="material-icons right">close</i></span>
-										<p>Here is some more information about this product that is only revealed once clicked on.</p>
+										<div><span class$="{{getSystemLabelClass(item.system)}}" data-system="pc" style="margin-right:5px;">{{getSystemType(item.system)}}</span></div>
 									</div>
 								</div>
 							</div>
 						</template>
+					</div>
+
+					<div id="games_overlay" class="layout vertical fit center-center" style="display:none;">
+						<div class="preloader-wrapper big active">
+							<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
+								<div class="circle-clipper left">
+									<div class="circle"></div>
+								</div><div class="gap-patch">
+									<div class="circle"></div>
+								</div><div class="circle-clipper right">
+									<div class="circle"></div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</paper-header-panel>
@@ -488,6 +575,20 @@
 						<i class="material-icons prefix">search</i>
 						<input style="margin-left:40px !important;" id="search_request_game" type="text" class="lfg-input-search validate" placeholder="The name of the game you want tagged">
 					</div>
+				</div>
+				<div style="width:100%; margin-top:7px;">
+					<div class="layout horizontal wrap">
+						<span class="center center-align add-filter-tags tag-neutral" data-system="ps3">PS3</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="ps4">PS4</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="xbox360">X360</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="xboxOne">X1</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="wii">Wii</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="wiiu">Wii U</span>
+						<span class="center center-align add-filter-tags tag-neutral" data-system="pc">PC</span>
+					</div>
+				</div>
+				<div class="no-system-tagged" style="display:none;">
+					<label class="red-text" style="font-size:1rem;">**Please tag a console to your game</label>
 				</div>
 				<br />
 				<div class="search-loading-container center center-align" style="display:none;">
@@ -551,6 +652,119 @@
         	/* Functions */
             addNeutralTag: function (node) {
             	$(node).addClass('tag-neutral');
+            },
+
+
+            activateSystemTag: function (e) {
+            	$('.no-system-tagged').hide();
+
+            	var cusElem = this;
+            	var system = e.target.dataset.system;
+
+            	$('.add-filter-tags').each(function () {
+            		cusElem.clearSystemTagClass($(this).get(0));
+            	});
+
+            	switch (system) {
+
+            		case 'pc':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('pc-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'pc';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'ps3':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'ps3';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'ps4':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'ps4';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'xbox360':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'xbox360';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'xboxOne':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'xboxOne';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'wii':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'wii';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+
+            		case 'wiiu':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearAddActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemTagged = 'wiiu';
+            			}
+            			else {
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemTagged = 'none';
+            			}
+            			break;
+            	}
             },
 
             activateFilterTag: function (e) {
@@ -747,8 +961,17 @@
             	}
             },
 
+
             clearActiveTag: function (exceptionNode) {
             	$('.filter-tags').each(function () {
+            		if ($(this).data('system') !== $(exceptionNode).data('system')) {
+            			$(this).removeClass('filter-active');
+            		}
+            	});
+            },
+
+            clearAddActiveTag: function (exceptionNode) {
+            	$('.add-filter-tags').each(function () {
             		if ($(this).data('system') !== $(exceptionNode).data('system')) {
             			$(this).removeClass('filter-active');
             		}
@@ -801,6 +1024,49 @@
             			break;
             	}
             },
+
+
+            //clearSystemAddTagClass: function (node) {
+            //	var system = node.dataset.system;
+
+            //	switch (system) {
+
+            //		case 'pc':
+            //			$(node).removeClass('pc-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'ps3':
+            //			$(node).removeClass('psn-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'ps4':
+            //			$(node).removeClass('psn-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'xbox360':
+            //			$(node).removeClass('xbox-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'xboxOne':
+            //			$(node).removeClass('xbox-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'wii':
+            //			$(node).removeClass('wii-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+
+            //		case 'wiiu':
+            //			$(node).removeClass('wii-tag');
+            //			this.addNeutralTag(node);
+            //			break;
+            //	}
+            //},
 
             convertDateToUtc: function (date) {
             	return window.lfg.utils.convertDateToUtc(date);
@@ -900,6 +1166,10 @@
             		case 'wiiu':
             			return 'Wii U';
             			break;
+
+            		default:
+            			return 'N/A';
+            			break;
             	}
             },
 
@@ -937,6 +1207,43 @@
             	}
             },
 
+            getSystemLabelClass: function (system) {
+            	switch (system) {
+
+            		case 'pc':
+            			return 'pc-tag';
+            			break;
+
+            		case 'ps3':
+            			return 'psn-tag';
+            			break;
+
+            		case 'ps4':
+            			return 'psn-tag';
+            			break;
+
+            		case 'xbox360':
+            			return 'xbox-tag';
+            			break;
+
+            		case 'xboxOne':
+            			return 'xbox-tag';
+            			break;
+
+            		case 'wii':
+            			return 'wii-tag';
+            			break;
+
+            		case 'wiiu':
+            			return 'wii-tag';
+            			break;
+
+            		default:
+            			return 'na-tag';
+            			break;
+            	}
+            },
+
             getTaggedGames: function () {
             	var cusElem = this;
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
@@ -953,6 +1260,8 @@
             		userGamesRef.on('child_added', function (snapshot) {
             			var game = snapshot.val();
             			cusElem.push('userGames', game);
+
+            			$(cusElem.$.games_overlay).fadeOut();
             		});
             	}
             },
@@ -962,6 +1271,7 @@
             },
 
             saveTaggedGame: function (tagged) {
+            	var cusElem = this;
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var authData = JSON.parse(authJSON);
 
@@ -974,13 +1284,15 @@
 					//Check to see if the user has this game tracked already
             		var userGamesRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/games');
             		userGamesRef
-						.orderByChild('game')
-						.equalTo(tagged.game)
+						.orderByChild('systemgameindex')
+						.startAt(tagged.system + window.lfg.utils.clearWhiteSpace(tagged.game.toLowerCase()))
+						.endAt(tagged.system + window.lfg.utils.clearWhiteSpace(tagged.game.toLowerCase()) + '~')
+						.limitToFirst(1)
 						.once('value', function (snapshot) {
 							var game = snapshot.val();
 							if (game !== null && game !== undefined) {
 								//Show potential duplicate error message
-								//...
+								alert('You already have ' + tagged.gametitle + ' tagged for ' + cusElem.getSystemType(tagged.system));
 							}
 							else {
 								userGamesRef.push(tagged);
@@ -990,7 +1302,13 @@
             },
 
             searchRowClick: function (e) {
-				//TODO: REPURPOSE THIS METHOD
+            	//TODO: REPURPOSE THIS METHOD
+
+            	if (this.systemTagged === null || this.systemTagged === undefined || this.systemTagged === '' || this.systemTagged === 'none') {
+            		$('.no-system-tagged').show();
+            		return;
+            	}
+
             	var cusElem = this;
 
             	var element = e.target;
@@ -1007,15 +1325,17 @@
             	var lexicoIndex = window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
             	var gameindex = window.lfg.utils.clearWhiteSpace(gametitle.toLowerCase()) + lexicoIndex;
             	var giantbombindex = gameid + lexicoIndex;
+            	var systemgameindex = this.systemTagged + window.lfg.utils.clearWhiteSpace(gametitle.toLowerCase()) + lexicoIndex;
 
             	var tagged = {
             		giantbombid: gameid,
             		game: gametitle.toLowerCase(),
             		gametitle: gametitle,
             		imageUrl: imageUrl,
-            		system: '',
+            		system: this.systemTagged,
             		gameindex: gameindex,
-            		giantbombindex: giantbombindex
+            		giantbombindex: giantbombindex,
+            		systemgameindex: systemgameindex
             	};
 
             	//Save the tagged game for the user
@@ -1046,13 +1366,14 @@
             	];
 
             	this.userGames = [];
-
+            	this.systemTagged = 'none';
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             },
 
             registerEvents: function () {
             	$(document).on('input', '#search_request_game', this.doVideoGameSearch.bind(this));
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
+            	$(document).on('click', '.add-filter-tags', this.activateSystemTag.bind(this));
             },
 
             registerPlugins: function() {

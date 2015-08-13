@@ -344,7 +344,7 @@
 	</style>
 
 	<template>
-		<paper-toolbar class="tall lfg-main-toolbar request-details-party">
+		<paper-toolbar class="tall lfg-main-toolbar request-details-party request-content" style="display:none;">
 			<div id="request_header_dopple" class="profile-background-dopple"></div>
 			<div id="request_header" class="profile-background"></div>
 			<div class="profile-background-overlay"></div>
@@ -372,7 +372,7 @@
 			</div>
 		</paper-toolbar>
 
-		<div class="white details-area request-details-party">
+		<div class="white details-area request-details-party request-content" style="display:none;">
 			<div class="row" style="margin-top:30px !important;">
 				<div class="col s3 left left-align">
 					<div class="switch">
@@ -434,7 +434,7 @@
 			</div>
 		</div>
 
-		<div id="details_loading_overlay" class="layout fit" style="position:absolute; margin: 0; background-color:#ffffff; z-index:10000;">
+		<div id="details_loading_overlay" class="layout fit">
 			<div class="layout vertical fit center-center">
 				<div class="preloader-wrapper big active">
 					<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
@@ -751,7 +751,9 @@
 					customElem.setCoverImage();
 					customElem.getUserProfile(request);
 
-					$(customElem.$.details_loading_overlay).fadeOut();
+					$(customElem.$.details_loading_overlay).hide(0, function () {
+						$('.request-content').fadeIn();
+					});
 				});
 			},
 

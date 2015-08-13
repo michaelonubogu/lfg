@@ -38,37 +38,50 @@
 			color: #ffffff;
 			cursor: pointer;
 		}
+
+		.sign-in-button {
+			display:block;
+			background-color:transparent; 
+			color: #ffffff;
+			font-size:1rem; 
+			padding:6px 18px; 
+			border:solid 2px #ffffff; 
+			border-radius:5px;
+			cursor:pointer;
+			/*width:100%;*/
+			margin: 0 15px !important;
+			margin-top:10px !important;
+			max-height:60px !important;
+			text-align:center;
+			cursor:pointer;
+		}
+
+		.sign-in-button:hover {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight:500;
+			box-shadow: 0 2px 5px 0 #e65100;
+		}
 	</style>
 
 	<template>
 		<div style="padding-top:20px; height:45vh;">
-			<paper-item class="waves-effect waves-light">
-				<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
-			</paper-item>
-			<template is="dom-if" if="{{isLoggedIn()}}">
+			<template is="dom-if" if="{{loggedIn}}">
 				<paper-item class="waves-effect waves-light">
-					<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
+					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
 				</paper-item>
 				<paper-item class="waves-effect waves-light">
-					<a href="#/users" class="white-text"><iron-icon icon="social:mood"></iron-icon><span class="thin">Players</span></a>
+					<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
 				</paper-item>
 				<paper-item class="waves-effect waves-light">
 					<a href="#/myrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
 				</paper-item>
 			</template>
-			<!--<paper-item class="waves-effect waves-light"><iron-icon icon="event"></iron-icon><span class="thin">Schedule</span></paper-item>-->
 		</div>
 		<div style="padding-top:20px;">
-			<paper-item class="waves-effect waves-light">
-				<a href="#/about" class="white-text"><iron-icon icon="info"></iron-icon><span class="thin">About Us</span></a>
-			</paper-item>
-			<template is="dom-if" if="{{isLoggedIn()}}">
+			<template is="dom-if" if="{{loggedIn}}">
 				<paper-item class="waves-effect waves-light" on-click="logOut"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></paper-item>
-			</template>
-			<template is="dom-if" if="{{isLoggedOut()}}">
-				<paper-item class="waves-effect waves-light">
-					<a href="#/login" class="white-text"><iron-icon icon="hardware:gamepad"><iron-icon icon="arrow-forward"></iron-icon><span class="thin">Sign In</span></a>
-				</paper-item>
 			</template>
 		</div>
 	</template>
@@ -102,7 +115,7 @@
             },
 
             isLoggedOut: function () {
-            	return window.lfg.utils.isLoggedIn() === false;
+            	return (window.lfg.utils.isLoggedIn() === false);
             },
 
             logOut: function(){
@@ -112,6 +125,9 @@
             initializeData: function () {
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	this.loggedIn = this.isLoggedIn();
+            	this.loggedOut = this.isLoggedOut();
             },
 
             registerEvents: function () {
