@@ -767,6 +767,7 @@
             	}
             },
 
+
             activateFilterTag: function (e) {
             	var cusElem = this;
             	var system = e.target.dataset.system;
@@ -784,22 +785,12 @@
             				$(e.target).addClass('pc-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'pc';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('pc');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -810,22 +801,12 @@
             				$(e.target).addClass('psn-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'ps3';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('ps3');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -836,22 +817,12 @@
             				$(e.target).addClass('psn-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'ps4';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('ps4');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -862,22 +833,12 @@
             				$(e.target).addClass('xbox-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'xbox360';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('xbox360');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -888,22 +849,12 @@
             				$(e.target).addClass('xbox-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'xboxOne';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('xboxOne');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -914,22 +865,12 @@
             				$(e.target).addClass('wii-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'wii';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('wii');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
 
@@ -940,22 +881,12 @@
             				$(e.target).addClass('wii-filter-tag');
             				$(e.target).addClass('filter-active');
             				cusElem.systemFilter = 'wiiu';
-            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
-            				}
+            				cusElem.getTaggedGames('wiiu');
             			}
             			else {
-            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            					cusElem.getRequests(null, cusElem.querytype.none, false);
-            				}
-            				else {
-            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
-            				}
             				$(e.target).removeClass('filter-active');
             				cusElem.systemFilter = 'none';
+            				cusElem.getTaggedGames();
             			}
             			break;
             	}
@@ -978,6 +909,12 @@
             	});
             },
 
+            clearFirebaseCallbacks: function () {
+            	_.each(this.firebaseRefs, function (ref) {
+            		//Detach all currently attached firebase callbacks. Only one should be attached at one time
+            		ref.value.off(ref.type, ref.functionRef);
+            	});
+            },
 
             clearNeutralTagClass: function (node) {
             	$(node).removeClass('tag-neutral');
@@ -1025,48 +962,6 @@
             	}
             },
 
-
-            //clearSystemAddTagClass: function (node) {
-            //	var system = node.dataset.system;
-
-            //	switch (system) {
-
-            //		case 'pc':
-            //			$(node).removeClass('pc-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'ps3':
-            //			$(node).removeClass('psn-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'ps4':
-            //			$(node).removeClass('psn-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'xbox360':
-            //			$(node).removeClass('xbox-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'xboxOne':
-            //			$(node).removeClass('xbox-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'wii':
-            //			$(node).removeClass('wii-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-
-            //		case 'wiiu':
-            //			$(node).removeClass('wii-tag');
-            //			this.addNeutralTag(node);
-            //			break;
-            //	}
-            //},
 
             convertDateToUtc: function (date) {
             	return window.lfg.utils.convertDateToUtc(date);
@@ -1244,7 +1139,7 @@
             	}
             },
 
-            getTaggedGames: function () {
+            getTaggedGames: function (system) {
             	var cusElem = this;
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var authData = JSON.parse(authJSON);
@@ -1256,13 +1151,42 @@
 
             	if (authData !== null && authData !== undefined) {
             		var userGamesRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/games');
+            		cusElem.userGames = [];
 
-            		userGamesRef.on('child_added', function (snapshot) {
-            			var game = snapshot.val();
-            			cusElem.push('userGames', game);
+            		if (system === null || system === undefined || system === '' || system === 'none') {
+            			var refFunc = userGamesRef.on('child_added', function (snapshot) {
+            				var game = snapshot.val();
+            				cusElem.push('userGames', game);
+            				$(cusElem.$.games_overlay).fadeOut();
+            			});
 
-            			$(cusElem.$.games_overlay).fadeOut();
-            		});
+            			//Store the firebaseRef so we can access it later to detach any callbacks
+            			cusElem.firebaseRefs.push({
+            				name: 'games_no_system',
+            				type: 'child_added',
+            				value: userGamesRef,
+            				functionRef: refFunc
+            			});
+            		}
+            		else {
+            			var refFunc = userGamesRef
+										.orderByChild('systemgameindex')
+										.startAt(system)
+										.endAt(system + '~')
+										.on('child_added', function (snapshot) {
+            								var game = snapshot.val();
+            								cusElem.push('userGames', game);
+            								$(cusElem.$.games_overlay).fadeOut();
+            							});
+
+            			//Store the firebaseRef so we can access it later to detach any callbacks
+            			cusElem.firebaseRefs.push({
+            				name: 'games_system',
+            				type: 'child_added',
+            				value: userGamesRef,
+            				functionRef: refFunc
+            			});
+            		}
             	}
             },
 
@@ -1368,12 +1292,14 @@
             	this.userGames = [];
             	this.systemTagged = 'none';
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            	this.firebaseRefs = [];
             },
 
             registerEvents: function () {
             	$(document).on('input', '#search_request_game', this.doVideoGameSearch.bind(this));
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
             	$(document).on('click', '.add-filter-tags', this.activateSystemTag.bind(this));
+            	$('.filter-tags').click(this.activateFilterTag.bind(this));
             },
 
             registerPlugins: function() {
