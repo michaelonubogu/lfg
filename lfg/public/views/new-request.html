@@ -1222,6 +1222,8 @@
             		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + lexicoIndex;
             		newRequest.giantbombindex = newRequest.giantbombid + lexicoIndex;
             		newRequest.systemgameindex = newRequest.system + newRequest.gameindex;
+            		newRequest.usergameindex = authData.uid + newRequest.gameindex;
+            		newRequest.usersystemgameindex = authData.uid + newRequest.systemgameindex;
 
             		//Save new request content;
             		var newRequestRef = requestsRef.push(newRequest);

@@ -154,6 +154,18 @@
 				}
 			},
 			
+			getUser: function () {
+				var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
+				var authData = JSON.parse(authJSON);
+				
+				if (authData == null || authData == undefined) {
+					var localJSON = localStorage.getItem(config.firebaseCacheKey);
+					authData = JSON.parse(localJSON);
+				}
+
+				return authData !== null && authData !== undefined && authData.uid !== null && authData.uid !== undefined && authData.uid !== '' ? authData.uid : null;
+			},
+			
 			isLoggedIn: function () {
 				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
 				var authData = JSON.parse(authJSON);

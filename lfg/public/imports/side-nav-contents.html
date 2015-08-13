@@ -69,13 +69,16 @@
 		<div style="padding-top:20px; height:45vh;">
 			<template is="dom-if" if="{{loggedIn}}">
 				<paper-item class="waves-effect waves-light">
-					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
+					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">All Requests</span></a>
+				</paper-item>
+				<paper-item class="waves-effect waves-light">
+					<a href="#/userrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
+				</paper-item>
+				<paper-item class="waves-effect waves-light">
+					<a href="#/userrequests" class="white-text"><iron-icon icon="history"></iron-icon><span class="thin">Recent Requests</span></a>
 				</paper-item>
 				<paper-item class="waves-effect waves-light">
 					<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
-				</paper-item>
-				<paper-item class="waves-effect waves-light">
-					<a href="#/myrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
 				</paper-item>
 			</template>
 		</div>
