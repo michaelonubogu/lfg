@@ -4145,6 +4145,7 @@
     <Content Include="public\imports\sign-in-button.html" />
     <Content Include="public\request.html" />
     <Content Include="public\views\games-page.html" />
+    <Content Include="public\views\recent-requests.html" />
     <Content Include="public\views\request-details-overlay.html" />
     <Content Include="public\views\user-requests.html" />
     <Content Include="public\views\user-setup.html" />

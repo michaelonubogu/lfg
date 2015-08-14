@@ -899,6 +899,7 @@
             		customElem.getComments(request.id);
             		customElem.setCoverImage();
             		customElem.getUserProfile(request);
+            		customElem.markAsRecent(request.id);
 
             		$(customElem.$.signin_overlay).fadeOut();
             	});
@@ -936,13 +937,41 @@
                 $.get(config.appUrl)
             },
 
-            postToFacebook: function () {
-            	//message : options.message,
-            	//name : options.title,
-            	//link : options.url,
-            	//description : options.description,
-            	//picture : options.image
+            markAsRecent: function (requestid) {
+                var customElem = this;
+                var userid = window.lfg.utils.getUser();
 
+                if (userid !== null && userid !== undefined && userid !== '') {
+                    var recentRequestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests');
+
+                    recentRequestRef
+                        .orderByChild('requestid')
+                        .equalTo(requestid)
+                        .once('value', function (snapshot) {
+                            var item = snapshot.val();
+
+                            if (item !== null && item !== undefined) {
+                                var itemArray = _.map(item, function (elem, key) { elem.id = key; return elem; });
+                                _.each(itemArray, function (elem, index) {
+                                    var recordkey = elem.id;
+                                    var recentRequestItemRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests/' + recordkey);
+                                    recentRequestItemRef.remove();
+                                });
+                            }
+
+                            //add the record
+                            var newHistory = {
+                                requestid: requestid
+                            };
+
+                            var lexicoIndex = window.lfg.utils.getSearchIndex(customElem.convertDateToUtc(Date.now()));
+                            newHistory.requestindex = lexicoIndex;
+                            recentRequestRef.push(newHistory);
+                        });
+                }
+            },
+
+            postToFacebook: function () {
             	var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             	var authData = JSON.parse(authJSON);
 
@@ -952,10 +981,6 @@
             	}
 
             	var message = 'Find gamers to play ' + this.request.gametitle + ' on ' + this.formatSystem(this.request.system) + ' with Parallel';
-
-            	//if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
-            	//	message = 'I created a gaming request for ' + this.request.gametitle + ' on the Parallel app';
-            	//}
 
             	var options = {
             		entityId: this.request.id,

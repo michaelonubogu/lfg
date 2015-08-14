@@ -750,6 +750,7 @@
 					customElem.getComments(request.id);
 					customElem.setCoverImage();
 					customElem.getUserProfile(request);
+					customElem.markAsRecent(request.id);
 
 					$(customElem.$.details_loading_overlay).hide(0, function () {
 						$('.request-content').fadeIn();
@@ -787,6 +788,40 @@
 				//Gets lookup data from Giant Bomb
 				var config = window.lfg.config;
 				$.get(config.appUrl)
+			},
+
+			markAsRecent: function (requestid) {
+			    var customElem = this;
+			    var userid = window.lfg.utils.getUser();
+
+			    if (userid !== null && userid !== undefined && userid !== '') {
+			        var recentRequestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests');
+
+			        recentRequestRef
+                        .orderByChild('requestid')
+                        .equalTo(requestid)
+                        .once('value', function (snapshot) {
+                            var item = snapshot.val();
+
+                            if (item !== null && item !== undefined) {
+                                var itemArray = _.map(item, function (elem, key) { elem.id = key; return elem; });
+                                _.each(itemArray, function (elem, index) {
+                                    var recordkey = elem.id;
+                                    var recentRequestItemRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests/' + recordkey);
+                                    recentRequestItemRef.remove();
+                                });
+                            }
+                            
+                            //add the record
+                            var newHistory = {
+                                requestid: requestid
+                            };
+
+                            var lexicoIndex = window.lfg.utils.getSearchIndex(customElem.convertDateToUtc(Date.now()));
+                            newHistory.requestindex = lexicoIndex;
+                            recentRequestRef.push(newHistory);
+                        });
+			    }
 			},
 
 			postToFacebook: function () {
