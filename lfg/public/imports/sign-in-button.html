@@ -57,7 +57,7 @@
 
 	<template>
 		<template is="dom-if" if="{{loggedOut}}">
-			<a href="#/login" class="sign-in-link" on-click="newRequest">Sign in</a>
+			<a href="#/login" class="sign-in-link">Sign in</a>
 		</template>
 	</template>
 </dom-module>
@@ -78,11 +78,27 @@
             properties: {
             },
 
-        	/* Functions */
+            /* Functions */
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedOut = true;
+                    cusElem.notifyPath('loggedOut', cusElem.loggedOut);
+                }
+            },
+
             isLoggedOut: function () {
             	return (window.lfg.utils.isLoggedIn() === false);
             },
 
+            registerEvents: function () {
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                ref.onAuth(this.authDataCallback.bind(this));
+            },
 
             /* Init */
             initializeData: function () {
@@ -95,6 +111,7 @@
             },
 
             attached: function () {
+                this.registerEvents();
             }
         });
     })(window);

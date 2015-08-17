@@ -69,7 +69,7 @@
 		<div style="padding-top:20px; height:45vh;">
 			<template is="dom-if" if="{{loggedIn}}">
 				<paper-item class="waves-effect waves-light">
-					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">All Requests</span></a>
+					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
 				</paper-item>
 				<paper-item class="waves-effect waves-light">
 					<a href="#/userrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
@@ -112,7 +112,23 @@
                 name: 'Side Nav Contents'
             },
 
-        	/* Functions */
+            /* Functions */
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.loggedOut = true;
+
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                    cusElem.notifyPath('loggedOut', cusElem.loggedOut);
+                    console.log("User is logged out");
+                }
+            },
+
             isLoggedIn: function () {
             	return window.lfg.utils.isLoggedIn();
             },
@@ -121,7 +137,9 @@
             	return (window.lfg.utils.isLoggedIn() === false);
             },
 
-            logOut: function(){
+            logOut: function () {
+                window.lfg.utils.logOut();
+                //check the current url. If they are in any of these pages, redirect them
             },
 
             /* Init */
@@ -134,6 +152,9 @@
             },
 
             registerEvents: function () {
+                // Register the callback to be fired every time auth state changes
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                ref.onAuth(this.authDataCallback.bind(this));
             },
 
             registerPlugins: function() {

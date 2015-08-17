@@ -502,7 +502,10 @@
 				<paper-toolbar class="medium-tall lfg-drawer-toolbar">
 				</paper-toolbar>
 				<div fit class="orange darken-3">
-					<a id="new_game" class="new-game-button modal-trigger" href="#game_tag"><!--<i class="fa fa-gamepad fa-lg"></i> &nbsp;-->Add Game</a>
+                    <template is="dom-if" if="{{loggedIn}}">
+                        <a id="new_game" class="new-game-button modal-trigger" href="#game_tag">Add Game</a>
+                    </template>
+                    <sign-in-button></sign-in-button>
 					<side-nav-contents></side-nav-contents>
 				</div>
 			</paper-header-panel>
@@ -892,6 +895,18 @@
             	}
             },
 
+
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                }
+            },
 
             clearActiveTag: function (exceptionNode) {
             	$('.filter-tags').each(function () {
@@ -1293,6 +1308,8 @@
             	this.systemTagged = 'none';
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             	this.firebaseRefs = [];
+
+            	this.loggedIn = this.isLoggedIn();
             },
 
             registerEvents: function () {
@@ -1300,6 +1317,9 @@
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
             	$(document).on('click', '.add-filter-tags', this.activateSystemTag.bind(this));
             	$('.filter-tags').click(this.activateFilterTag.bind(this));
+
+            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+            	ref.onAuth(this.authDataCallback.bind(this));
             },
 
             registerPlugins: function() {

@@ -342,7 +342,7 @@
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
                 </paper-toolbar>
                 <div fit class="orange darken-3">
-                    <template is="dom-if" if="{{isLoggedIn()}}">
+                    <template is="dom-if" if="{{loggedIn}}">
                         <a class="new-request-button" on-click="newRequest">New Request</a>
                     </template>
                     <sign-in-button></sign-in-button>
@@ -706,6 +706,18 @@
             			}
             			break;
             	}
+            },
+
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                }
             },
 
             clearActiveTag: function (exceptionNode) {
@@ -1220,10 +1232,10 @@
             	}
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
-
             	this.firebaseRefs = [];
 
             	this.requests = [];
+            	this.loggedIn = this.isLoggedIn();
 
                 //hide elements
             	$(this.$.filter_modal).hide();
@@ -1231,13 +1243,14 @@
             },
 
             registerEvents: function () {
-            	var polymer = this;
-
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
             	$('#search_input').on('keypress', this.doSearch.bind(this));
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
             	$(document).on('click', '.search-result-link', this.doResultSearchWithClick.bind(this));
             	$('.filter-tags').click(this.activateFilterTag.bind(this));
+
+            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+            	ref.onAuth(this.authDataCallback.bind(this));
             },
 
             registerPlugins: function() {

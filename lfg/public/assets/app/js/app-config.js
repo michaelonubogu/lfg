@@ -128,7 +128,12 @@
 			clearWhiteSpace: function (str) {
 				var re = / /g;
 				return str.toString().replace(re, '');
-			},
+            },
+            
+            deleteAuthToken: function () {
+                sessionStorage.removeItem(config.firebaseCacheKey);
+                localStorage.removeItem(config.firebaseCacheKey);
+            },
 			
 			getSearchIndex: function (string) {
 				var ascii = '';
@@ -161,22 +166,52 @@
 				if (authData == null || authData == undefined) {
 					var localJSON = localStorage.getItem(config.firebaseCacheKey);
 					authData = JSON.parse(localJSON);
-				}
+                }
+                
+                if (authData == null || authData == undefined) {
+                    var ref = new Firebase(config.getFirebaseUrl());
+                    authData = ref.getAuth();
+                }
+                
+                //Set the token on the client if it exists in firebase - this shouldnt happen though I think :\
+                if (authData !== null && authData !== undefined) {
+                    this.setAuthToken(authData);
+                }
 
 				return authData !== null && authData !== undefined && authData.uid !== null && authData.uid !== undefined && authData.uid !== '' ? authData.uid : null;
 			},
 			
-			isLoggedIn: function () {
-				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            isLoggedIn: function () {
+                //Check the client first - session storage
+                var loggedIn = true;
+				var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
 				var authData = JSON.parse(authJSON);
-				
+                
+                //local storage check
 				if (authData == null || authData == undefined) {
-					var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+					var localJSON = localStorage.getItem(config.firebaseCacheKey);
 					authData = JSON.parse(localJSON);
-				}
+                }
+                
+                //db session check
+                if (authData == null || authData == undefined) {
+                    var ref = new Firebase(config.getFirebaseUrl());
+                    authData = ref.getAuth();
+                }
+                
+                if (authData == null || authData == undefined) {
+                    loggedIn = false;
+                }
 
-				return (authData !== null && authData !== undefined);
-			},
+				//return (authData !== null && authData !== undefined);
+                return loggedIn;
+            },
+            
+            logOut: function () {
+                var ref = new Firebase(config.getFirebaseUrl());
+                ref.unauth();
+                this.deleteAuthToken();
+            },
 			
 			postToFacebook: function (options) {
 				var href = '';
@@ -195,7 +230,14 @@
 						description: options.description,
 						picture: options.photo
 					}, function (response) { });
-			},
+            },
+            
+            setAuthToken: function (authData) {
+                var jsonAuthData = JSON.stringify(authData);
+
+                sessionStorage.setItem(config.firebaseCacheKey, jsonAuthData);
+                localStorage.setItem(config.firebaseCacheKey, jsonAuthData);
+            },
 			
 			tweetOnTwitter: function (options) {
 				//Get app url
