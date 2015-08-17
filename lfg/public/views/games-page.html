@@ -1328,6 +1328,8 @@
 
 			/* Events */
             ready: function () {
+                window.lfg.utils.automaticSignin();
+
             	if (this.isLoggedIn()) {
             		this.initializeData();
             	}

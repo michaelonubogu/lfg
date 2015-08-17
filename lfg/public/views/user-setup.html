@@ -44,8 +44,11 @@
 	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
 
 	<style>
+        body {
+        }
+
 		:host {
-			
+			background-color: #FB8C00 !important;
 		}
 
 		.profile-background {
@@ -223,97 +226,99 @@
 	<template>
 		<neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			<neon-animatable>
-				<div id="profile_background" class="profile-background" layout vertical center>
-					<div class="profile-overlay">
-						<!-- Navigational Butons -->
-						<div layout horizontal center-justified style="opacity:1.0 !important;">
-							<!--<div layout no-wrap style="visibility:hidden;">
-								<a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
-									<i class="material-icons white-text left">arrow_back</i>
-									Back
-								</a>
-							</div>-->
-							<div flex></div>
-							<div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Enter your Username & Email, and upload a profile picture</h6></div>
-							<div flex></div>
-							<!--<div layout no-wrap>
-								<a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
-									<i class="material-icons white-text right thin">arrow_forward</i>
-									Next
-								</a>
-							</div>-->
-						</div>
-						<div class="row" style="margin-top: 20px; opacity:1.0 !important; z-index:1000;">
-							<div class="col s12 center center-aligned">
-								<img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:125px; width:125px;">
-							</div>
-							<div class="col s12 center" style="margin-top:-10px;">
-								<h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
-							</div>
+				<div class="orange darken-1">
+                    <div id="profile_background" class="profile-background" layout vertical center>
+                        <div class="profile-overlay">
+                            <!-- Navigational Butons -->
+                            <div layout horizontal center-justified style="opacity:1.0 !important;">
+                                <!--<div layout no-wrap style="visibility:hidden;">
+                                    <a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
+                                        <i class="material-icons white-text left">arrow_back</i>
+                                        Back
+                                    </a>
+                                </div>-->
+                                                <div flex></div>
+                                                <div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Enter your Username & Email, and upload a profile picture</h6></div>
+                                                <div flex></div>
+                                                <!--<div layout no-wrap>
+                                    <a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
+                                        <i class="material-icons white-text right thin">arrow_forward</i>
+                                        Next
+                                    </a>
+                                </div>-->
+                            </div>
+                            <div class="row" style="margin-top: 20px; opacity:1.0 !important; z-index:1000;">
+                                <div class="col s12 center center-aligned">
+                                    <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:125px; width:125px;">
+                                </div>
+                                <div class="col s12 center" style="margin-top:-10px;">
+                                    <h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
+                                </div>
 
-							<div class="row">
-								<div class="col s12">
-									<div class="lfg-input input-field col s12 center" layout center>
-										<div class="file-field" layout horizontal center-center>
-											<a class="btn-flat center center-aligned white-text light photo-upload">
-												<span><i class="material-icons left">backup</i> Upload Photo</span>
-												<input id="profile_upload" type="file" accept="image/*" capture="camera" />
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center" layout center>
+                                            <div class="file-field" layout horizontal center-center>
+                                                <a class="btn-flat center center-aligned white-text light photo-upload">
+                                                    <span><i class="material-icons left">backup</i> Upload Photo</span>
+                                                    <input id="profile_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-							<!-- Cover Photo Upload -->
-							<!--<div class="row">
-								<div class="col s12">
-									<div class="lfg-input input-field col s12 center" layout center>
-										<div class="file-field" layout horizontal center-center>
-											<a class="btn center center-aligned blue darken-1" style="padding-left:42px; padding-right:42px;">
-												<span><i class="material-icons left">panorama</i> Cover Photo</span>
-												<input id="cover_upload" type="file" accept="image/*" capture="camera" />
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>-->
-						</div>
-					</div>
-				</div>
-				<div class="container content-area">
-					<div class="card-panel requests-card-panel">
-						<ul class="collection collection-modified">
-							<li class="collection-item avatar">
-								<div class="wizard-input row">
-									<div class="col s2"><i class="material-icons prefix">account_circle</i></div>
-									<div class="lfg-input input-field col s7">
-										<input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keypress="clearUsernameError"  on-keyup="changeUsername" />
-									</div>
-									<div class="col s3" style="margin-top:30px;">
-										<span id="username_error" class="red-text"><strong></strong></span>
-									</div>
-								</div>
-							</li>
-							<li class="collection-item avatar">
-								<div class="row">
-									<div class="col s2"><i class="material-icons prefix">email</i></div>
-									<div class="lfg-input input-field col s7">
-										<input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
-									</div>
-									<div class="col s3" style="margin-top:30px;">
-										<span id="email_error" class="red-text"><strong></strong></span>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col s12 center center-align">
-							<a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
-						</div>
-					</div>
-				</div>
+                                <!-- Cover Photo Upload -->
+                                <!--<div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center" layout center>
+                                            <div class="file-field" layout horizontal center-center>
+                                                <a class="btn center center-aligned blue darken-1" style="padding-left:42px; padding-right:42px;">
+                                                    <span><i class="material-icons left">panorama</i> Cover Photo</span>
+                                                    <input id="cover_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container content-area">
+                        <div class="card-panel requests-card-panel">
+                            <ul class="collection collection-modified">
+                                <li class="collection-item avatar">
+                                    <div class="wizard-input row">
+                                        <div class="col s2"><i class="material-icons prefix">account_circle</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keypress="clearUsernameError" on-keyup="changeUsername" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="username_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <div class="row">
+                                        <div class="col s2"><i class="material-icons prefix">email</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="email_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col s12 center center-align">
+                                <a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</neon-animatable>
 			<!--<neon-animatable>
 				<div layout vertical fit class="green darken-3" style="height:100vh;">
@@ -458,7 +463,8 @@
             },
 
             saveUserData: function (authData, userdata) {
-            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                userdata.setupcomplete = true;
             	userRef.set(userdata);
             	document.querySelector('app-router').go('/requests');
             },

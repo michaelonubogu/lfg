@@ -257,31 +257,9 @@
                 name: 'Sign In'
             },
 
-        	/* Functions */
-            authomaticSignin: function () {
-            	//Checks sessionStorage, and then localStorage for an authData object, and if one exists, 
-            	//signs the user in automatically. Called in 'created' lifecycle event
-            	var found = false;
-            	var sessionJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
-            	var sessionAuth = JSON.parse(sessionJSON);
-            	if (sessionAuth !== null && sessionAuth !== undefined && sessionAuth.uid !== null && sessionAuth.uid !== undefined && sessionAuth.uid !== '') {
-            		found = true;
-            		this.startIntroProcess(sessionAuth);
-            	}
-            	else {
-            		var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
-            		var localAuth = JSON.parse(localJSON);
-            		if (localAuth !== null && localAuth !== undefined && localAuth.uid !== null && localAuth.uid !== undefined && localAuth.uid !== '') {
-            			found = true;
-            			this.cacheLoginCredentials(localAuth);		//Have the authData stored in session
-            			this.startIntroProcess(localAuth);
-            		}
-            	}
+            /* Functions */
+            automaticSignin: function () {
 
-            	if (!found) {
-            		this.removeOverlay();
-            	}
-				//if we reach here, sign in page should just load normally...
             },
 
             cacheLoginCredentials: function (authData) {
@@ -392,7 +370,7 @@
 						var user = snapshot.val();
 
 						//redirect to user setup page
-						if (user === null || user === undefined) {
+						if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
 							document.querySelector('app-router').go('/setup');
 						}
 						else {
@@ -451,7 +429,7 @@
             },
 
             ready: function () {
-            	
+                window.lfg.utils.automaticSignin();
             },
 
             attached: function () {

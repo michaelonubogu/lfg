@@ -29,6 +29,7 @@ User Page
 ====================================================================================================================================================
 
 NEW TODOs FOR LAUNCH:
+ - Fix user setup - acct created bug
  - Throttle search
  - Card links on all games within the my games page
  - Landing Page

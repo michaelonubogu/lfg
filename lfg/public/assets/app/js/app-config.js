@@ -81,7 +81,37 @@
 				{ char: '7', value : 'c' },
 				{ char: '8', value : 'b' },
 				{ char: '9', value : 'a' },
-			],
+            ],
+            
+            automaticSignin: function () {
+                //Check if the user is logged in on the server
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                authData = ref.getAuth();
+                
+                if (authData !== null && authData !== undefined) {
+                    //set auth token
+                    window.lfg.utils.setAuthToken(authData);
+                    
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                    
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+					    .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                        
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                document.querySelector('app-router').go('/setup');
+                            }
+                        });
+                }
+                else {
+                    //redirect to sign in..
+                    document.querySelector('app-router').go('/login');
+                }
+                
+                return false;
+            },
 			
 			checkEmail: function (email) {
 				var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
