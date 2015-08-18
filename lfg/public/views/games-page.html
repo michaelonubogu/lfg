@@ -503,7 +503,7 @@
 				</paper-toolbar>
 				<div fit class="orange darken-3">
                     <template is="dom-if" if="{{loggedIn}}">
-                        <a id="new_game" class="new-game-button modal-trigger" href="#game_tag">Add Game</a>
+                        <a id="new_game" class="new-game-button modal-trigger" on-click="showAddModal">Add Game</a>
                     </template>
                     <sign-in-button></sign-in-button>
 					<side-nav-contents></side-nav-contents>
@@ -993,7 +993,7 @@
 
             		//perform giantbomb search
             		var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
-            		var limit = 4;
+            		var limit = 10;
 
             		$.ajax({
             			url: url,
@@ -1284,6 +1284,10 @@
             	$(cusElem.$.game_tag).closeModal();
             },
 
+            showAddModal: function () {
+                $(this.$.game_tag).openModal();
+            },
+
             truncateText: function (text, limit) {
 				//TODO: Factor in the window/screen size
             	return text.length <= limit ? text : text.substring(0, limit) + '...';
@@ -1313,7 +1317,7 @@
             },
 
             registerEvents: function () {
-            	$(document).on('input', '#search_request_game', this.doVideoGameSearch.bind(this));
+                $(document).on('input', '#search_request_game', _.debounce(this.doVideoGameSearch.bind(this), 250));
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
             	$(document).on('click', '.add-filter-tags', this.activateSystemTag.bind(this));
             	$('.filter-tags').click(this.activateFilterTag.bind(this));

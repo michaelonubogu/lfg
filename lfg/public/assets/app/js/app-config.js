@@ -15,7 +15,10 @@
 		//Config & Util Settings
 		var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};
 		var config = {
-			appUrl: '',
+            appDevUrl: 'http://localhost:1337',
+            appTestUrl: 'https://lfgbase.firebaseapp.com',
+            appProdUrl: '',
+            env: 'test',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
@@ -30,7 +33,7 @@
 				users: 'users'
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
-			tunneling: true,
+			tunneling: false,
 			tempSecureTunnel: 'http://fb40516a.ngrok.io',
 			getFirebaseUrl: function () {
 				return this.firebaseUrl;
@@ -187,7 +190,24 @@
 						return this.indexMapping[i].value;
 					}
 				}
-			},
+            },
+            
+            getAuthData: function () {
+                var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
+                var authData = JSON.parse(authJSON);
+                
+                if (authData == null || authData == undefined) {
+                    var localJSON = localStorage.getItem(config.firebaseCacheKey);
+                    authData = JSON.parse(localJSON);
+                }
+                
+                if (authData == null || authData == undefined) {
+                    var ref = new Firebase(config.getFirebaseUrl());
+                    authData = ref.getAuth();
+                }
+                
+                return authData !== null && authData !== undefined ? authData : null;
+            },
 			
 			getUser: function () {
 				var authJSON = sessionStorage.getItem(config.firebaseCacheKey);

@@ -302,6 +302,14 @@
 			border-radius:4px;
 		}
 
+        .search-loading-item{
+            cursor:auto;
+        }
+
+        .search-loading-item:hover{
+            background-color:#ffffff;
+        }
+
         @media (max-width: 640px){
             .logo-link{
                 margin-left:0px;
@@ -347,12 +355,29 @@
 					<div class="col s1" style="margin-top:19px;">
 						<paper-icon-button icon="arrow-back" class="grey-text text-darken-1"></paper-icon-button>
 					</div>
-					<div class="col s11 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
+					<div class="col s10 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
 						<input id="search_input" type="text" class="validate style-scope request-page" placeholder="Game Title">
 					</div>
+                    <div class="col s1" style="margin-bottom: 0px; margin-top:21px;">
+                        <div class="search-loading-item center center-align" style="display:none;">
+                            <div class="preloader-wrapper active" style="height:32px; width:32px;">
+                                <div class="spinner-layer spinner-yellow-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</li>
-		</ul>
+        </ul>
 		<!-- ------------------------ Search Box --------------------------------- -->
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
@@ -844,87 +869,97 @@
             doSearch: function (e) {
             	var query = $('#search_input').val();
 
-            	if ((e.keyCode || e.which) === 13) {
-            		/* so the idea here is to take a the text and do a "LIKE" type of query to firebase using "startAt" and "endAt".
-					 * I'm not sure atm, whether if/when the user selects the suggested option within the search window, I want to - 
+            	var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+
+            	$('#search_dropdown').find('.search-loading-item').show();
+
+            	$.ajax({
+            	    url: url,
+            	    type: 'GET',
+            	    cache: false,
+            	    data: { search: query, limit: 4 },
+            	    dataType: 'json',
+            	    success: function (data) {
+            	        var html = '<li class="divider search-result-item"></li>';
+            	        $('#search_dropdown').find('.search-result-item').remove();
+
+            	        _.each(data.results, function (result) {
+            	            html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;">';
+
+            	            if (
+                                result.image !== null && result.image !== undefined &&
+                                result.image.screen_url !== null &&
+                                result.image.screen_url !== undefined &&
+                                result.image.screen_url !== '') {
+            	                html += '<span><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px;" /></span>';
+            	            }
+            	            else {
+            	                html += '<span style="background-color:#FB8C00; width:100px; height:56px;"></span>';
+            	            }
+
+            	            html += '<span style="margin-top:-7px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
+            	        });
+            	        $('#search_dropdown').find('.search-loading-item').hide();
+            	        $('#search_dropdown').append(html);
+            	    },
+            	    error: function (err) {
+            	    }
+            	});
+            },
+
+            doSearchWithEnter: function (e) {
+                var query = $('#search_input').val();
+
+                if ((e.keyCode || e.which) === 13) {
+                    /* so the idea here is to take a the text and do a "LIKE" type of query to firebase using "startAt" and "endAt".
+					 * I'm not sure atm, whether if/when the user selects the suggested option within the search window, I want to -
 					 * still do a "LIKE" search or do an "EQUAL TO" search. The user might select the title "Street Fighter" but actually
 					 * not want street fighter from the 80s, but street fighter  4. Cuz we are using Giant Bomb as reference, whats returned in the
 					 * autocomplete ties to a gameid.
 					 *
 					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :| */
-            		query = query !== null && query !== undefined && query !== '' ? window.lfg.utils.clearWhiteSpace(query) : '';
-            		this.dataops.query = query;		//save the query incase we need it for scrolling
-            		//this.getRequests(this.dataops.sort, true, query.toLowerCase());
+                    query = query !== null && query !== undefined && query !== '' ? window.lfg.utils.clearWhiteSpace(query) : '';
+                    this.dataops.query = query;		//save the query incase we need it for scrolling
+                    //this.getRequests(this.dataops.sort, true, query.toLowerCase());
 
-            		//Account for the system filters
-            		if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
-            			this.getRequests(query.toLowerCase(), this.querytype.bysystem, false);
-            		}
-            		else {
-            			if (query !== null && query !== undefined && query !== '') {
-            				this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
-            			}
-            			else {
-            				this.getRequests(null, this.querytype.none, false);
-            			}
-            		}
-            		//this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
-            		$('#search_dropdown').fadeOut(100);
-            	}
-            	else {
-            		var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
-
-            		$.ajax({
-            			url: url,
-            			type: 'GET',
-            			cache: false,
-            			data: { search: query, limit: 4 },
-            			dataType: 'json',
-            			success: function (data) {
-            				var html = '<li class="divider search-result-item"></li>';
-            				$('#search_dropdown').find('.search-result-item').remove();
-
-            				_.each(data.results, function (result) {
-            					html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;">';
-
-            					if (
-									result.image !== null && result.image !== undefined &&
-									result.image.screen_url !== null &&
-									result.image.screen_url !== undefined &&
-									result.image.screen_url !== '') {
-            						html += '<span><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px;" /></span>';
-            					}
-            					else {
-            						html += '<span style="background-color:#FB8C00; width:100px; height:56px;"></span>';
-            					}
-
-            					html += '<span style="margin-top:-7px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
-            				});
-            				$('#search_dropdown').append(html);
-            			},
-            			error: function (err) {
-            			}
-            		});
-            	}
+                    //Account for the system filters
+                    if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+                        this.getRequests(query.toLowerCase(), this.querytype.bysystem, false);
+                    }
+                    else {
+                        if (query !== null && query !== undefined && query !== '') {
+                            this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+                        }
+                        else {
+                            this.getRequests(null, this.querytype.none, false);
+                        }
+                    }
+                    //this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+                    $('#search_dropdown').fadeOut(100);
+                }
             },
 
             doResultSearchWithClick: function (e) {
-            	var polymer = this;		//bound to polymer elem
-            	var anchor = e.target;
+                var polymer = this;		//bound to polymer elem
+                var anchor = e.target;
 
-            	var li = $(anchor).parent();
-            	var giantbombid = $(li).data('resultId');
-            	var game = $(anchor).html().toLowerCase();
-            	game = window.lfg.utils.clearWhiteSpace(game);
+                var li = $(anchor);
+                if (anchor.tagName.toLowerCase() !== 'li') {
+                    li = $(anchor).parents('li');
+                }
 
-            	//Account for the system filters
-            	if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
-            		polymer.getRequests(game, polymer.querytype.bysystem, false);
-            	}
-            	else {
-            		polymer.getRequests(game, polymer.querytype.bygame, false);
-            	}
-            	e.preventDefault();
+                var giantbombid = $(li).data('resultId');
+                var game = $(li).find('.search-result-link').html().toLowerCase();
+                game = window.lfg.utils.clearWhiteSpace(game);
+
+                //Account for the system filters
+                if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+                    polymer.getRequests(game, polymer.querytype.bysystem, false);
+                }
+                else {
+                    polymer.getRequests(game, polymer.querytype.bygame, false);
+                }
+                e.preventDefault();
             },
 
             formatDate: function (utc) {
@@ -1445,9 +1480,10 @@
 
             registerEvents: function () {
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
-            	$('#search_input').on('keypress', this.doSearch.bind(this));
+            	$('#search_input').on('input', _.debounce(this.doSearch.bind(this), 250));
+            	$('#search_input').on('keypress', this.doSearchWithEnter.bind(this));
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
-            	$(document).on('click', '.search-result-link', this.doResultSearchWithClick.bind(this));
+            	$(document).on('click', '.search-result-item', this.doResultSearchWithClick.bind(this));
             	$('.filter-tags').click(this.activateFilterTag.bind(this));
 
             	var ref = new Firebase(window.lfg.config.getFirebaseUrl());

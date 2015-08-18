@@ -230,17 +230,20 @@
                     <div id="profile_background" class="profile-background" layout vertical center>
                         <div class="profile-overlay">
                             <!-- Navigational Butons -->
-                            <div layout horizontal center-justified style="opacity:1.0 !important;">
+                            <div class="layout horizontal center-justified" style="opacity:1.0 !important;">
                                 <!--<div layout no-wrap style="visibility:hidden;">
                                     <a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
                                         <i class="material-icons white-text left">arrow_back</i>
                                         Back
                                     </a>
                                 </div>-->
-                                                <div flex></div>
-                                                <div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Enter your Username & Email, and upload a profile picture</h6></div>
-                                                <div flex></div>
-                                                <!--<div layout no-wrap>
+                                <div flex></div>
+                                <div self-center class="col s6 center">
+                                    <h6 class="white-text thin" style="font-size:1.5rem;">{{providerText}}</h6>
+                                    <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
+                                </div>
+                                <div flex></div>
+                                <!--<div layout no-wrap>
                                     <a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
                                         <i class="material-icons white-text right thin">arrow_forward</i>
                                         Next
@@ -285,6 +288,7 @@
                         </div>
                     </div>
                     <div class="container content-area">
+                        <br />
                         <div class="card-panel requests-card-panel">
                             <ul class="collection collection-modified">
                                 <li class="collection-item avatar">
@@ -462,6 +466,40 @@
             	}
             },
 
+            getProvider: function () {
+                var authData = window.lfg.utils.getAuthData();
+
+                if (authData !== null && authData !== undefined) {
+                    switch (authData.provider) {
+                        case 'facebook':
+                            this.provider = 'Facebook';
+                            break;
+
+                        case 'twitter':
+                            this.provider = 'Twitter';
+                            break;
+
+                        case 'google':
+                            this.provider = 'Google';
+                            break;
+
+                        case 'steam':
+                            this.provider = 'Steam';
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                if (this.provider == null || this.provider == undefined || this.provider == '') {
+                    this.providerText = 'Thank you for signing in. Just one more step...';
+                }
+                else {
+                    this.providerText = 'Thank you for signing in through ' + this.provider + '. Just one more step...';
+                }
+            },
+
             saveUserData: function (authData, userdata) {
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
@@ -505,9 +543,12 @@
             	};
             	this.usernameExists = null;
             	this.emailExists = null;
+            	this.provider = '';
 
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	this.getProvider();
             },
 
             registerEvents: function () {

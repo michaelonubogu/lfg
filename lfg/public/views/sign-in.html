@@ -258,10 +258,6 @@
             },
 
             /* Functions */
-            automaticSignin: function () {
-
-            },
-
             cacheLoginCredentials: function (authData) {
             	sessionStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
 
@@ -391,8 +387,19 @@
 
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            	var url = window.lfg.config.appDevUrl;
 
-            	var faye_client = new Faye.Client('http://localhost:8089/faye');
+            	switch (window.lfg.config.env.toLowerCase()) {
+            	    case 'test':
+            	        url = window.lfg.config.appTestUrl;
+            	        break;
+
+            	    case 'prod':
+            	        url = window.lfg.config.appProdUrl;
+            	        break;
+            	}
+
+            	var faye_client = new Faye.Client(url);
 
 				//Callback for Steam Authentication
             	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
@@ -429,14 +436,13 @@
             },
 
             ready: function () {
-                window.lfg.utils.automaticSignin();
             },
 
             attached: function () {
             	this.initializeData();
-            	this.authomaticSignin();
             	this.registerPlugins();
             	this.registerEvents();
+            	$(this.$.signin_overlay).fadeOut();
             }
         });
     })(window);
