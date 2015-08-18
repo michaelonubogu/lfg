@@ -1,4 +1,7 @@
-﻿var express = require('express');
+﻿/**
+ * Created by Namdascious.
+ */
+var express = require('express');
 var http = require('http');
 var url = require('url');
 var path = require('path');
@@ -100,17 +103,5 @@ router.get('/giantbomb/search', function (req, res) {
 		console.log("%j", err.res.statusCode);
 	});
 });
-
-//router.get('/giantbomb/games', function (req, res) {
-////...
-//});
-
-//router.get('/giantbomb/game/:id', function (req, res) {
-////...
-//});
-
-//router.get('/giantbomb/platforms', function (req, res) {
-////...
-//});
 
 module.exports = router;

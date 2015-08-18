@@ -1,4 +1,7 @@
-﻿var rp = require('request-promise');
+﻿/**
+ * Created by Namdascious.
+ */
+var rp = require('request-promise');
 var _ = require('underscore');
 var config = require('./config.js');
 

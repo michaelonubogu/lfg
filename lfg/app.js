@@ -13,7 +13,7 @@ var domain = 'localhost';
 switch (config.appsettings.env) {
 
 	case 'test':
-		domain = 'localhost';
+		domain = '';
 		break;
 
 	case 'prod':

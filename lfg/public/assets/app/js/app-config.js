@@ -18,7 +18,10 @@
             appDevUrl: 'http://localhost:1337',
             appTestUrl: 'https://lfgbase.firebaseapp.com',
             appProdUrl: '',
-            env: 'test',
+            fayeDevUrl: 'http://localhost:8089',
+            fayeTestUrl: 'https://lfgbase.firebaseapp.com',
+            fayeProdUrl: '',
+            env: 'dev',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
@@ -39,28 +42,63 @@
 				return this.firebaseUrl;
 			},
 			
-			getGiantBombUrl: function (entity) {
+            getGiantBombUrl: function (entity) {
+                var url = '';
+                switch (this.env) {
+                    case 'dev':
+                        url = this.appDevUrl + '/';
+                        break;
+
+                    case 'test':
+                        url = this.appTestUrl + '/';
+                        break;
+
+                    case 'prod':
+                        url = this.appProdUrl + '/';
+                        break;
+
+                    default:
+                        break;
+                }
+
 				switch (entity) {
 					case this.apiEndPoints.games:
-						return this.appUrl + this.apiEndPoints.games;
+						return url + this.apiEndPoints.games;
 						break;
 
 					case this.apiEndPoints.game:
-						return this.appUrl + this.apiEndPoints.game;
+						return url + this.apiEndPoints.game;
 						break;
 
 					case this.apiEndPoints.platforms:
-						return this.appUrl + this.apiEndPoints.platforms;
+						return url + this.apiEndPoints.platforms;
 						break;
 
 					case this.apiEndPoints.search:
-						return this.appUrl + this.apiEndPoints.search;
+						return url + this.apiEndPoints.search;
 						break;
 				}
 			},
 			
-			getSteamVerifyUrl: function () {
-				return this.appUrl + this.apiEndPoints.steamlogin;
+            getSteamVerifyUrl: function () {
+                var url = '';
+                switch (this.env) {
+                    case 'dev':
+                        url =  this.appDevUrl;
+                        break;
+
+                    case 'test':
+                        url =  this.appTestUrl;
+                        break;
+
+                    case 'prod':
+                        url =  this.appProdUrl;
+                        break;
+
+                    default:
+                        break;
+                }
+				return url + '/' + this.apiEndPoints.steamlogin;
 			}
 		};
 		

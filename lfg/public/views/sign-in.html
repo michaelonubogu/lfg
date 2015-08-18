@@ -387,15 +387,15 @@
 
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
-            	var url = window.lfg.config.appDevUrl;
+            	var url = window.lfg.config.fayeDevUrl;
 
             	switch (window.lfg.config.env.toLowerCase()) {
             	    case 'test':
-            	        url = window.lfg.config.appTestUrl;
+            	        url = window.lfg.config.fayeTestUrl;
             	        break;
 
             	    case 'prod':
-            	        url = window.lfg.config.appProdUrl;
+            	        url = window.lfg.config.fayeProdUrl;
             	        break;
             	}
 
